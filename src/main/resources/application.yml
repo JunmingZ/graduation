@@ -1,0 +1,35 @@
+server:
+  port: 80
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/graduation
+    username: root
+    password: root
+    platform: mysql
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 初始化大小，最小，最大
+    initialSize: 1
+    minIdle: 3
+    maxActive: 20
+    # 配置获取连接等待超时的时间
+    maxWait: 60000
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    # 配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 30000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    # 是否缓存preparedStatement，打开PSCache，并且指定每个连接上 PSCache的大小。官方建议MySQL下建议关闭，如果用SQL防火墙 建议打开
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+  devtools:
+    restart:
+      enabled: true  #设置开启热部署
+      additional-paths: resources/**,static/**,templates/** #重启目录
+      exclude:
+
+

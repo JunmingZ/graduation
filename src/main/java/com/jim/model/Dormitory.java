@@ -9,12 +9,9 @@ import lombok.Data;
  * 宿舍
  */
 @Data
-public class Dormitory extends Model<Dormitory> {
-  @TableId(type = IdType.AUTO)
+public class Dormitory {
   private Long id;  //宿舍号
-  private Integer bedNum;  //床号
   private String description; //描述
   private Long ctime;
   private Long utime;
-
 }

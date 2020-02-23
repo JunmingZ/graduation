@@ -29,7 +29,7 @@ public class StudentService {
     /**
      * 分页获取学生列表
      * @param page
-     * @param username
+     * @param username  搜索条件
      * @return 返回总记录数和集合
      */
     public Results getAllStudentsByPage(Page page, String username){

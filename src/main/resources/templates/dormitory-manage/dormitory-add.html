@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>编辑学生信息</title>
+        <header th:replace="header::html"></header>
+        <link rel="stylesheet" th:href="@{/css/custom.css}" />
+    </head>
+    <body>
+        <div class="layui-fluid">
+            <div class="layui-row">
+                <form class="layui-form">
+                  <div class="layui-form-item">
+                      <label for="sno" class="layui-form-label">
+                          学号
+                      </label>
+                      <div class="layui-input-inline">
+                          <input type="text" id="sno" name="sno" required="" lay-verify="required"
+                          autocomplete="off" class="layui-input">
+                      </div>
+                  </div>
+                  <div class="layui-form-item">
+                      <label for="name" class="layui-form-label">
+                         姓名
+                      </label>
+                      <div class="layui-input-inline">
+                          <input type="text" id="name" name="name" required="" lay-verify="required" autocomplete="off" class="layui-input" >
+                      </div>
+                  </div>
+                    
+                  <div class="layui-form-item">
+                      <label  class="layui-form-label">
+                          性别
+                      </label>
+                      <div class="layui-input-inline">
+                          <input type="radio"  name="sex" value="0" required="" autocomplete="off" title="男" class="layui-input"  checked>
+                          <input type="radio"  name="sex" value="1" required="" autocomplete="off"  title="女" class="layui-input" >
+                      </div>
+                  </div>
+
+                    <div class="layui-form-item">
+                        <label for="phone" class="layui-form-label">
+                            号码
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="phone" name="phone" required="" autocomplete="off" class="layui-input" lay-verify="telephone"  >
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label for="major" class="layui-form-label">
+                            专业名称
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="major" name="major" required=""  autocomplete="off" class="layui-input" >
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label for="home" class="layui-form-label">
+                            家乡
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="home" name="home" required=""  autocomplete="off" class="layui-input" >
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label for="L_dormitory" class="layui-form-label">
+                            宿舍号
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="L_dormitory" name="dormitory" required=""  autocomplete="off" class="layui-input" >
+                        </div>
+                    </div>
+
+                  <div class="layui-form-item">
+                      <label for="L_pass" class="layui-form-label">
+                          密码
+                      </label>
+                      <div class="layui-input-inline">
+                          <input type="password" id="L_pass" name="password" required="" lay-verify="pass"
+                          autocomplete="off" class="layui-input">
+                      </div>
+                      <div class="layui-form-mid layui-word-aux">
+                          6到16个字符
+                      </div>
+                  </div>
+                  <div class="layui-form-item">
+                      <label for="L_repass" class="layui-form-label">
+                          确认密码
+                      </label>
+                      <div class="layui-input-inline">
+                          <input type="password" id="L_repass" name="repass" required="" lay-verify="repass"
+                          autocomplete="off" class="layui-input">
+                      </div>
+                  </div>
+                    <input type="hidden"  name="ctime" >
+
+                  <div class="layui-form-item">
+                      <label for="L_repass" class="layui-form-label"></label>
+                      <button  class="layui-btn" lay-filter="add" lay-submit="">
+                          添加
+                      </button>
+                  </div>
+              </form>
+            </div>
+        </div>
+        <script>layui.use(['form', 'layer'],
+            function() {
+                $ = layui.jquery;
+                var form = layui.form,
+                layer = layui.layer;
+
+                //自定义验证规则
+                form.verify({
+                    pass: [/(.+){6,12}$/, '密码必须6到12位'],
+                    repass: function(value) {
+                        if ($('#L_pass').val() != $('#L_repass').val()) {
+                            return '两次密码不一致';
+                        }
+                    },
+                    telephone: [/(.+){6,12}$/, '电话号码必须6到12位']
+                });
+
+                //监听提交
+                form.on('submit(add)',
+                function(data) {
+                    console.log(data);
+                    $.ajax({
+                        url:"/student/add",
+                        type:"POST",
+                        data:data.field,
+                        dataType:'json',
+                        success:function(result){
+                            console.log(result)
+                            if(result.code == 500||result.code == 5000100){
+                                layer.alert(result.msg);
+                            }else{
+                                layer.alert("设置成功", {icon: 6},function () {
+                                    //关闭当前frame
+                                    xadmin.close();
+                                    // 可以对父窗口进行刷新
+                                    xadmin.father_reload();
+                                });
+                            }
+                        },
+                        error:function () {
+                            layer.msg('系统错误,请联系管理员小姐姐');
+                        }
+                    });
+
+                    return false;
+                });
+            });</script>
+
+    </body>
+
+</html>

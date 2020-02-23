@@ -15,7 +15,7 @@ public enum ResponseCode {
 	SNO_REPEAT(5000100,"错误操作，该学号已存在！！！"),
 	//用户-角色
 	//5000201 - 5000300
-	USER_ROLE_NO_CLEAR(5000201,"该角色存在用户关联，无法删除")
+	Dormitory_REPEAT(5000201,"错误操作，该宿舍已存在！！！")
 ;
 	private Integer code;
 	

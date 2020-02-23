@@ -3,6 +3,7 @@ package com.jim.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.jim.base.result.ResponseCode;
 import com.jim.base.result.Results;
 import com.jim.mapper.DormitoryMapper;
 import com.jim.model.Dormitory;
@@ -68,5 +69,23 @@ public class DormitoryService {
             return Results.failure();
         }
         return Results.ok();
+    }
+
+    /**
+     * 添加宿舍
+     * @param dormitory
+     * @return
+     */
+    public Results addDormitory(Dormitory dormitory) {
+        if(dormitoryMapper.selectById(dormitory.getId())!=null){
+            return Results.failure(ResponseCode.Dormitory_REPEAT.getCode(),ResponseCode.Dormitory_REPEAT.getMessage());
+        }
+        dormitory.setCtime(System.currentTimeMillis());
+        dormitory.setUtime(System.currentTimeMillis());
+        int insert = dormitoryMapper.insert(dormitory);
+        if(insert>0){
+            return  Results.ok();
+        }
+        return Results.failure();
     }
 }

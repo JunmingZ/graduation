@@ -47,12 +47,12 @@
     <script type="text/html" id="toolbarDemo">
         <div class="layui-btn-container">
             <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="getCheckData"> <i class="layui-icon"></i>批量删除</button>
-            <button class="layui-btn" onclick="xadmin.open('添加宿舍','/api/getPage?pageName=dormitory-manage/dormitory-add',800,600)"><i class="layui-icon"></i>添加宿舍</button>
+            <button class="layui-btn" onclick="xadmin.open('添加宿舍','/api/getPage?pageName=dormitory-manage/dormitory-add',460,260)"><i class="layui-icon"></i>添加宿舍</button>
         </div>
     </script>
 
     <script>
-        layui.use('table', function(){
+        layui.use('table', 'layer',function(){
             var table = layui.table;
             let form = layui.form;
             table.render({
@@ -183,7 +183,7 @@
 
                     });
                 } else if(obj.event === 'edit'){
-                     xadmin.open('编辑学生信息','/dormitory/edit/?sno='+data.sno,800,600);
+                     xadmin.open('编辑宿舍信息','/dormitory/edit/?id='+data.sno,460,260);
                 }
             });
 

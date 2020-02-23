@@ -47,14 +47,15 @@
     <script type="text/html" id="toolbarDemo">
         <div class="layui-btn-container">
             <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="getCheckData"> <i class="layui-icon"></i>批量删除</button>
-            <button class="layui-btn" onclick="xadmin.open('添加宿舍','/api/getPage?pageName=dormitory-manage/dormitory-add',460,260)"><i class="layui-icon"></i>添加宿舍</button>
+            <button class="layui-btn layui-btn-sm" lay-event="add_dormitory"><i class="layui-icon"></i>添加宿舍</button>
         </div>
     </script>
 
     <script>
-        layui.use('table', 'layer',function(){
+        layui.use(['table', 'layer'],function(){
             var table = layui.table;
             let form = layui.form;
+            let layer = layui.layer;
             table.render({
                 elem: '#test'
                 ,url:'/dormitory/list'
@@ -118,6 +119,18 @@
                             layer.msg("你没有选中")
                         }
                         // layer.alert(JSON.stringify(delList));
+                        break;
+                    case 'add_dormitory':
+                        layer.open({
+                            type: 2,
+                            title: '添加宿舍',
+                            shadeClose: true,
+                            shade: false,
+                            maxmin: true, //开启最大化最小化按钮
+                            area: ['460px','250px'],
+                            content: '/api/getPage?pageName=dormitory-manage/dormitory-add'
+                        });
+
                         break;
                     case 'LAYTABLE_TIPS':
                         layer.alert('这是工具栏右侧自定义的一个图标按钮');

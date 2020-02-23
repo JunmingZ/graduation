@@ -10,7 +10,7 @@ import lombok.Data;
  */
 @Data
 public class Student extends Model<Student>  {
-  @TableId(type = IdType.AUTO)
+  @TableId()
   private Long sno;
   private String name;
   private Integer sex;

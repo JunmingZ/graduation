@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.result.PageTableRequest;
 import com.jim.base.result.Results;
 import com.jim.model.Student;
-import com.jim.service.DormitoryService;
 import com.jim.service.StudentService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,8 +15,7 @@ import javax.annotation.Resource;
 public class StudentController {
     @Resource
     private StudentService studentService;
-    @Resource
-    private DormitoryService dormitoryService;
+
     /**
      * 查出相应数据返回前端
      * @param pageTableRequest 分页初始处理
@@ -62,9 +60,24 @@ public class StudentController {
         return modelAndView;
     }
 
+    /**
+     * 编辑学生
+     * @param student
+     * @return
+     */
     @PostMapping("/edit")
     public Results editStudent(Student student){
         return studentService.editStudent(student);
+    }
+
+    /**
+     * 添加学生
+     * @param student
+     * @return
+     */
+    @PostMapping("/add")
+    public Results addStudent(Student student){
+        return studentService.addStudent(student);
     }
 
 }

@@ -4,6 +4,7 @@ package com.jim.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.jim.base.result.ResponseCode;
 import com.jim.base.result.Results;
 import com.jim.dto.StudentDto;
 import com.jim.mapper.StudentMapper;
@@ -74,10 +75,20 @@ public class StudentService {
         return Results.ok();
     }
 
+    /**
+     * 通过学号查找学生
+     * @param sno
+     * @return
+     */
     public Student findStudentBySno(String sno) {
         return studentMapper.selectById(sno);
     }
 
+    /**
+     * 编辑学生
+     * @param student
+     * @return
+     */
     public Results editStudent(Student student) {
         student.setUtime(System.currentTimeMillis());
         int i = studentMapper.updateById(student);
@@ -86,5 +97,25 @@ public class StudentService {
         }
         return Results.failure();
 
+    }
+
+
+    /**
+     * 插入学生
+     * @param student
+     * @return
+     */
+    public Results addStudent(Student student) {
+
+        if(studentMapper.selectById(student.getSno())!=null){
+            return Results.failure(ResponseCode.SNO_REPEAT.getCode(),ResponseCode.SNO_REPEAT.getMessage());
+        }
+        student.setCtime(System.currentTimeMillis());
+        student.setUtime(System.currentTimeMillis());
+        int insert = studentMapper.insert(student);
+        if(insert>0){
+            return  Results.ok();
+        }
+        return Results.failure();
     }
 }

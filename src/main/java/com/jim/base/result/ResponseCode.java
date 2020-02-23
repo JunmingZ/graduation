@@ -10,11 +10,9 @@ public enum ResponseCode {
 	UNAUTHORIZED(401,"未授权"),
 	// ..一真往后面加
 
-	//用户信息
+	//信息
 	//5000100 - 5000200
-	USERNAME_REPEAT(5000100,"用户名已存在"),
-	PHONE_REPEAT(5000101,"手机号已存在"),
-	EMAIL_REPEAT(5000102,"邮箱已存在"),
+	SNO_REPEAT(5000100,"错误操作，该学号已存在！！！"),
 	//用户-角色
 	//5000201 - 5000300
 	USER_ROLE_NO_CLEAR(5000201,"该角色存在用户关联，无法删除")

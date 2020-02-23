@@ -8,5 +8,5 @@ import java.util.List;
 
 @Data
 public class StudentDto extends Student {
-    public List<Integer> bedNums = new ArrayList<>();
+
 }

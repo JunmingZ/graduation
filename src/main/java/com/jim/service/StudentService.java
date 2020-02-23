@@ -74,17 +74,8 @@ public class StudentService {
         return Results.ok();
     }
 
-    public StudentDto findStudentBySno(String sno) {
-        Student student = studentMapper.selectById(sno);
-        StudentDto studentDto = new StudentDto();
-        BeanUtils.copyProperties(student,studentDto);
-        Dormitory dormitory = new Dormitory();
-        Integer bedNums = dormitory.selectById(student.getDormitory()).getBedNum();//获取床数
-        // 加入集合给前端
-        for(int i = 1; i<= bedNums; i++){
-            studentDto.getBedNums().add(i);
-        }
-        return studentDto;
+    public Student findStudentBySno(String sno) {
+        return studentMapper.selectById(sno);
     }
 
     public Results editStudent(Student student) {

@@ -18,7 +18,6 @@ public class Student extends Model<Student>  {
   private String major;
   private String home;
   private String password;
-  private Integer bedNum;
   private Long dormitory;
   private Long ctime;
   private Long utime;

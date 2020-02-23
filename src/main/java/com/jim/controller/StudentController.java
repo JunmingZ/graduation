@@ -3,7 +3,6 @@ package com.jim.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.result.PageTableRequest;
 import com.jim.base.result.Results;
-import com.jim.dto.StudentDto;
 import com.jim.model.Student;
 import com.jim.service.DormitoryService;
 import com.jim.service.StudentService;
@@ -58,7 +57,7 @@ public class StudentController {
     @GetMapping("/edit")
     public ModelAndView toEditStudent(ModelAndView modelAndView,String sno){
         modelAndView.setViewName("student-manage/student-edit");
-        StudentDto studentBySno = studentService.findStudentBySno(sno);
+        Student studentBySno = studentService.findStudentBySno(sno);
         modelAndView.addObject("studentDTO",studentBySno);
         return modelAndView;
     }

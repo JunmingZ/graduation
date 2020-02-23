@@ -17,7 +17,7 @@
                       </label>
                       <div class="layui-input-inline">
                           <input type="text" id="sno" name="sno" required="" lay-verify="required"
-                          autocomplete="off" class="layui-input layui-disabled" Readonly="true" th:value="${studentDTO.sno}" >
+                          autocomplete="off" class="layui-input layui-disabled" Readonly="true"  >
                       </div>
                   </div>
                   <div class="layui-form-item">
@@ -25,7 +25,7 @@
                          姓名
                       </label>
                       <div class="layui-input-inline">
-                          <input type="text" id="name" name="name" required="" lay-verify="required" autocomplete="off" class="layui-input" th:value="${studentDTO.name}">
+                          <input type="text" id="name" name="name" required="" lay-verify="required" autocomplete="off" class="layui-input" >
                       </div>
                   </div>
                     
@@ -34,8 +34,8 @@
                           性别
                       </label>
                       <div class="layui-input-inline">
-                          <input type="radio"  name="sex" value="0" required="" autocomplete="off" title="男" class="layui-input" th:checked="${studentDTO.sex==0}">
-                          <input type="radio"  name="sex" value="1" required="" autocomplete="off"  title="女" class="layui-input" th:checked="${studentDTO.sex==1}">
+                          <input type="radio"  name="sex" value="0" required="" autocomplete="off" title="男" class="layui-input" >
+                          <input type="radio"  name="sex" value="1" required="" autocomplete="off"  title="女" class="layui-input" >
                       </div>
                   </div>
 
@@ -44,7 +44,7 @@
                             号码
                         </label>
                         <div class="layui-input-inline">
-                            <input type="text" id="phone" name="phone" required="" autocomplete="off" class="layui-input" lay-verify="telephone" th:value="${studentDTO.phone}" >
+                            <input type="text" id="phone" name="phone" required="" autocomplete="off" class="layui-input" lay-verify="telephone"  >
                         </div>
                     </div>
 
@@ -53,7 +53,7 @@
                             专业名称
                         </label>
                         <div class="layui-input-inline">
-                            <input type="text" id="major" name="major" required=""  autocomplete="off" class="layui-input" th:value="${studentDTO.major}">
+                            <input type="text" id="major" name="major" required=""  autocomplete="off" class="layui-input" >
                         </div>
                     </div>
 
@@ -62,19 +62,16 @@
                             家乡
                         </label>
                         <div class="layui-input-inline">
-                            <input type="text" id="home" name="home" required=""  autocomplete="off" class="layui-input" th:value="${studentDTO.home}">
+                            <input type="text" id="home" name="home" required=""  autocomplete="off" class="layui-input" >
                         </div>
                     </div>
-
-
-
 
                     <div class="layui-form-item">
                         <label for="L_dormitory" class="layui-form-label">
                             宿舍号
                         </label>
                         <div class="layui-input-inline">
-                            <input type="text" id="L_dormitory" name="dormitory" required=""  autocomplete="off" class="layui-input" th:value="${studentDTO.dormitory}">
+                            <input type="text" id="L_dormitory" name="dormitory" required=""  autocomplete="off" class="layui-input" >
                         </div>
                     </div>
 
@@ -83,7 +80,7 @@
                           密码
                       </label>
                       <div class="layui-input-inline">
-                          <input type="password" id="L_pass" name="pass" required="" lay-verify="pass" th:value="${studentDTO.password}"
+                          <input type="password" id="L_pass" name="pass" required="" lay-verify="pass"
                           autocomplete="off" class="layui-input">
                       </div>
                       <div class="layui-form-mid layui-word-aux">
@@ -95,11 +92,11 @@
                           确认密码
                       </label>
                       <div class="layui-input-inline">
-                          <input type="password" id="L_repass" name="repass" required="" lay-verify="repass" th:value="${studentDTO.password}"
+                          <input type="password" id="L_repass" name="repass" required="" lay-verify="repass"
                           autocomplete="off" class="layui-input">
                       </div>
                   </div>
-                    <input type="hidden"  name="ctime" th:value="${studentDTO.ctime}">
+                    <input type="hidden"  name="ctime" >
 
                   <div class="layui-form-item">
                       <label for="L_repass" class="layui-form-label"></label>

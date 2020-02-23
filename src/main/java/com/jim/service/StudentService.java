@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -84,5 +85,15 @@ public class StudentService {
             studentDto.getBedNums().add(i);
         }
         return studentDto;
+    }
+
+    public Results editStudent(Student student) {
+        student.setUtime(System.currentTimeMillis());
+        int i = studentMapper.updateById(student);
+        if(i>0){
+            return Results.ok();
+        }
+        return Results.failure();
+
     }
 }

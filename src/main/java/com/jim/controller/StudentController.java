@@ -49,13 +49,23 @@ public class StudentController {
        return studentService.deleteStudentByIds(ids);
     }
 
-
+    /**
+     * 进入编辑页面
+     * @param modelAndView
+     * @param sno
+     * @return
+     */
     @GetMapping("/edit")
-    public ModelAndView editStudent(ModelAndView modelAndView,String sno){
+    public ModelAndView toEditStudent(ModelAndView modelAndView,String sno){
         modelAndView.setViewName("student-manage/student-edit");
         StudentDto studentBySno = studentService.findStudentBySno(sno);
         modelAndView.addObject("studentDTO",studentBySno);
         return modelAndView;
+    }
+
+    @PostMapping("/edit")
+    public Results editStudent(Student student){
+        return studentService.editStudent(student);
     }
 
 }

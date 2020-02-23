@@ -10,6 +10,7 @@ import lombok.Data;
  */
 @Data
 public class Dormitory {
+  @TableId
   private Long id;  //宿舍号
   private String description; //描述
   private Long ctime;

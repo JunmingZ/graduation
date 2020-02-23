@@ -1,6 +1,5 @@
 package com.jim.model;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
@@ -10,7 +9,7 @@ import lombok.Data;
  */
 @Data
 public class Student extends Model<Student>  {
-  @TableId()
+  @TableId
   private Long sno;
   private String name;
   private Integer sex;

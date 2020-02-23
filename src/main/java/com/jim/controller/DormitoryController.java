@@ -8,6 +8,7 @@ import com.jim.model.Dormitory;
 import com.jim.model.Student;
 import com.jim.service.DormitoryService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 
@@ -55,6 +56,28 @@ public class DormitoryController {
         return dormitoryService.addDormitory(dormitory);
     }
 
+    /**
+     * 进入编辑页面
+     * @param modelAndView
+     * @param id
+     * @return
+     */
+    @GetMapping("/edit")
+    public ModelAndView toEditDormitory(ModelAndView modelAndView, String id){
+        modelAndView.setViewName("dormitory-manage/dormitory-edit");
+        Dormitory dormitory = dormitoryService.findDormitoryById(id);
+        modelAndView.addObject("dormitory",dormitory);
+        return modelAndView;
+    }
 
+    /**
+     * 编辑宿舍
+     * @param dormitory
+     * @return
+     */
+    @PostMapping("/edit")
+    public Results editDormitory(Dormitory dormitory){
+        return dormitoryService.editDormitory(dormitory);
+    }
 
 }

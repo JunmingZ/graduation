@@ -10,6 +10,8 @@ import com.jim.model.Dormitory;
 import com.jim.model.Student;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 
@@ -85,6 +87,24 @@ public class DormitoryService {
         int insert = dormitoryMapper.insert(dormitory);
         if(insert>0){
             return  Results.ok();
+        }
+        return Results.failure();
+    }
+
+    /**
+     * 通过id查找宿舍
+     * @param id
+     * @return
+     */
+    public Dormitory findDormitoryById(String id) {
+        return dormitoryMapper.selectById(id);
+    }
+
+    public Results editDormitory(Dormitory dormitory) {
+        dormitory.setUtime(System.currentTimeMillis());
+        int i = dormitoryMapper.updateById(dormitory);
+        if(i>0){
+            return Results.ok();
         }
         return Results.failure();
     }

@@ -72,7 +72,7 @@ public class DormitoryController {
 
     /**
      * 编辑宿舍
-     * @param dormitory
+     * @param dormitory 宿舍
      * @return
      */
     @PostMapping("/edit")

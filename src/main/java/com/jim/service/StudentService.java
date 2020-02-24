@@ -6,20 +6,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.result.ResponseCode;
 import com.jim.base.result.Results;
-import com.jim.dto.StudentDto;
 import com.jim.mapper.StudentMapper;
-import com.jim.model.Dormitory;
 import com.jim.model.Student;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Stream;
 
 @Service
 @Transactional   //加入事务

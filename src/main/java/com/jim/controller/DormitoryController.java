@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/dormitory")
@@ -78,6 +79,19 @@ public class DormitoryController {
     @PostMapping("/edit")
     public Results editDormitory(Dormitory dormitory){
         return dormitoryService.editDormitory(dormitory);
+    }
+
+    /**
+     * 查看宿舍信息
+     * @param id 宿舍号
+     * @return
+     */
+    @GetMapping("/info")
+    public ModelAndView dormitoryInfo(ModelAndView modelAndView,String id){
+        List<Student> dormitoryInfo = dormitoryService.findDormitoryInfo(id);
+        modelAndView.addObject("dormitoryInfo",dormitoryInfo);
+        modelAndView.setViewName("dormitory-manage/dormitory-info");
+        return modelAndView;
     }
 
 }

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>编辑学生信息</title>
+        <header th:replace="header::html"></header>
+        <link rel="stylesheet" th:href="@{/css/custom.css}" />
+    </head>
+    <body>
+        <div class="layui-fluid">
+            <div class="layui-row">
+                <table class="layui-table">
+                    <thead>
+                        <tr>
+                            <th>学号</th>
+                            <th>姓名</th>
+                            <th>电话</th>
+                            <th>性别</th>
+                            <th>专业</th>
+                            <th>家乡</th>
+                            <th>宿舍号</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="students:${dormitoryInfo}">
+                        <td th:text="${students.sno}"></td>
+                        <td th:text="${students.name}"></td>
+                        <td th:text="${students.phone}"></td>
+                        <td th:text="${students.sex==0?'男':'女'}" ></td>
+                        <td th:text="${students.major}"></td>
+                        <td th:text="${students.home}"></td>
+                        <td th:text="${students.dormitory}"></td>
+                    </tr>
+                    <tr th:if="${ #lists.isEmpty(dormitoryInfo)}">
+                        <td colspan="7" align="center" class="layui-bg-gray"><i class="layui-icon layui-icon-face-cry"></i>&nbsp;&nbsp;该宿舍尚未住人</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div></div>
+            </div>
+        </div>
+    </body>
+
+</html>

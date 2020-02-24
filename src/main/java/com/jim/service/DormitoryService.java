@@ -6,23 +6,29 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.result.ResponseCode;
 import com.jim.base.result.Results;
 import com.jim.mapper.DormitoryMapper;
+import com.jim.mapper.StudentMapper;
 import com.jim.model.Dormitory;
 import com.jim.model.Student;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 宿舍业务层
  */
 @Service
+@Transactional   //加入事务
 public class DormitoryService {
     @Resource
     private DormitoryMapper dormitoryMapper;
 
+    @Resource
+    private StudentMapper studentMapper;
     /**
      * 兼搜索的分页列表
      * @param page
@@ -41,12 +47,17 @@ public class DormitoryService {
     }
 
     /**
-     * 通过id删除
+     * 通过id删除,将更新学生的宿舍号为null
      * @param id
      * @return
      */
     public Results deleteDormitoryById(String id) {
         if(dormitoryMapper.deleteById(id)>0){
+            QueryWrapper<Student> wrapper = new QueryWrapper<>();
+            wrapper.eq("dormitory",id);
+            Student student = new Student();
+            student.setDormitory(0L);
+            studentMapper.update(student,wrapper);
             return Results.ok();
         }else {
             return Results.failure();
@@ -66,6 +77,11 @@ public class DormitoryService {
         int flag=0;
         for (String s : split) {
             flag = dormitoryMapper.deleteById(s);
+            QueryWrapper<Student> wrapper = new QueryWrapper<>();
+            wrapper.eq("dormitory",s);
+            Student student = new Student();
+            student.setDormitory(0L);
+            studentMapper.update(student,wrapper);
         }
         if(flag==0){
             return Results.failure();
@@ -100,6 +116,11 @@ public class DormitoryService {
         return dormitoryMapper.selectById(id);
     }
 
+    /**
+     * 编辑宿舍信息
+     * @param dormitory
+     * @return
+     */
     public Results editDormitory(Dormitory dormitory) {
         dormitory.setUtime(System.currentTimeMillis());
         int i = dormitoryMapper.updateById(dormitory);
@@ -107,5 +128,15 @@ public class DormitoryService {
             return Results.ok();
         }
         return Results.failure();
+    }
+
+    /**
+     * 查找宿舍信息，与之相关的学生
+     * @param id
+     */
+    public List<Student> findDormitoryInfo(String id) {
+        QueryWrapper<Student> wrapper = new QueryWrapper<>();
+        wrapper.eq("dormitory",id);
+        return studentMapper.selectList(wrapper);
     }
 }

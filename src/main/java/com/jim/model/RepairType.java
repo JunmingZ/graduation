@@ -9,11 +9,9 @@ import lombok.Data;
  */
 @Data
 public class RepairType {
-  @TableId(type = IdType.AUTO)
+  @TableId
   private Integer id;
   private String type;
   private Long ctime;
   private Long utime;
-
-
 }

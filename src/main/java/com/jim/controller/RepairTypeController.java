@@ -60,7 +60,18 @@ public class RepairTypeController {
      * @return
      */
     @PostMapping("/edit")
-    public Results editDormitory(RepairType repairType){
+    public Results editRepairType(RepairType repairType){
         return repairTypeService.editRepairType(repairType);
+    }
+
+
+    /**
+     * 通过id单个删除
+     * @param id
+     * @return
+     */
+    @GetMapping("/delete")
+    public Results deleteRepairTypeById(String id){
+        return repairTypeService.deleteRepairTypeById(id);
     }
 }

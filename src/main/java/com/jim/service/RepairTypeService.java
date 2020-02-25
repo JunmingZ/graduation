@@ -3,11 +3,13 @@ package com.jim.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.jim.base.result.ResponseCode;
 import com.jim.base.result.Results;
 import com.jim.mapper.RepairTypeMapper;
+import com.jim.mapper.RepairsMapper;
 import com.jim.model.RepairType;
+import com.jim.model.Repairs;
+import com.jim.model.Student;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -17,6 +19,8 @@ import javax.annotation.Resource;
 public class RepairTypeService  {
     @Resource
     private RepairTypeMapper repairTypeMapper;
+    @Resource
+    private RepairsMapper repairsMapper;
     /**
      * 按类型搜索
      * @param page
@@ -72,5 +76,23 @@ public class RepairTypeService  {
             return Results.ok();
         }
         return Results.failure();
+    }
+
+    /**
+     * 通过id单个删除
+     * @param id
+     * @return
+     */
+    public Results deleteRepairTypeById(String id) {
+        if(repairTypeMapper.deleteById(id)>0){
+            QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
+            wrapper.eq("type_id",id);
+            Repairs repairs = new Repairs();
+            repairs.setDormitory(0L);
+            repairsMapper.update(repairs,wrapper);
+            return Results.ok();
+        }else {
+            return Results.failure();
+        }
     }
 }

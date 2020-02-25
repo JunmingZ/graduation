@@ -7,6 +7,7 @@ import com.jim.model.Dormitory;
 import com.jim.model.RepairType;
 import com.jim.service.RepairTypeService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 
@@ -23,7 +24,7 @@ public class RepairTypeController {
      * @return
      */
     @GetMapping("/list")
-    public Results studentList(PageTableRequest pageTableRequest, @RequestParam(required = false) String type){
+    public Results RepairTypeList(PageTableRequest pageTableRequest, @RequestParam(required = false) String type){
         return repairTypeService.getAllRepairTypeByPage(new Page(pageTableRequest.getPage(),pageTableRequest.getLimit()),type);
     }
 
@@ -34,7 +35,32 @@ public class RepairTypeController {
      * @return
      */
     @PostMapping("/add")
-    public Results addStudent(RepairType repairType){
+    public Results addRepairType(RepairType repairType){
         return repairTypeService.addRepairType(repairType);
+    }
+
+
+    /**
+     * 进入编辑页面
+     * @param modelAndView
+     * @param id
+     * @return
+     */
+    @GetMapping("/edit")
+    public ModelAndView toEditRepairType(ModelAndView modelAndView, String id){
+        modelAndView.setViewName("repair-manage/repair-type-edit");
+        RepairType repairType = repairTypeService.findRepairTypeById(id);
+        modelAndView.addObject("repairType",repairType);
+        return modelAndView;
+    }
+
+    /**
+     * 编辑宿舍
+     * @param repairType 宿舍
+     * @return
+     */
+    @PostMapping("/edit")
+    public Results editDormitory(RepairType repairType){
+        return repairTypeService.editRepairType(repairType);
     }
 }

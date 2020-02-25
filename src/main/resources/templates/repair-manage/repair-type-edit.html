@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>编辑报修类型</title>
+        <header th:replace="header::html"></header>
+        <link rel="stylesheet" th:href="@{/css/custom.css}" />
+    </head>
+    <body>
+        <div class="layui-fluid">
+            <div class="layui-row">
+                <form class="layui-form">
+                  <div class="layui-form-item">
+                      <label for="L_id" class="layui-form-label">
+                          报修类型ID
+                      </label>
+                      <div class="layui-input-inline">
+                          <input type="text" id="L_id" name="id" required="" lay-verify="required"  th:value="${repairType.id}"
+                          autocomplete="off" class="layui-input layui-disabled" Readonly="true">
+                      </div>
+                  </div>
+                  <div class="layui-form-item">
+                      <label for="L_description" class="layui-form-label">
+                         报修类型
+                      </label>
+                      <div class="layui-input-inline">
+                          <input type="text" id="L_description" name="type" required="" lay-verify="required" autocomplete="off" class="layui-input"  th:value="${repairType.type}">
+                      </div>
+                  </div>
+                    <input type="hidden"  name="ctime" th:value="${repairType.ctime}">
+
+                  <div class="layui-form-item">
+                      <label for="L_description" class="layui-form-label"></label>
+                      <button  class="layui-btn" lay-filter="add" lay-submit="">
+                          编辑
+                      </button>
+                  </div>
+              </form>
+            </div>
+        </div>
+        <script>layui.use(['form', 'layer'],
+            function() {
+                $ = layui.jquery;
+                var form = layui.form,
+                layer = layui.layer;
+
+                //监听提交
+                form.on('submit(add)',
+                function(data) {
+                    console.log(data);
+                    $.ajax({
+                        url:"/repairType/edit",
+                        type:"POST",
+                        data:data.field,
+                        dataType:'json',
+                        success:function(result){
+                            console.log(result)
+                            if(result.code == 500||result.code == 5000301){
+                                layer.alert(result.msg);
+                            }else{
+                                layer.alert("设置成功", {icon: 6},function () {
+                                    parent.layui.table.reload('test');
+                                    //关闭当前frame
+                                    xadmin.close();
+                                    // 可以对父窗口进行刷新
+                                    // xadmin.father_reload();
+                                });
+                            }
+                        },
+                        error:function () {
+                            layer.msg('系统错误,请联系管理员小姐姐');
+                        }
+                    });
+
+                    return false;
+                });
+            });</script>
+
+    </body>
+
+</html>

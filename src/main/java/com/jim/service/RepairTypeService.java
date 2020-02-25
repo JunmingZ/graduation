@@ -3,6 +3,7 @@ package com.jim.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.jim.base.result.ResponseCode;
 import com.jim.base.result.Results;
 import com.jim.mapper.RepairTypeMapper;
@@ -13,7 +14,7 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 
 @Service
-public class RepairTypeService {
+public class RepairTypeService  {
     @Resource
     private RepairTypeMapper repairTypeMapper;
     /**
@@ -47,6 +48,28 @@ public class RepairTypeService {
         int insert = repairTypeMapper.insert(repairType);
         if(insert>0){
             return  Results.ok();
+        }
+        return Results.failure();
+    }
+
+    /**
+     * 通过id查找报修类型
+     * @param id
+     * @return
+     */
+    public RepairType findRepairTypeById(String id) {
+        return repairTypeMapper.selectById(id);
+    }
+
+    /**
+     * 编辑报修类型
+     * @param repairType
+     * @return
+     */
+    public Results editRepairType(RepairType repairType) {
+        repairType.setUtime(System.currentTimeMillis());
+        if(repairTypeMapper.updateById(repairType)>0){
+            return Results.ok();
         }
         return Results.failure();
     }

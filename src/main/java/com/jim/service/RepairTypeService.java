@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 
 @Service
 public class RepairTypeService  {
@@ -94,5 +95,22 @@ public class RepairTypeService  {
         }else {
             return Results.failure();
         }
+    }
+
+
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    public Results deleteRepairTypeByIds(String ids) {
+        if(StringUtils.isEmpty(ids)){
+            return Results.failure();
+        }
+        String[] split = ids.split(",");
+        if(repairTypeMapper.deleteBatchIds(Arrays.asList(split))>0){
+            return Results.ok();
+        }
+        return Results.failure();
     }
 }

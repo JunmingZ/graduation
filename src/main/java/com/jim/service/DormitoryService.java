@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -75,16 +76,8 @@ public class DormitoryService {
             return Results.failure();
         }
         String[] split = ids.split(",");
-        int flag=0;
-        for (String s : split) {
-            flag = dormitoryMapper.deleteById(s);
-            QueryWrapper<Student> wrapper = new QueryWrapper<>();
-            wrapper.eq("dormitory",s);
-            Student student = new Student();
-            student.setDormitory(0L);
-            studentMapper.update(student,wrapper);
-        }
-        if(flag==0){
+
+        if(dormitoryMapper.deleteBatchIds(Arrays.asList(split))==0){
             return Results.failure();
         }
         return Results.ok();

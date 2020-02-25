@@ -74,4 +74,15 @@ public class RepairTypeController {
     public Results deleteRepairTypeById(String id){
         return repairTypeService.deleteRepairTypeById(id);
     }
+
+
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    @PostMapping("/delete")
+    public Results deleteRepairTypeByIds(String ids){
+        return repairTypeService.deleteRepairTypeByIds(ids);
+    }
 }

@@ -99,7 +99,7 @@
                         if(delList != ''||delList != []){
                             layer.confirm('确定删除所选项吗？',function (index) {
                                     $.ajax({
-                                        url: '/dormitory/delete',
+                                        url: '/repairType/delete',
                                         type:'post',
                                         dataType:'json',
                                         data: 'ids='+delList,

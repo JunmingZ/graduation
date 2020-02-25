@@ -3,6 +3,7 @@ package com.jim.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.jim.base.result.ResponseCode;
 import com.jim.base.result.Results;
 import com.jim.mapper.RepairTypeMapper;
 import com.jim.model.RepairType;
@@ -30,5 +31,23 @@ public class RepairTypeService {
         }
         iPage = repairTypeMapper.selectPage(page,wrapper);
         return Results.success((int) iPage.getTotal(),iPage.getRecords());
+    }
+
+    /**
+     * 添加报修类型
+     * @param repairType
+     * @return
+     */
+    public Results addRepairType(RepairType repairType) {
+        if(repairTypeMapper.selectById(repairType.getId())!=null){
+            return Results.failure(ResponseCode.REPAIR_TYPE_REPEAT.getCode(),ResponseCode.REPAIR_TYPE_REPEAT.getMessage());
+        }
+        repairType.setCtime(System.currentTimeMillis());
+        repairType.setUtime(System.currentTimeMillis());
+        int insert = repairTypeMapper.insert(repairType);
+        if(insert>0){
+            return  Results.ok();
+        }
+        return Results.failure();
     }
 }

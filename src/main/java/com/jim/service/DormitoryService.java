@@ -96,7 +96,7 @@ public class DormitoryService {
      */
     public Results addDormitory(Dormitory dormitory) {
         if(dormitoryMapper.selectById(dormitory.getId())!=null){
-            return Results.failure(ResponseCode.Dormitory_REPEAT.getCode(),ResponseCode.Dormitory_REPEAT.getMessage());
+            return Results.failure(ResponseCode.DORMITORY_REPEAT.getCode(),ResponseCode.DORMITORY_REPEAT.getMessage());
         }
         dormitory.setCtime(System.currentTimeMillis());
         dormitory.setUtime(System.currentTimeMillis());

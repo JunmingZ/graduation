@@ -124,12 +124,12 @@
                     case 'add_dormitory':
                         layer.open({
                             type: 2,
-                            title: '添加宿舍',
+                            title: '添加报修类型',
                             shadeClose: true,
                             shade: false,
                             maxmin: true, //开启最大化最小化按钮
                             area: ['460px','250px'],
-                            content: '/api/getPage?pageName=dormitory-manage/dormitory-add'
+                            content: '/api/getPage?pageName=repair-manage/repair-type-add'
                         });
 
                         break;
@@ -141,7 +141,7 @@
 
             // 监听搜索和提交
             form.on('submit(search)', function(data){
-                var id = data.field.type; //获取input里面的值
+                var type = data.field.type; //获取input里面的值
                 table.render({
                     elem: '#test'
                     ,url: '/repairType/list' //数据接口

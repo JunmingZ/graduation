@@ -3,7 +3,7 @@
     
     <head>
         <meta charset="UTF-8">
-        <title>添加宿舍</title>
+        <title>添加报修类型</title>
         <header th:replace="header::html"></header>
         <link rel="stylesheet" th:href="@{/css/custom.css}" />
     </head>
@@ -13,7 +13,7 @@
                 <form class="layui-form">
                   <div class="layui-form-item">
                       <label for="L_id" class="layui-form-label">
-                          宿舍号
+                          报修类型ID
                       </label>
                       <div class="layui-input-inline">
                           <input type="text" id="L_id" name="id" required="" lay-verify="required"
@@ -22,10 +22,10 @@
                   </div>
                   <div class="layui-form-item">
                       <label for="L_description" class="layui-form-label">
-                         描述
+                         报修类型
                       </label>
                       <div class="layui-input-inline">
-                          <input type="text" id="L_description" name="description" required="" lay-verify="required" autocomplete="off" class="layui-input" >
+                          <input type="text" id="L_description" name="type" required="" lay-verify="required" autocomplete="off" class="layui-input" >
                       </div>
                   </div>
                     
@@ -50,13 +50,13 @@
                 function(data) {
                     console.log(data);
                     $.ajax({
-                        url:"/dormitory/add",
+                        url:"/repairType/add",
                         type:"POST",
                         data:data.field,
                         dataType:'json',
                         success:function(result){
                             console.log(result)
-                            if(result.code == 500||result.code == 5000201){
+                            if(result.code == 500||result.code == 5000301){
                                 layer.alert(result.msg);
                             }else{
                                 layer.alert("设置成功", {icon: 6},function () {

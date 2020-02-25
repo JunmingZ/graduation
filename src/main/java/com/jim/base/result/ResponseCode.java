@@ -13,9 +13,14 @@ public enum ResponseCode {
 	//信息
 	//5000100 - 5000200
 	SNO_REPEAT(5000100,"错误操作，该学号已存在！！！"),
-	//用户-角色
+
+	//宿舍
 	//5000201 - 5000300
-	Dormitory_REPEAT(5000201,"错误操作，该宿舍已存在！！！")
+	DORMITORY_REPEAT(5000201,"错误操作，该宿舍已存在！！！"),
+
+	//报修类型
+	//5000301 - 5000400
+	REPAIR_TYPE_REPEAT(5000301,"错误操作，该报修类型已存在！！！")
 ;
 	private Integer code;
 	

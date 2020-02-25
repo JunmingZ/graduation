@@ -175,7 +175,7 @@
                 if(obj.event === 'del'){
                     layer.confirm('真的删除吗?', function(index){
                         $.ajax({
-                            url:"/dormitory/delete",
+                            url:"/repairType/delete",
                             type:"GET",
                             data:{id:data.id},
                             dataType:'json',

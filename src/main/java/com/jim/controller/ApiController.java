@@ -11,9 +11,16 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/api")
 public class ApiController {
 
+    /**
+     * 普通页面
+     * @param modelAndView
+     * @param pageName
+     * @return
+     */
     @RequestMapping("/getPage")
     public ModelAndView getPage(ModelAndView modelAndView,String pageName){
         modelAndView.setViewName(pageName);
         return modelAndView;
     }
+
 }

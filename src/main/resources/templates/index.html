@@ -5,10 +5,10 @@
         <title>高校学生宿舍报修管理系统</title>
         <header th:replace="header::html"></header>
         <link rel="stylesheet" th:href="@{/xadmin/css/self.min.css}" />
-        <script>
-            // 是否开启刷新记忆tab功能
-            // var is_remember = false;
-        </script>
+<!--        <script>-->
+<!--            // 是否开启刷新记忆tab功能-->
+<!--             var is_remember = true;-->
+<!--        </script>-->
     </head>
     <body class="index">
         <!-- 顶部开始 -->
@@ -96,6 +96,11 @@
                             <cite>报修管理</cite>
                             <i class="iconfont nav_right">&#xe697;</i></a>
                         <ul class="sub-menu">
+                            <li>
+                                <a onclick="xadmin.add_tab('报修统计','/repairs/statistics')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>报修统计</cite></a>
+                            </li>
                             <li>
                                 <a onclick="xadmin.add_tab('报修类型管理','/api/getPage?pageName=repair-manage/repair-type-list')">
                                     <i class="iconfont">&#xe6a7;</i>

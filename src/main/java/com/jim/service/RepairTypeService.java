@@ -11,12 +11,14 @@ import com.jim.model.RepairType;
 import com.jim.model.Repairs;
 import com.jim.model.Student;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
 
 @Service
+@Transactional   //加入事务
 public class RepairTypeService  {
     @Resource
     private RepairTypeMapper repairTypeMapper;

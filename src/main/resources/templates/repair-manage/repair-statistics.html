@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <title>报修统计</title>
         <header th:replace="header::html"></header>
+        <script th:src="@{/js/echarts.min.js}"></script>
     </head>
     <body>
         <div class="layui-fluid">
@@ -14,20 +15,62 @@
                         <div class="layui-card-header">数据统计</div>
                         <div class="layui-card-body ">
                             <ul class="layui-row layui-col-space10 layui-this x-admin-carousel x-admin-backlog">
-                                <li class="layui-col-md2 layui-col-xs6" th:each="type : ${types}">
+                                <li class="layui-col-md4 layui-col-xs6" th:each="type : ${types}">
                                     <a href="javascript:;" class="x-admin-backlog-body">
                                         <h3 th:text="${type.type}"></h3>
+                                        <div class="layui-card-body" style="min-height: 280px;">
+                                            <div th:id="${type.id}" class="layui-col-sm12" style="height: 250px;"></div>
+                                        </div>
                                         <p>
-                                            <cite>66</cite></p>
+                                            <cite></cite></p>
                                     </a>
                                 </li>
                             </ul>
                         </div>
                     </div>
+
                 </div>
 
             </div>
         </div>
         </div>
     </body>
+<script>
+    // 基于准备好的dom，初始化echarts实例
+
+    var myChart = echarts.init(document.getElementById('1'));
+
+    // 指定图表的配置项和数据
+    var option = {
+        //显示百分号
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        series : [
+            {
+                name: '访问来源',
+                type: 'pie',
+                // radius : '55%',
+                // center: ['50%', '60%'],
+                data:[
+                    {value:335, name:'直接访问'},
+                    {value:310, name:'邮件营销'},
+                    {value:234, name:'联盟广告'},
+                    {value:135, name:'视频广告'},
+                    {value:1548, name:'搜索引擎'}
+                ],
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
 </html>

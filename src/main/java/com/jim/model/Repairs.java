@@ -12,10 +12,10 @@ public class Repairs {
   @TableId(type = IdType.AUTO)
   private Long id;
   private Long sno;
-  private Integer type;
+  private Integer typeId;
   private String content;
   private Long dormitory;  //宿舍号
-  private Integer repairId;
+  private Integer repairmanId; //维修员id
   private Integer state;
   private Long handling;
   private Long ctime;

@@ -23,6 +23,11 @@ public class RepairsController {
     @Resource
     private RepairsService repairsService;
 
+    /**
+     * 进入统计页面
+     * @param modelAndView
+     * @return
+     */
     @GetMapping("/statistics")
     public ModelAndView toRepairStatistics(ModelAndView modelAndView){
         Map map = repairsService.getRepairStatisticsDTO();
@@ -32,8 +37,11 @@ public class RepairsController {
         return modelAndView;
     }
 
+
+
     @GetMapping("/list")
     public Results repairsList(PageTableRequest pageTableRequest, @RequestParam(required = false) String sno){
+        //  getPage ：当前页   getLimit ：显示条数数目
         return repairsService.getAllRepairsByPage(new Page(pageTableRequest.getPage(),pageTableRequest.getLimit()),sno);
     }
 }

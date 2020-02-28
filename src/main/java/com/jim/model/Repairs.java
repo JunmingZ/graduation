@@ -17,7 +17,7 @@ public class Repairs {
   private Long dormitory;  //宿舍号
   private Integer repairmanId; //维修员id
   private Integer state;
-  private Long handling;
   private Long ctime;
+  private Long utime;
 
 }

@@ -3,6 +3,8 @@ package com.jim.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.jim.base.result.Results;
 import com.jim.dto.RepairStatisticsDTO;
 import com.jim.mapper.RepairTypeMapper;
 import com.jim.mapper.RepairsMapper;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.xml.transform.Result;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,5 +75,10 @@ public class RepairsService {
         map.put("types",repairTypes);
 
         return map;
+    }
+
+    public Results getAllRepairsByPage(Page page, String sno) {
+
+        return Results.ok();
     }
 }

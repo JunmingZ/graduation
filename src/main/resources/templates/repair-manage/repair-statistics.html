@@ -9,15 +9,22 @@
     <body>
         <div class="layui-fluid">
             <div class="layui-row layui-col-space15">
-
+                <div class="x-nav">
+            <span class="layui-breadcrumb">
+                <a href="">报修统计</a>
+            </span>
+                    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+                        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+                    </a>
+                </div>
                 <div class="layui-col-md12">
                     <div class="layui-card">
                         <div class="layui-card-header">数据统计</div>
                         <div class="layui-card-body ">
                             <ul class="layui-row layui-col-space10 layui-this x-admin-carousel x-admin-backlog">
-                                <li class="layui-col-md4 layui-col-xs6" th:each="type : ${types}">
+                                <li class="layui-col-md6 layui-col-xs6" th:each="type : ${types}">
                                     <a href="javascript:;" class="x-admin-backlog-body">
-                                        <h3 th:text="${type.type}"></h3>
+                                        <h1 th:text="${type.type}"></h1>
                                         <div class="layui-card-body" style="min-height: 280px;">
                                             <div th:id="${type.id}" class="layui-col-sm12" style="height: 250px;"></div>
                                         </div>
@@ -35,42 +42,99 @@
         </div>
         </div>
     </body>
-<script>
+<script th:inline="javascript">
     // 基于准备好的dom，初始化echarts实例
+    let repairData =[[${RepairStatistics}]];
+    repairData[0].type
+    for(let i = 0 ;i<repairData.length;i++){
+        var myChart = echarts.init(document.getElementById(repairData[i].type));
 
-    var myChart = echarts.init(document.getElementById('1'));
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                subtext:  '总数：'+repairData[i].total
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{b} : {c} ({d}%)"
+            },
+            series : [
+                {
+                    name: '访问来源',
+                    type: 'pie',
 
-    // 指定图表的配置项和数据
-    var option = {
-        //显示百分号
-        tooltip : {
-            trigger: 'item',
-            formatter: "{a} <br/>{b} : {c} ({d}%)"
-        },
-        series : [
-            {
-                name: '访问来源',
-                type: 'pie',
-                // radius : '55%',
-                // center: ['50%', '60%'],
-                data:[
-                    {value:335, name:'直接访问'},
-                    {value:310, name:'邮件营销'},
-                    {value:234, name:'联盟广告'},
-                    {value:135, name:'视频广告'},
-                    {value:1548, name:'搜索引擎'}
-                ],
-                itemStyle: {
-                    emphasis: {
-                        shadowBlur: 10,
-                        shadowOffsetX: 0,
-                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    // radius : '55%',
+                    // center: ['50%', '60%'],
+                    data:[
+                        {value:repairData[i].untreated, name:'未处理'},
+                        {value:repairData[i].pending, name:'待处理'},
+                        {value:repairData[i].finish, name:'已处理'},
+                    ],
+                    // label: {
+                    //     formatter: '{b} : {c} ({d}%)'
+                    // },
+
+                    label: {
+
+                        formatter: '  {b|{b}：}{c}  {per|{d}%}  ',
+                        backgroundColor: '#eee',
+                        borderColor: '#aaa',
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        // shadowBlur:3,
+                        // shadowOffsetX: 2,
+                        // shadowOffsetY: 2,
+                        // shadowColor: '#999',
+                        // padding: [0, 7],
+                        rich: {
+                            a: {
+                                color: '#999',
+                                lineHeight: 22,
+                                align: 'center'
+                            },
+                            // abg: {
+                            //     backgroundColor: '#333',
+                            //     width: '100%',
+                            //     align: 'right',
+                            //     height: 22,
+                            //     borderRadius: [4, 4, 0, 0]
+                            // },
+                            hr: {
+                                borderColor: '#aaa',
+                                width: '100%',
+                                borderWidth: 0.5,
+                                height: 0
+                            },
+                            b: {
+                                fontSize: 16,
+                                lineHeight: 33
+                            },
+                            per: {
+                                color: '#eee',
+                                backgroundColor: '#334455',
+                                padding: [2, 4],
+                                borderRadius: 2
+                            }
+                        }
+                    },
+                    itemStyle: {
+                        //emphasis是鼠标 hover 时候的高亮样式
+                        emphasis: {
+                            // 阴影的大小
+                            shadowBlur: 10,
+                            // 阴影水平方向上的偏移
+                            shadowOffsetX: 0,
+                            // 阴影颜色
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
                     }
                 }
-            }
-        ]
-    };
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
+            ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    }
+
+
 </script>
 </html>

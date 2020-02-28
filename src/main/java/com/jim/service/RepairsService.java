@@ -1,5 +1,7 @@
 package com.jim.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jim.dto.RepairStatisticsDTO;
 import com.jim.mapper.RepairTypeMapper;
@@ -29,9 +31,9 @@ public class RepairsService {
     }
 
 
-    public Map getRepairStatisticsDTO() {
+    public Map<String,List<RepairStatisticsDTO>> getRepairStatisticsDTO() {
 
-        List list = new ArrayList();
+        List<RepairStatisticsDTO> list = new ArrayList();
         Map map = new HashMap();
         // 1. 查出所有维修类型
         List<RepairType> repairTypes = repairTypeMapper.selectList(null);
@@ -64,7 +66,9 @@ public class RepairsService {
             list.add(repairStatisticsDTO);
 
         }
-        map.put("RepairStatistics",list);
+
+
+        map.put("RepairStatistics", list);
         map.put("types",repairTypes);
 
         return map;

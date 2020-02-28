@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 @Transactional   //加入事务
@@ -114,5 +115,13 @@ public class RepairTypeService  {
             return Results.ok();
         }
         return Results.failure();
+    }
+
+    /**
+     * 单纯获取集合
+     * @return
+     */
+    public List getAllRepairType() {
+        return repairTypeMapper.selectList(null);
     }
 }

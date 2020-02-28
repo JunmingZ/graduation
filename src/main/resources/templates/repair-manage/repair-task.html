@@ -57,11 +57,23 @@
             var table = layui.table;
             let form = layui.form;
             let repairmans=[],repair_types=[];
+            //获取维修人
              $.get("/repairman/repairmans",function(data,status){
                  for(let i =0; i<data.length;i++){
                      repairmans.push(data[i])
                  }
             });
+             //获取维修类型
+             $.get("/repairType/types",function(data,status){
+                 for(let i =0; i<data.length;i++){
+                     repair_types.push(data[i])
+                 }
+            });
+
+             console.log(repairmans);
+             console.log(repair_types);
+
+
 
 
 

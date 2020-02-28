@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/repairType")
@@ -17,6 +18,13 @@ public class RepairTypeController {
 
     @Resource
     private RepairTypeService repairTypeService;
+
+    @GetMapping("/types")
+    public List RepairTypeList(){
+        return repairTypeService.getAllRepairType();
+    }
+
+
 
     /**
      * 查出相应数据返回前端

@@ -39,7 +39,7 @@ public class RepairmanService {
      * 单纯获取维修人列表
      * @return
      */
-    public List getAllRepairman() {
+    public List<Repairman> getAllRepairman() {
         return repairmanMapper.selectList(null);
     }
 }

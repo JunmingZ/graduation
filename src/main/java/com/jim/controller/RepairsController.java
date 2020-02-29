@@ -1,10 +1,13 @@
 package com.jim.controller;
 
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.result.PageTableRequest;
 import com.jim.base.result.Results;
+import com.jim.model.RepairType;
+import com.jim.model.Repairman;
+import com.jim.service.RepairTypeService;
+import com.jim.service.RepairmanService;
 import com.jim.service.RepairsService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import javax.xml.transform.Result;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -23,6 +26,11 @@ public class RepairsController {
     @Resource
     private RepairsService repairsService;
 
+    @Resource
+    private RepairmanService repairmanService;
+    
+    @Resource
+    private RepairTypeService repairTypeService;
     /**
      * 进入统计页面
      * @param modelAndView
@@ -38,12 +46,39 @@ public class RepairsController {
     }
 
 
-
+    /**
+     * 搜索兼列表显示
+     * @param pageTableRequest
+     * @param sno
+     * @param state
+     * @return
+     */
     @GetMapping("/list")
     public Results repairsList(PageTableRequest pageTableRequest
                                 , @RequestParam(required = false) String sno
                                 , @RequestParam(required = false) Integer state){
         //  getPage ：当前页   getLimit ：显示条数数目
         return repairsService.getAllRepairsByPage(new Page(pageTableRequest.getPage(),pageTableRequest.getLimit()),sno,state);
+    }
+
+    /**
+     * 跳转到任务分配页面
+     * @param modelAndView
+     * @return
+     */
+    @GetMapping("/allocation")
+    public ModelAndView toAllocationPage(ModelAndView modelAndView){
+        //维修员列表
+        List<Repairman> allRepairman = repairmanService.getAllRepairman();
+        
+        //报修类型
+        List allRepairType = repairTypeService.getAllRepairType();
+
+
+        modelAndView.addObject("allRepairman",allRepairman);
+        modelAndView.addObject("allRepairType",allRepairType);
+
+        modelAndView.setViewName("repair-manage/task-allocation");
+        return modelAndView;
     }
 }

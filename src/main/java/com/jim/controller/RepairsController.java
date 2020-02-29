@@ -40,8 +40,10 @@ public class RepairsController {
 
 
     @GetMapping("/list")
-    public Results repairsList(PageTableRequest pageTableRequest, @RequestParam(required = false) String sno){
+    public Results repairsList(PageTableRequest pageTableRequest
+                                , @RequestParam(required = false) String sno
+                                , @RequestParam(required = false) Integer state){
         //  getPage ：当前页   getLimit ：显示条数数目
-        return repairsService.getAllRepairsByPage(new Page(pageTableRequest.getPage(),pageTableRequest.getLimit()),sno);
+        return repairsService.getAllRepairsByPage(new Page(pageTableRequest.getPage(),pageTableRequest.getLimit()),sno,state);
     }
 }

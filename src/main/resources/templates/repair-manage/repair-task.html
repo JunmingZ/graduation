@@ -23,7 +23,14 @@
                     <div class="layui-card">
                         <div class="layui-card-body ">
                             <form class="layui-form layui-col-space5">
-
+                                <div class="layui-input-inline">
+                                    <select name="state" lay-verify="" >
+                                        <option value="">请选择状态</option>
+                                        <option value="1" >未处理</option>
+                                        <option value="2" >待处理</option>
+                                        <option value="3" >已处理</option>
+                                    </select>
+                                </div>
                                 <div class="layui-inline layui-show-xs-block">
                                     <input type="text" name="sno" placeholder="请输入学号" autocomplete="off" class="layui-input"></div>
                                 <div class="layui-inline layui-show-xs-block">
@@ -59,7 +66,7 @@
         layui.use('table', function(){
             var table = layui.table;
             let form = layui.form;
-            let repairmans=[],repair_types=[],repair_state=['未处理','待处理','已处理'];
+            let repairmans=[],repair_types=[];
             //获取维修人
              $.get("/repairman/repairmans",function(data,status){
                  for(let i =0; i<data.length;i++){
@@ -179,13 +186,21 @@
 
             //监听搜索和提交
             form.on('submit(search)', function(data){
-                var sno = data.field.sno; //获取input里面的值
+                let sno = data.field.sno; //获取input里面的值
+                let state = data.field.state; //获取下拉列表的
                 table.render({
                     elem: '#test'
                     ,url: '/repairs/list' //数据接口
                     ,page: true //开启分页
+                    ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+                    ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                        title: '提示'
+                        ,layEvent: 'LAYTABLE_TIPS'
+                        ,icon: 'layui-icon-tips'
+                    }]
                     ,where:{
-                        sno:sno
+                        sno: sno,
+                        state: state
                     }
                     ,response: {
                         dataName: 'datas' //规定数据列表的字段名称，默认：data

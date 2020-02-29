@@ -89,13 +89,16 @@ public class RepairsService {
      * @param sno
      * @return
      */
-    public Results getAllRepairsByPage(Page page, String sno) {
+    public Results getAllRepairsByPage(Page page, String sno,Integer state) {
         QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
         wrapper.orderByAsc("state");
         IPage iPage = null;
         if(!StringUtils.isEmpty(sno)){
             //模糊查询
             wrapper.like("sno",sno);
+        }
+        if(!StringUtils.isEmpty(state)){
+            wrapper.eq("state",state);
         }
         iPage = repairsMapper.selectPage(page,wrapper);
         return Results.success((int) iPage.getTotal(),iPage.getRecords());  //getRecords()是获取记录

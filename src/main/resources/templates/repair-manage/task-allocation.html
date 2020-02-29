@@ -16,26 +16,29 @@
                           报修类型
                       </label>
                       <div class="layui-input-inline">
-                          <select name="state" lay-verify=""  id="repair_type">
-                              <option value="" >请选择报修类修</option>
+                          <select name="type" lay-verify="repair_type"  id="repair_type">
+                              <option value="99" >请选择报修类修</option>
                               <option th:value="${type.id}" th:each="type:${allRepairType}"  th:text="${type.type}"></option>
                           </select>
                       </div>
                   </div>
                   <div class="layui-form-item">
-                      <label for="L_description" class="layui-form-label">
-                         描述
+                      <label for="L_repairman" class="layui-form-label">
+                         维修人员安排
                       </label>
                       <div class="layui-input-inline">
-                          <input type="text" id="L_description" name="description" required="" lay-verify="required" autocomplete="off" class="layui-input" >
+                          <select name="repairman" lay-verify="L_repairman"  id="L_repairman">
+                              <option value="100" >请选择维修人</option>
+                              <option th:value="${man.id}" th:each="man:${allRepairman}"  th:text="${man.name}"></option>
+                          </select>
                       </div>
                   </div>
                     
 
                   <div class="layui-form-item">
-                      <label for="L_description" class="layui-form-label"></label>
+                      <label for="L_repairman" class="layui-form-label"></label>
                       <button  class="layui-btn" lay-filter="add" lay-submit="">
-                          添加
+                          分配
                       </button>
                   </div>
               </form>
@@ -49,16 +52,16 @@
 
                 //监听提交
                 form.on('submit(add)',
-                function(data) {
+                    function(data) {
                     console.log(data);
                     $.ajax({
-                        url:"/dormitory/add",
+                        url:"/repairs/allocation",
                         type:"POST",
                         data:data.field,
                         dataType:'json',
                         success:function(result){
-                            console.log(result)
-                            if(result.code == 500||result.code == 5000201){
+                            console.log(result);
+                            if(result.code == 500){
                                 layer.alert(result.msg);
                             }else{
                                 layer.alert("设置成功", {icon: 6},function () {
@@ -76,6 +79,19 @@
                     });
 
                     return false;
+                });
+
+                form.verify({
+                    L_repairman: function(value, item){
+                        if(value == '100'){
+                            return '未选择维修人!!!!!!'
+                        }
+                    },
+                    repair_type:function(value, item){
+                        if(value == '99'){
+                            return '未选择报修类型!!!!!!'
+                        }
+                    }
                 });
             });</script>
 

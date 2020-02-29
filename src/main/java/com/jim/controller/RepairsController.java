@@ -9,10 +9,7 @@ import com.jim.model.Repairman;
 import com.jim.service.RepairTypeService;
 import com.jim.service.RepairmanService;
 import com.jim.service.RepairsService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -81,4 +78,18 @@ public class RepairsController {
         modelAndView.setViewName("repair-manage/task-allocation");
         return modelAndView;
     }
+
+    /**
+     * 分配任务
+     * @param type
+     * @param type
+     * @param repairman
+     * @return
+     */
+    @PostMapping("/allocation")
+    public Results taskAllocation(Integer type,Integer repairman){
+
+        return repairsService.taskAllocation(type,repairman) ;
+    }
+
 }

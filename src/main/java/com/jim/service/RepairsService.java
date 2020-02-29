@@ -104,4 +104,22 @@ public class RepairsService {
         return Results.success((int) iPage.getTotal(),iPage.getRecords());  //getRecords()是获取记录
 
     }
+
+    /**
+     * 分配任务
+     * @param type  报修类型
+     * @param repairman  维修人id
+     * @return
+     */
+    public Results taskAllocation(Integer type, Integer repairman) {
+        QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
+        wrapper.eq("type_id",type);
+        Repairs repairs = new Repairs();
+        repairs.setRepairmanId(repairman);
+        int update = repairsMapper.update(repairs, wrapper);
+        if(update>0){
+            return Results.ok();
+        }
+        return Results.failure();
+    }
 }

@@ -89,9 +89,13 @@
                 ,{field:'content', title:'内容'}
                 ,{field:'dormitory', title:'宿舍号'}
                 ,{field:'repairmanId', title:'维修人',templet:function (d) {
+
                         for(let i=0 ; i<repairmans.length; i++){
                             if(repairmans[i].id===d.repairmanId){
                                 return repairmans[i].name;
+                            }
+                            if(d.repairmanId==0){
+                                return '未分配维修人'
                             }
                         }
                     }

@@ -25,7 +25,7 @@
                             <form class="layui-form layui-col-space5">
 
                                 <div class="layui-inline layui-show-xs-block">
-                                    <input type="text" name="username" placeholder="请输入姓名" autocomplete="off" class="layui-input"></div>
+                                    <input type="text" name="sno" placeholder="请输入学号" autocomplete="off" class="layui-input"></div>
                                 <div class="layui-inline layui-show-xs-block">
                                     <button class="layui-btn" lay-submit="" lay-filter="search">
                                         <i class="layui-icon">&#xe615;</i></button>
@@ -178,24 +178,24 @@
             // });
 
             //监听搜索和提交
-            // form.on('submit(search)', function(data){
-            //     var username = data.field.username; //获取input里面的值
-            //     table.render({
-            //         elem: '#test'
-            //         ,url: '/student/list' //数据接口
-            //         ,page: true //开启分页
-            //         ,where:{
-            //             "username":username
-            //         }
-            //         ,response: {
-            //             dataName: 'datas' //规定数据列表的字段名称，默认：data
-            //         }
-            //         ,cols: [
-            //             temp
-            //         ]
-            //     });
-            //     return false;
-            // });
+            form.on('submit(search)', function(data){
+                var sno = data.field.sno; //获取input里面的值
+                table.render({
+                    elem: '#test'
+                    ,url: '/repairs/list' //数据接口
+                    ,page: true //开启分页
+                    ,where:{
+                        sno:sno
+                    }
+                    ,response: {
+                        dataName: 'datas' //规定数据列表的字段名称，默认：data
+                    }
+                    ,cols: [
+                        temp
+                    ]
+                });
+                return false;
+            });
 
 
 

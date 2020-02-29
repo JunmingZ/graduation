@@ -37,6 +37,10 @@ public class RepairsService {
     }
 
 
+    /**
+     * 统计页面
+     * @return
+     */
     public Map<String,List<RepairStatisticsDTO>> getRepairStatisticsDTO() {
 
         List<RepairStatisticsDTO> list = new ArrayList();
@@ -53,17 +57,16 @@ public class RepairsService {
             // 4.1 统计 未处理
             QueryWrapper<Repairs> wrapper1 = new QueryWrapper<>();
             wrapper1.eq("state",1).eq("type_id",id);
-
             repairStatisticsDTO.setUntreated(repairsMapper.selectCount(wrapper1));
-
+            // 4.2 待处理
             QueryWrapper<Repairs> wrapper2 = new QueryWrapper<>();
             wrapper2.eq("state",2).eq("type_id",id);;
             repairStatisticsDTO.setPending(repairsMapper.selectCount(wrapper2));
-
+            // 4.3 已处理
             QueryWrapper<Repairs> wrapper3 = new QueryWrapper<>();
             wrapper3.eq("state",3).eq("type_id",id);;
             repairStatisticsDTO.setFinish(repairsMapper.selectCount(wrapper3));
-
+            // 4.4 总记录数
             QueryWrapper<Repairs> wrapper4 = new QueryWrapper<>();
             wrapper4.eq("type_id",id);
             repairStatisticsDTO.setTotal(repairsMapper.selectCount(wrapper4));
@@ -80,8 +83,15 @@ public class RepairsService {
         return map;
     }
 
+    /**
+     * 获取所有
+     * @param page
+     * @param sno
+     * @return
+     */
     public Results getAllRepairsByPage(Page page, String sno) {
         QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
+        wrapper.orderByAsc("state");
         IPage iPage = null;
         if(!StringUtils.isEmpty(sno)){
             //模糊查询

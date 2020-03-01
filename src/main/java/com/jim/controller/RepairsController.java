@@ -111,4 +111,10 @@ public class RepairsController {
         return modelAndView;
     }
 
+
+    @PostMapping("/edit")
+    public Results updateRepair(Repairs repairs){
+        return repairsService.updateRepairsByEntity(repairs);
+    }
+
 }

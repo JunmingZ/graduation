@@ -119,7 +119,26 @@ public class RepairsService {
         return Results.failure();
     }
 
+    /**
+     * 通过id找报修条目
+     * @param id
+     * @return
+     */
     public Repairs findRepairById(String id) {
         return repairsMapper.selectById(id);
+    }
+
+    /**
+     * 更新报修条目
+     * @param repairs
+     * @return
+     */
+    public Results updateRepairsByEntity(Repairs repairs) {
+        repairs.setUtime(System.currentTimeMillis());
+        int i = repairsMapper.updateById(repairs);
+        if(i>0){
+            return Results.ok();
+        }
+        return Results.failure();
     }
 }

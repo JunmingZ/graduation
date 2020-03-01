@@ -18,10 +18,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.xml.transform.Result;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional
@@ -140,5 +137,34 @@ public class RepairsService {
             return Results.ok();
         }
         return Results.failure();
+    }
+
+    /**
+     * 通过id单个删除
+     * @param id
+     * @return
+     */
+    public Results deleteRepairsById(String id) {
+        if(repairsMapper.deleteById(id)>0){
+            return Results.ok();
+        }
+        return Results.failure();
+    }
+
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    public Results deleteRepairsByIds(String ids) {
+        if(StringUtils.isEmpty(ids)){
+            return Results.failure();
+        }
+        String[] split = ids.split(",");
+
+        if(repairsMapper.deleteBatchIds(Arrays.asList(split))==0){
+            return Results.failure();
+        }
+        return Results.ok();
     }
 }

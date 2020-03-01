@@ -117,4 +117,25 @@ public class RepairsController {
         return repairsService.updateRepairsByEntity(repairs);
     }
 
+    /**
+     * 通过id单个删除
+     * @param id
+     * @return
+     */
+    @GetMapping("/delete")
+    public Results deleteRepairsById(String id){
+        return repairsService.deleteRepairsById(id);
+    }
+
+
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    @PostMapping("/delete")
+    public Results deleteRepairsByIds(String ids){
+        return repairsService.deleteRepairsByIds(ids);
+    }
+
 }

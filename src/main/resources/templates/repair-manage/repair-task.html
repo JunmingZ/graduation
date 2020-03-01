@@ -50,6 +50,8 @@
 
     <script type="text/html" id="toolbarDemo">
         <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="getCheckData"> <i class="layui-icon"></i>批量删除</button>
+            <button class="layui-btn" onclick="xadmin.open('添加报修任务','/api/getPage?pageName=student-manage/student-add',800,600)"><i class="layui-icon"></i>添加报修任务</button>
             <button class="layui-btn" onclick="xadmin.open('任务分配','/repairs/allocation',800,600)"><i class="layui-icon"></i>任务分配</button>
         </div>
     </script>
@@ -77,7 +79,8 @@
             });
 
             let lie=[
-                {field:'id', title:'ID', width:120, fixed: 'left', unresize: true, sort: true}
+                {type: 'checkbox', fixed: 'left',id: 'idTest'}
+                ,{field:'id', title:'ID', width:120, fixed: 'left', unresize: true, sort: true}
                 ,{field:'sno', title:'学号'}
                 ,{field:'dormitory', title:'宿舍号'}
                 ,{field:'typeId', title:'报修类型', templet: function (d) {
@@ -146,7 +149,37 @@
                 // console.log("obj--->  "+obj);
                 // console.log("obj.config--->  "+obj.config);
                 switch(obj.event){
-
+                    case 'getCheckData':
+                        var data = checkStatus.data;
+                        var delList=[];
+                        data.forEach(function(n,i){
+                            delList.push(n.id);
+                        });
+                        if(delList != ''||delList != []){
+                            layer.confirm('确定删除所选项吗？',function (index) {
+                                $.ajax({
+                                    url: '/repairs/delete',
+                                    type:'post',
+                                    dataType:'json',
+                                    data: 'ids='+delList,
+                                    success:function (data) {
+                                        if(data.code===200){
+                                            layer.msg('删除成功');
+                                            table.reload('test');
+                                        }else{
+                                            layer.msg('删除失败，后端有问题');
+                                        }
+                                    },
+                                    error:function () {
+                                        layer.msg('系统错误');
+                                    }
+                                })
+                            })
+                        }else{
+                            layer.msg("你没有选中")
+                        }
+                        // layer.alert(JSON.stringify(delList));
+                        break;
                     case 'LAYTABLE_TIPS':
                         layer.alert('这是工具栏右侧自定义的一个图标按钮');
                         break;
@@ -188,12 +221,11 @@
                 if(obj.event === 'del'){
                     layer.confirm('真的删除吗?', function(index){
                         $.ajax({
-                            url:"/repairType/delete",
+                            url:"/repairs/delete",
                             type:"GET",
                             data:{id:data.id},
                             dataType:'json',
                             success:function(result){
-
                                 if(result.code==200){
                                     layer.alert("删除成功", {icon: 1},function (index1) {
                                         layer.close(index1);
@@ -216,7 +248,6 @@
                     xadmin.open('编辑报修类型','/repairs/edit/?id='+data.id,800,600);
                 }
             });
-
 
 
         });

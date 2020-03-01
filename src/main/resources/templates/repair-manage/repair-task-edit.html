@@ -43,7 +43,7 @@
                          报修类型
                       </label>
                       <div class="layui-input-inline">
-                          <select name="typeId" lay-verify="required" id="L_repair_type">
+                          <select name="typeId" lay-verify="repair_type" id="L_repair_type">
                               <option value="" >请选择报修类型</option>
                               <option th:value="${type.id}" th:each="type:${allRepairType}"  th:text="${type.type}" th:selected="${repairs.typeId==type.id}"></option>
                           </select>
@@ -64,7 +64,7 @@
                             维修人
                         </label>
                         <div class="layui-input-inline">
-                            <select name="repairmanId" lay-verify="required" id="L_repairman">
+                            <select name="repairmanId" lay-verify="L_repairman" id="L_repairman">
                                 <option value="" >请选择维修人</option>
                                 <option th:value="${man.id}" th:each="man:${allRepairman}"  th:text="${man.name}" th:selected="${man.id==repairs.repairmanId}"></option>
                             </select>
@@ -75,7 +75,7 @@
                             维修状态
                         </label>
                         <div class="layui-input-inline">
-                            <select name="state" lay-verify="required" id="L_repair_state">
+                            <select name="state" lay-verify="L_repair_state" id="L_repair_state">
                                 <option value="" >请选择维修状态</option>
                                 <option value="1"  th:selected="${repairs.state==1}">未处理</option>
                                 <option value="2"  th:selected="${repairs.state==2}">已处理</option>
@@ -127,6 +127,26 @@
                         }
                     });
                     return false;
+                });
+
+
+                //校验
+                form.verify({
+                    L_repairman: function(value, item){
+                        if(value == ''){
+                            return '未选择维修人!!!!!!'
+                        }
+                    },
+                    repair_type:function(value, item){
+                        if(value == ''){
+                            return '未选择报修类型!!!!!!'
+                        }
+                    },
+                    L_repair_state:function (value,item) {
+                        if(value == ''){
+                            return '未选择维修状态!!!!!!'
+                        }
+                    }
                 });
             });
         </script>

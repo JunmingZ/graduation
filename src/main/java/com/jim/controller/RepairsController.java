@@ -6,6 +6,7 @@ import com.jim.base.result.PageTableRequest;
 import com.jim.base.result.Results;
 import com.jim.model.RepairType;
 import com.jim.model.Repairman;
+import com.jim.model.Repairs;
 import com.jim.service.RepairTypeService;
 import com.jim.service.RepairmanService;
 import com.jim.service.RepairsService;
@@ -88,8 +89,26 @@ public class RepairsController {
      */
     @PostMapping("/allocation")
     public Results taskAllocation(Integer type,Integer repairman){
-
         return repairsService.taskAllocation(type,repairman) ;
+    }
+
+    /**
+     * 进入编辑页面
+     * @param modelAndView
+     * @param id
+     * @return
+     */
+    @GetMapping("/edit")
+    public ModelAndView toEditRepairType(ModelAndView modelAndView, String id){
+        modelAndView.setViewName("repair-manage/repair-task-edit");
+        List<RepairType> allRepairType = repairTypeService.getAllRepairType();
+        List<Repairman> allRepairman = repairmanService.getAllRepairman();
+        Repairs repairs = repairsService.findRepairById(id);
+
+        modelAndView.addObject("allRepairType",allRepairType);
+        modelAndView.addObject("allRepairman",allRepairman);
+        modelAndView.addObject("repairs",repairs);
+        return modelAndView;
     }
 
 }

@@ -27,8 +27,7 @@
                                     <select name="state" lay-verify="" >
                                         <option value="">请选择状态</option>
                                         <option value="1" >未处理</option>
-                                        <option value="2" >待处理</option>
-                                        <option value="3" >已处理</option>
+                                        <option value="2" >已处理</option>
                                     </select>
                                 </div>
                                 <div class="layui-inline layui-show-xs-block">
@@ -54,10 +53,12 @@
             <button class="layui-btn" onclick="xadmin.open('任务分配','/repairs/allocation',800,600)"><i class="layui-icon"></i>任务分配</button>
         </div>
     </script>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
 
-
-
-    <script>
+    <script th:inline="javascript">
         layui.use('table', function(){
             var table = layui.table;
             let form = layui.form;
@@ -75,29 +76,29 @@
                  }
             });
 
-            let temp=[
+            let lie=[
                 {field:'id', title:'ID', width:120, fixed: 'left', unresize: true, sort: true}
                 ,{field:'sno', title:'学号'}
-                ,{field:'typeId', title:'报修类型', templet:function (d) {
-                       for(let i=0 ; i<repair_types.length; i++){
-                           if(repair_types[i].id===d.typeId){
-                               return repair_types[i].type;
-                           }
-                       }
+                ,{field:'typeId', title:'报修类型', templet: function (d) {
+                        for(let i=0; i<repair_types.length; i++){
+                            if(repair_types[i].id == d.typeId) {
+                                return repair_types[i].type;
+                            }
+                        }
                     }
                 }
                 ,{field:'content', title:'内容'}
                 ,{field:'dormitory', title:'宿舍号'}
-                ,{field:'repairmanId', title:'维修人',templet:function (d) {
-
+                ,{field:'repairmanId', title:'维修人',templet: function (d) {
                         for(let i=0 ; i<repairmans.length; i++){
-                            if(repairmans[i].id===d.repairmanId){
+                            if(repairmans[i].id == d.repairmanId){
                                 return repairmans[i].name;
                             }
-                            if(d.repairmanId==0){
+                            if(d.repairmanId == 0){
                                 return '未分配维修人'
                             }
                         }
+
                     }
                 }
                 ,{field:'state', title:'状态', templet:function (d) {
@@ -106,9 +107,6 @@
                                 return '<span class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger">未处理</span>';
                                 break;
                             case 2 :
-                                return '<span class="layui-btn layui-btn-sm layui-btn-radius layui-btn-warm">待处理</span>';
-                                break;
-                            case 3 :
                                 return '<span class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">已处理</span>';
                                 break;
                         }
@@ -135,9 +133,10 @@
                     dataName: 'datas' //规定数据列表的字段名称，默认：data
                 }
                 ,cols: [
-                    temp
+                    lie
                 ]
                 ,page: true
+                ,text:{none: '无数据'}
             });
 
             // 头工具栏事件
@@ -175,16 +174,48 @@
                         dataName: 'datas' //规定数据列表的字段名称，默认：data
                     }
                     ,cols: [
-                        temp
+                        lie
                     ]
                 });
                 return false;
             });
 
 
+            //监听行工具事件
+            table.on('tool(test)', function(obj){
+                var data = obj.data;
+                //console.log(obj)
+                if(obj.event === 'del'){
+                    layer.confirm('真的删除吗?', function(index){
+                        $.ajax({
+                            url:"/repairType/delete",
+                            type:"GET",
+                            data:{id:data.id},
+                            dataType:'json',
+                            success:function(result){
 
+                                if(result.code==200){
+                                    layer.alert("删除成功", {icon: 1},function (index1) {
+                                        layer.close(index1);
+                                        //整个页面刷新
+                                        // xadmin.father_reload();
+                                        //局部页面刷新
+                                        table.reload('test');
+                                    });
+                                }else {
+                                    layer.msg('删除失败');
+                                }
+                            },
+                            error:function (result) {
+                                layer.msg('系统错误,请联系管理员小姐姐');
+                            }
+                        });
 
-
+                    });
+                } else if(obj.event === 'edit'){
+                    xadmin.open('编辑报修类型','/repairs/edit/?id='+data.id,800,600);
+                }
+            });
         });
 
     </script>

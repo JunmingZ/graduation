@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>编辑报修类型</title>
+        <header th:replace="header::html"></header>
+        <link rel="stylesheet" th:href="@{/css/custom.css}" />
+    </head>
+    <body>
+        <div class="layui-fluid">
+            <div class="layui-row">
+                <form class="layui-form">
+                  <div class="layui-form-item">
+                      <label for="L_id" class="layui-form-label">
+                           ID
+                      </label>
+                      <div class="layui-input-inline">
+                          <input type="text" id="L_id" name="id" required="" lay-verify="required"  th:value="${repairs.id}"
+                          autocomplete="off" class="layui-input layui-disabled" Readonly="true">
+                      </div>
+                  </div>
+                    <div class="layui-form-item">
+                        <label for="L_Sno" class="layui-form-label">
+                            学号
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="L_Sno" name="sno" required="" lay-verify="required"  th:value="${repairs.sno}"
+                                   autocomplete="off" class="layui-input layui-disabled" Readonly="true">
+                        </div>
+                    </div>
+
+                  <div class="layui-form-item">
+                      <label for="L_repair_type" class="layui-form-label">
+                         报修类型
+                      </label>
+                      <div class="layui-input-inline">
+                          <select name="city" lay-verify="required" id="L_repair_type">
+                              <option value="" >请选择报修类型</option>
+                              <option th:value="${type.id}" th:each="type:${allRepairType}"  th:text="${type.type}" th:selected="${repairs.typeId==type.id}"></option>
+                          </select>
+                      </div>
+                  </div>
+                    <div class="layui-form-item">
+                        <label for="L_content" class="layui-form-label">
+                            报修内容
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="L_content" name="sno" required="" lay-verify="required"  th:value="${repairs.content}"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="L_dormitory" class="layui-form-label">
+                            报修内容
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="L_dormitory" name="sno" required="" lay-verify="required"  th:value="${repairs.dormitory}"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="L_repairman" class="layui-form-label">
+                            维修人
+                        </label>
+                        <div class="layui-input-inline">
+                            <select name="city" lay-verify="required" id="L_repairman">
+                                <option value="" >请选择维修人</option>
+                                <option th:value="${man.id}" th:each="man:${allRepairman}"  th:text="${man.name}" th:selected="${man.id==repairs.repairmanId}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="L_repair_state" class="layui-form-label">
+                            维修状态
+                        </label>
+                        <div class="layui-input-inline">
+                            <select name="city" lay-verify="required" id="L_repair_state">
+                                <option value="" >请选择维修状态</option>
+                                <option value="1"  th:selected="${repairs.state==1}">未处理</option>
+                                <option value="2"  th:selected="${repairs.state==2}">已处理</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="hidden"  name="ctime" th:value="${repairs.ctime}">
+
+                  <div class="layui-form-item">
+                      <label for="L_repair_state" class="layui-form-label"></label>
+                      <button  class="layui-btn" lay-filter="add" lay-submit="">
+                          编辑
+                      </button>
+                  </div>
+              </form>
+            </div>
+        </div>
+        <script>layui.use(['form', 'layer'],
+            function() {
+                $ = layui.jquery;
+                var form = layui.form,
+                layer = layui.layer;
+
+                //监听提交
+                form.on('submit(add)',
+                function(data) {
+                    console.log(data);
+                    $.ajax({
+                        url:"/repairType/edit",
+                        type:"POST",
+                        data:data.field,
+                        dataType:'json',
+                        success:function(result){
+                            console.log(result)
+                            if(result.code == 500||result.code == 5000301){
+                                layer.alert(result.msg);
+                            }else{
+                                layer.alert("设置成功", {icon: 6},function () {
+                                    parent.layui.table.reload('test');
+                                    //关闭当前frame
+                                    xadmin.close();
+                                    // 可以对父窗口进行刷新
+                                    // xadmin.father_reload();
+                                });
+                            }
+                        },
+                        error:function () {
+                            layer.msg('系统错误,请联系管理员小姐姐');
+                        }
+                    });
+
+                    return false;
+                });
+            });</script>
+
+    </body>
+
+</html>

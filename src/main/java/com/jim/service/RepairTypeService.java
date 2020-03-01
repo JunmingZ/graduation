@@ -121,7 +121,7 @@ public class RepairTypeService  {
      * 单纯获取集合
      * @return
      */
-    public List getAllRepairType() {
+    public List<RepairType> getAllRepairType() {
         return repairTypeMapper.selectList(null);
     }
 }

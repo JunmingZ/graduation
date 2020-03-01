@@ -60,7 +60,7 @@ public class RepairsService {
             repairStatisticsDTO.setUntreated(repairsMapper.selectCount(wrapper1));
             // 4.2 已处理
             QueryWrapper<Repairs> wrapper3 = new QueryWrapper<>();
-            wrapper3.eq("state",3).eq("type_id",id);;
+            wrapper3.eq("state",2).eq("type_id",id);;
             repairStatisticsDTO.setFinish(repairsMapper.selectCount(wrapper3));
             // 4.3 总记录数
             QueryWrapper<Repairs> wrapper4 = new QueryWrapper<>();

@@ -79,6 +79,7 @@
             let lie=[
                 {field:'id', title:'ID', width:120, fixed: 'left', unresize: true, sort: true}
                 ,{field:'sno', title:'学号'}
+                ,{field:'dormitory', title:'宿舍号'}
                 ,{field:'typeId', title:'报修类型', templet: function (d) {
                         for(let i=0; i<repair_types.length; i++){
                             if(repair_types[i].id == d.typeId) {
@@ -88,7 +89,7 @@
                     }
                 }
                 ,{field:'content', title:'内容'}
-                ,{field:'dormitory', title:'宿舍号'}
+
                 ,{field:'repairmanId', title:'维修人',templet: function (d) {
                         for(let i=0 ; i<repairmans.length; i++){
                             if(repairmans[i].id == d.repairmanId){

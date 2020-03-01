@@ -29,7 +29,15 @@
                                    autocomplete="off" class="layui-input layui-disabled" Readonly="true">
                         </div>
                     </div>
-
+                    <div class="layui-form-item">
+                        <label for="L_dormitory" class="layui-form-label">
+                            宿舍号
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="L_dormitory" name="sno" required="" lay-verify="required"  th:value="${repairs.dormitory}"
+                                   autocomplete="off" class="layui-input  layui-disabled" Readonly="true">
+                        </div>
+                    </div>
                   <div class="layui-form-item">
                       <label for="L_repair_type" class="layui-form-label">
                          报修类型
@@ -50,15 +58,7 @@
                                    autocomplete="off" class="layui-input">
                         </div>
                     </div>
-                    <div class="layui-form-item">
-                        <label for="L_dormitory" class="layui-form-label">
-                            报修内容
-                        </label>
-                        <div class="layui-input-inline">
-                            <input type="text" id="L_dormitory" name="sno" required="" lay-verify="required"  th:value="${repairs.dormitory}"
-                                   autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
+
                     <div class="layui-form-item">
                         <label for="L_repairman" class="layui-form-label">
                             维修人

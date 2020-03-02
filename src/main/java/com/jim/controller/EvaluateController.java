@@ -17,8 +17,25 @@ public class EvaluateController {
     @Resource
     private EvaluateService evaluateService;
 
+    /**
+     * 获取评价列表
+     * @param pageTableRequest
+     * @param id
+     * @return
+     */
     @GetMapping("/list")
     public Results getEvaluateList(PageTableRequest pageTableRequest, @RequestParam(required = false) String id){
         return evaluateService.getEvaluateListByPage(new Page(pageTableRequest.getPage(),pageTableRequest.getLimit()),id);
+    }
+
+
+    /**
+     * 通过id单个删除
+     * @param id
+     * @return
+     */
+    @GetMapping("/delete")
+    public Results deleteEvaluateById(String id){
+        return evaluateService.deleteEvaluateById(id);
     }
 }

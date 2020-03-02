@@ -186,7 +186,7 @@
                 if(obj.event === 'del'){
                     layer.confirm('真的删除吗?', function(index){
                         $.ajax({
-                            url:"/dormitory/delete",
+                            url:"/evaluate/delete",
                             type:"GET",
                             data:{id:data.id},
                             dataType:'json',
@@ -200,7 +200,10 @@
                                         //局部页面刷新
                                         table.reload('test');
                                     });
-                                }else {
+                                } else if(result.code ==1002){
+                                    layer.alert(result.msg);
+                                }
+                                else {
                                     layer.msg('删除失败');
                                 }
                             },

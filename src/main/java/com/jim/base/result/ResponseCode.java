@@ -11,6 +11,7 @@ public enum ResponseCode {
 	// ..一真往后面加
 	OBJECT_IS_NULL(1000,"对象为空"),
 	INSERT_EXCEPTION(1001,"异常插入"),
+
 	//信息
 	//5000100 - 5000200
 	SNO_REPEAT(5000100,"错误操作，该学号已存在！！！"),

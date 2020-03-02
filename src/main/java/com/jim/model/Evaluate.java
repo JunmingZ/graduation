@@ -11,9 +11,8 @@ import lombok.Data;
 public class Evaluate {
   @TableId(type = IdType.AUTO)
   private Long id;
-  private Long sno;
-  private Integer evaluate;
-  private Integer repairId;
+  private Integer star;      //评价等级
+  private String  content;   //评价内容
   private Long ctime;
 
 

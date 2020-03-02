@@ -9,7 +9,8 @@ public enum ResponseCode {
 	PARAMETER_MISSING(600,"参数缺失"),
 	UNAUTHORIZED(401,"未授权"),
 	// ..一真往后面加
-
+	OBJECT_IS_NULL(1000,"对象为空"),
+	INSERT_EXCEPTION(1001,"异常插入"),
 	//信息
 	//5000100 - 5000200
 	SNO_REPEAT(5000100,"错误操作，该学号已存在！！！"),
@@ -20,7 +21,11 @@ public enum ResponseCode {
 
 	//报修类型
 	//5000301 - 5000400
-	REPAIR_TYPE_REPEAT(5000301,"错误操作，该报修类型已存在！！！")
+	REPAIR_TYPE_REPEAT(5000301,"错误操作，该报修类型已存在！！！"),
+
+	//报修任务
+	//5000401 - 5000500
+	REPAIRS_REPEAT(5000401,"错误操作，该报修任务已存在！！！")
 ;
 	private Integer code;
 	

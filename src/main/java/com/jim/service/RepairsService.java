@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.jim.base.result.ResponseCode;
 import com.jim.base.result.Results;
 import com.jim.dto.RepairStatisticsDTO;
 import com.jim.mapper.RepairTypeMapper;
@@ -166,5 +167,27 @@ public class RepairsService {
             return Results.failure();
         }
         return Results.ok();
+    }
+
+    /**
+     * 添加报修任务
+     * @param repairs
+     * @return
+     */
+    public Results addRepairs(Repairs repairs) {
+        int insert =0;
+        repairs.setCtime(System.currentTimeMillis());
+        repairs.setUtime(System.currentTimeMillis());
+        if(repairs.getId() == null){
+            insert = repairsMapper.insert(repairs);
+        }else {
+            // 异常插入
+            return  Results.failure(ResponseCode.INSERT_EXCEPTION.getCode(),ResponseCode.INSERT_EXCEPTION.getMessage());
+        }
+        if(insert>0){
+            return Results.ok();
+        }else {
+            return Results.failure();
+        }
     }
 }

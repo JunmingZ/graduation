@@ -3,6 +3,7 @@ package com.jim.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.result.PageTableRequest;
+import com.jim.base.result.ResponseCode;
 import com.jim.base.result.Results;
 import com.jim.model.RepairType;
 import com.jim.model.Repairman;
@@ -10,6 +11,7 @@ import com.jim.model.Repairs;
 import com.jim.service.RepairTypeService;
 import com.jim.service.RepairmanService;
 import com.jim.service.RepairsService;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -93,25 +95,35 @@ public class RepairsController {
     }
 
     /**
-     * 进入编辑页面
+     * 进入编辑页面 或者 添加页面
      * @param modelAndView
      * @param id
      * @return
      */
-    @GetMapping("/edit")
-    public ModelAndView toEditRepairType(ModelAndView modelAndView, String id){
-        modelAndView.setViewName("repair-manage/repair-task-edit");
+    @GetMapping({"/edit","/add"})
+    public ModelAndView toEditRepairType(ModelAndView modelAndView, @RequestParam(required = false) String id){
+        if(StringUtils.isEmpty(id)){
+            modelAndView.setViewName("repair-manage/repair-task-add");
+        }else {
+            modelAndView.setViewName("repair-manage/repair-task-edit");
+            Repairs repairs = repairsService.findRepairById(id);
+            modelAndView.addObject("repairs",repairs);
+        }
+
         List<RepairType> allRepairType = repairTypeService.getAllRepairType();
         List<Repairman> allRepairman = repairmanService.getAllRepairman();
-        Repairs repairs = repairsService.findRepairById(id);
 
         modelAndView.addObject("allRepairType",allRepairType);
         modelAndView.addObject("allRepairman",allRepairman);
-        modelAndView.addObject("repairs",repairs);
         return modelAndView;
     }
 
 
+    /**
+     * 更新任务
+     * @param repairs
+     * @return
+     */
     @PostMapping("/edit")
     public Results updateRepair(Repairs repairs){
         return repairsService.updateRepairsByEntity(repairs);
@@ -136,6 +148,20 @@ public class RepairsController {
     @PostMapping("/delete")
     public Results deleteRepairsByIds(String ids){
         return repairsService.deleteRepairsByIds(ids);
+    }
+
+
+    /**
+     * 添加报修任务
+     * @param repairs
+     * @return
+     */
+    @PostMapping("/add")
+    public Results addRepairs(Repairs repairs){
+        if(repairs.equals(null)){
+            return Results.failure(ResponseCode.OBJECT_IS_NULL.getCode(),ResponseCode.OBJECT_IS_NULL.getMessage());
+        }
+        return repairsService.addRepairs(repairs);
     }
 
 }

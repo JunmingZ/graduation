@@ -19,4 +19,4 @@ public class Repairs {
   private Integer state;
   private Long ctime;
   private Long utime;
-}
+  }

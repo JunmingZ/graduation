@@ -85,7 +85,7 @@ public class RepairsService {
      */
     public Results getAllRepairsByPage(Page page, String sno,Integer state) {
         QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
-        wrapper.orderByAsc("state");
+        wrapper.orderByDesc("id");
         IPage iPage = null;
         if(!StringUtils.isEmpty(sno)){
             //模糊查询

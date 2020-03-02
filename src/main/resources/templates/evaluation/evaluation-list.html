@@ -60,6 +60,8 @@
             let list =  [
                 {type: 'checkbox', fixed: 'left',id: 'idTest'}
                 ,{field:'id', title:'ID', width:120, fixed: 'left', unresize: true, sort: true}
+                ,{field:'sno', title:'学号'}
+                ,{field:'repairmanId', title:'维修人员工号'}
                 ,{field:'star', title:'等级',id: 'z',templet: function (d) {
                         return '<div id="avgScore'+d.id+'"  style="line-height: 0px"></div>'
                     }}
@@ -68,7 +70,21 @@
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:145}
             ];
 
+            let  star_method = function(res, curr, count){
+                var data = res.datas;//返回的json中data数据
 
+                for (var item in data) {
+                    //司机星级
+                    console.log(data[item].star)
+                    rate.render({
+                        elem: '#avgScore'+data[item].id+''         //绑定元素
+                        , length: 5            //星星个数
+                        , value: data[item].star             //初始化值
+                        , readonly: true      //只读
+                    });
+
+                }
+            }
             table.render({
                 elem: '#test'
                 ,url:'/evaluate/list'
@@ -86,21 +102,7 @@
                     list
                 ]
                 ,page: true
-                ,done:function(res, curr, count){
-                    var data = res.datas;//返回的json中data数据
-
-                    for (var item in data) {
-                        //司机星级
-                        console.log(data[item].star)
-                        rate.render({
-                            elem: '#avgScore'+data[item].id+''         //绑定元素
-                            , length: 5            //星星个数
-                            , value: data[item].star             //初始化值
-                            , readonly: true      //只读
-                        });
-
-                    }
-                }
+                ,done: star_method
             });
 
             //头工具栏事件
@@ -169,6 +171,7 @@
                     ,cols: [
                        list
                     ]
+                    ,done: star_method
                 });
                 return false;
             });

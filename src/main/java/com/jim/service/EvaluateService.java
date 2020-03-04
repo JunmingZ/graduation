@@ -87,11 +87,26 @@ public class EvaluateService {
         }
     }
 
+
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
     public Results deleteEvaluateByIds(String ids) {
         if(StringUtils.isEmpty(ids)){
             return Results.failure(ResponseCode.DELETE_ID_IS_NULL.getCode(),ResponseCode.DELETE_ID_IS_NULL.getMessage());
         }
         String[] split = ids.split(",");
+
+        for (String id : split) {
+            QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
+            wrapper.eq("evaluation_id", id);
+            Repairs repairs = new Repairs();
+            repairs.setEvaluationId(0L);
+            repairsMapper.update(repairs, wrapper);
+            return null;
+        }
 
         if(evaluateMapper.deleteBatchIds(Arrays.asList(split))==0){
             return Results.failure();

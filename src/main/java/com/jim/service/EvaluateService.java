@@ -20,6 +20,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -84,5 +85,17 @@ public class EvaluateService {
         }else {
             return Results.failure();
         }
+    }
+
+    public Results deleteEvaluateByIds(String ids) {
+        if(StringUtils.isEmpty(ids)){
+            return Results.failure(ResponseCode.DELETE_ID_IS_NULL.getCode(),ResponseCode.DELETE_ID_IS_NULL.getMessage());
+        }
+        String[] split = ids.split(",");
+
+        if(evaluateMapper.deleteBatchIds(Arrays.asList(split))==0){
+            return Results.failure();
+        }
+        return Results.ok();
     }
 }

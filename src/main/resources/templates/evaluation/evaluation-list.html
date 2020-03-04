@@ -74,8 +74,8 @@
                 var data = res.datas;//返回的json中data数据
 
                 for (var item in data) {
-                    //司机星级
-                    console.log(data[item].star)
+                    //星级
+                    // console.log(data[item].star)
                     rate.render({
                         elem: '#avgScore'+data[item].id+''         //绑定元素
                         , length: 5            //星星个数
@@ -121,7 +121,7 @@
                         if(delList != ''||delList != []){
                             layer.confirm('确定删除所选项吗？',function (index) {
                                     $.ajax({
-                                        url: '/dormitory/delete',
+                                        url: '/evaluate/delete',
                                         type:'post',
                                         dataType:'json',
                                         data: 'ids='+delList,
@@ -129,8 +129,8 @@
                                             if(data.code===200){
                                                 layer.msg('删除成功');
                                                 table.reload('test');
-                                            }else{
-                                                layer.msg('删除失败');
+                                            }else if(data.code ===1002){
+                                                layer.msg(data.msg);
                                             }
                                         },
                                         error:function () {

@@ -13,6 +13,7 @@ public enum ResponseCode {
 	INSERT_EXCEPTION(1001,"异常插入"),
 	DELETE_ID_IS_NULL(1002,"删除的id为空"),
 
+
 	//信息
 	//5000100 - 5000200
 	SNO_REPEAT(5000100,"错误操作，该学号已存在！！！"),

@@ -1,7 +1,5 @@
 package com.jim.service;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -10,7 +8,6 @@ import com.jim.base.result.Results;
 import com.jim.dto.RepairStatisticsDTO;
 import com.jim.mapper.RepairTypeMapper;
 import com.jim.mapper.RepairsMapper;
-import com.jim.model.Dormitory;
 import com.jim.model.RepairType;
 import com.jim.model.Repairs;
 import org.springframework.stereotype.Service;
@@ -18,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import javax.xml.transform.Result;
 import java.util.*;
 
 @Service

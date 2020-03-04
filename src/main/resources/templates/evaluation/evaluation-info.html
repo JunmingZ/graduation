@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>编辑学生信息</title>
+        <header th:replace="header::html"></header>
+        <link rel="stylesheet" th:href="@{/css/custom.css}" />
+    </head>
+    <body>
+        <div class="layui-fluid">
+            <div class="layui-row">
+                <table class="layui-table " lay-size="sm">
+<!--                    <colgroup>-->
+<!--                        <col width="50">-->
+<!--                        <col width="50">-->
+<!--                    </colgroup>-->
+                    <thead>
+                    <tr>
+                        <th colspan="2" style="text-align: center;">报修评价信息</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>报修ID</td>
+                        <td th:text="${repairs.id}"></td>
+                    </tr>
+                    <tr>
+                        <td>报修学号</td>
+                        <td th:text="${repairs.sno}"></td>
+                    </tr>
+                    <tr>
+                        <td>报修类型ID</td>
+                        <td th:text="${repairs.typeId}"></td>
+                    </tr>
+                    <tr>
+                        <td>报修内容</td>
+                        <td th:text="${repairs.content}"></td>
+                    </tr>
+                    <tr>
+                        <td>宿舍号</td>
+                        <td th:text="${repairs.dormitory}"></td>
+                    </tr>
+                    <tr>
+                        <td>维修工号</td>
+                        <td th:text="${repairs.repairmanId}"></td>
+                    </tr>
+
+                    <tr>
+                        <td>评价等级</td>
+                        <td ><span id="test1"></span></td>
+                    </tr>
+                    <tr>
+                        <td>评价内容</td>
+                        <td th:text="${evaluate.content}"></td>
+                    </tr>
+                    <tr>
+                        <td>评价创建时间</td>
+                        <td th:text="${#dates.format(evaluate.ctime,'yyyy-MM-dd HH:mm')}"></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <script th:inline="javascript">
+            layui.use('rate', function(){
+                var rate = layui.rate;
+
+
+                //渲染
+                rate.render({
+                    elem: '#test1'  //绑定元素
+                    ,value: [[${evaluate.star}]]
+                    , length: 5
+                    ,readonly:true
+                });
+            });
+        </script>
+    </body>
+
+</html>

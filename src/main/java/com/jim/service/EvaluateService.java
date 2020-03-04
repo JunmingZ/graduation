@@ -3,7 +3,6 @@ package com.jim.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.result.ResponseCode;
 import com.jim.base.result.Results;
@@ -12,16 +11,12 @@ import com.jim.mapper.EvaluateMapper;
 import com.jim.mapper.RepairsMapper;
 import com.jim.model.Evaluate;
 import com.jim.model.Repairs;
-import com.jim.model.Student;
 import org.springframework.beans.BeanUtils;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * 报修评价业务层
@@ -51,11 +46,12 @@ public class EvaluateService {
         iPage = evaluateMapper.selectPage(page,wrapper);
         List<Evaluate> records = iPage.getRecords();
         List<EvaluateDTO> list  = new ArrayList<>();
+
         for (Evaluate record : records) {
             EvaluateDTO evaluateDTO = new EvaluateDTO();
             QueryWrapper<Repairs> evaluateId = new QueryWrapper<>();
             evaluateId.eq("evaluation_id",record.getId());
-            Repairs repairs = repairsMapper.selectOne(evaluateId);
+            Repairs repairs = repairsMapper.selectOne(evaluateId);  //通过evaluation_id查找报修任务表的相关信息
             BeanUtils.copyProperties(record,evaluateDTO);
             if(repairs!=null){
                 evaluateDTO.setSno(repairs.getSno());
@@ -112,5 +108,24 @@ public class EvaluateService {
             return Results.failure();
         }
         return Results.ok();
+    }
+
+
+    /**
+     * 获取评价信息
+     * @param id
+     * @return
+     */
+    public Map getEvaluateInfo(String id) {
+        Evaluate evaluate = evaluateMapper.selectById(id);
+
+        QueryWrapper<Repairs> wrapper = new QueryWrapper();
+        wrapper.eq("evaluation_id",id);
+        Repairs repairs = repairsMapper.selectOne(wrapper);
+
+        Map map = new HashMap();
+        map.put("evaluate",evaluate);
+        map.put("repairs",repairs);
+        return map;
     }
 }

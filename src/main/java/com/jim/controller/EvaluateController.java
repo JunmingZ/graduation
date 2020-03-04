@@ -3,10 +3,13 @@ package com.jim.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.result.PageTableRequest;
 import com.jim.base.result.Results;
+import com.jim.model.Evaluate;
 import com.jim.service.EvaluateService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/evaluate")
@@ -45,6 +48,21 @@ public class EvaluateController {
     @PostMapping("/delete")
     public Results deleteEvaluateByIds(String ids){
         return evaluateService.deleteEvaluateByIds(ids);
+    }
+
+
+    /**
+     * 查看报修评价的详细信息
+     * @param id
+     * @param modelAndView
+     * @return
+     */
+    @GetMapping("/info")
+    public ModelAndView toEvaluateInfo(String id,ModelAndView modelAndView){
+        Map evaluateInfo = evaluateService.getEvaluateInfo(id);
+        modelAndView.addAllObjects(evaluateInfo);
+        modelAndView.setViewName("evaluation/evaluation-info");
+        return modelAndView;
     }
 
 }

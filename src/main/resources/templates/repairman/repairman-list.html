@@ -54,10 +54,10 @@
 
     <script type="text/html" id="switchTpl">
         <!-- 这里的 checked 的状态只是演示 -->
-        <input type="checkbox" name="flag" value="{{d.id}}" lay-skin="switch" lay-text="在职|失职" lay-filter="sexDemo" {{ d.flag == 1 ? 'checked' : '' }}>
+        <input type="checkbox"  name="flag" id="{{d.id}}" value="{{d.flag}}" lay-skin="switch" lay-text="在职|离职" lay-filter="sexDemo" {{ d.flag == 1 ? 'checked' : '' }}>
     </script>
     <script>
-        layui.use(['table', 'layer'],function(){
+        layui.use(['table', 'layer','form'],function(){
             var table = layui.table;
             let form = layui.form;
             let layer = layui.layer;
@@ -91,10 +91,34 @@
                 ,page: true
             });
 
-            //监听flag操作
+            //监听flag操作 修改在职状态
             form.on('switch(sexDemo)', function(obj){
-                console.log(this);
-                layer.tips(this.value + ' ' + this.name + '：'+ obj.elem.checked, obj.othis);
+                $.ajax({
+                    url: '/repairman/flag',
+                    type:'post',
+                    dataType:'json',
+                    data: {
+                        id:this.id,
+                        flag:this.value
+                    },
+                    success:function (data) {
+                        if(data.code===200){
+                            layer.msg('修改成功');
+                        }else if(data.code === 5000501 ||data.code ===5000502){
+                            layer.msg(data.msg);
+                            table.reload('test');
+                            table.reload('test');
+                        }else {
+                            layer.msg('删除失败');
+                            table.reload('test');
+                        }
+                    },
+                    error:function () {
+                        layer.msg('系统错误');
+                        table.reload('test');
+                    }
+                });
+
             });
 
             //头工具栏事件

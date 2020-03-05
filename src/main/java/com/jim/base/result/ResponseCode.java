@@ -28,7 +28,12 @@ public enum ResponseCode {
 
 	//报修任务
 	//5000401 - 5000500
-	REPAIRS_REPEAT(5000401,"错误操作，该报修任务已存在！！！")
+	REPAIRS_REPEAT(5000401,"错误操作，该报修任务已存在！！！"),
+
+	//维修人员
+	//5000501 - 5000600
+	REPAIRMAN_UPDATE_FLAG(5000501,"错误操作，更新状态失败！！！"),
+	REPAIRMAN_FLAG_NULL(5000502,"维修人的职位状态为空"),
 ;
 	private Integer code;
 	

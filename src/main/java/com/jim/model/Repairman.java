@@ -14,7 +14,7 @@ public class Repairman {
   private String name;
   private Long phone;
   private String password;
-  private Character flag;  // 1 在职  2 离职
+  private Integer flag;  // 1 在职  2 离职
   private Long ctime;
   private Long utime;
 

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>维修人员列表</title>
+        <header th:replace="header::html"></header>
+    </head>
+    
+    <body>
+        <div class="x-nav">
+            <span class="layui-breadcrumb">
+                <a href="">维修人员列表</a>
+            </span>
+            <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+                <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+            </a>
+        </div>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">
+                            <form class="layui-form layui-col-space5">
+
+                                <div class="layui-inline layui-show-xs-block">
+                                    <input type="text" name="id" placeholder="请输入工号或名称" autocomplete="off" class="layui-input"></div>
+                                <div class="layui-inline layui-show-xs-block">
+                                    <button class="layui-btn" lay-submit="" lay-filter="search">
+                                        <i class="layui-icon">&#xe615;</i></button>
+                                </div>
+                            </form>
+                             <table class="layui-hide" id="test" lay-filter="test"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs  layui-btn-normal" lay-event="see">查看</a>
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    </script>
+
+    <script type="text/html" id="toolbarDemo">
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="getCheckData"> <i class="layui-icon"></i>批量删除</button>
+            <button class="layui-btn layui-btn-sm" lay-event="add_dormitory"><i class="layui-icon"></i>添加维修员工</button>
+        </div>
+    </script>
+
+
+    <script type="text/html" id="switchTpl">
+        <!-- 这里的 checked 的状态只是演示 -->
+        <input type="checkbox" name="flag" value="{{d.id}}" lay-skin="switch" lay-text="在职|失职" lay-filter="sexDemo" {{ d.flag == 1 ? 'checked' : '' }}>
+    </script>
+    <script>
+        layui.use(['table', 'layer'],function(){
+            var table = layui.table;
+            let form = layui.form;
+            let layer = layui.layer;
+            let rmdata = [
+                {type: 'checkbox', fixed: 'left',id: 'idTest'}
+                ,{field:'id', title:'工号', width:120, fixed: 'left', unresize: true, sort: true}
+                ,{field:'name', title:'名字'}
+                ,{field:'phone', title:'电话'}
+                ,{field:'flag', title:'状态',templet:'#switchTpl'}
+                ,{field:'ctime', title:'创建时间',  sort: true, templet: "<div>{{layui.util.toDateString(d.ctime, 'yyyy-MM-dd HH:mm:ss')}}</div>"}
+                ,{field:'utime', title:'更新时间',  sort: true,templet: "<div>{{layui.util.toDateString(d.utime, 'yyyy-MM-dd HH:mm:ss')}}</div>"}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+            ];
+
+            table.render({
+                elem: '#test'
+                ,url:'/repairman/list'
+                ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+                ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                    title: '提示'
+                    ,layEvent: 'LAYTABLE_TIPS'
+                    ,icon: 'layui-icon-tips'
+                }]
+                ,title: '宿舍数据表'
+                ,response: {
+                    dataName: 'datas' //规定数据列表的字段名称，默认：data
+                }
+                ,cols: [
+                    rmdata
+                ]
+                ,page: true
+            });
+
+            //监听flag操作
+            form.on('switch(sexDemo)', function(obj){
+                console.log(this);
+                layer.tips(this.value + ' ' + this.name + '：'+ obj.elem.checked, obj.othis);
+            });
+
+            //头工具栏事件
+            table.on('toolbar(test)', function(obj){
+                var checkStatus = table.checkStatus(obj.config.id);
+                // console.log("obj--->  "+obj);
+                // console.log("obj.config--->  "+obj.config);
+                switch(obj.event){
+                    case 'getCheckData':
+                        var data = checkStatus.data;
+                        var delList=[];
+                        //将选中的id加入数组中
+                        data.forEach(function(n,i){
+                            delList.push(n.id);
+                        });
+                        if(delList != ''||delList != []){
+                            layer.confirm('确定删除所选项吗？',function (index) {
+                                    $.ajax({
+                                        url: '/dormitory/delete',
+                                        type:'post',
+                                        dataType:'json',
+                                        data: 'ids='+delList,
+                                        success:function (data) {
+                                            if(data.code===200){
+                                                layer.msg('删除成功');
+                                                table.reload('test');
+                                            }else{
+                                                layer.msg('删除失败');
+                                            }
+                                        },
+                                        error:function () {
+                                            layer.msg('系统错误');
+                                        }
+                                    })
+                            })
+                        }else{
+                            layer.msg("你没有选中")
+                        }
+                        // layer.alert(JSON.stringify(delList));
+                        break;
+                    case 'add_dormitory':
+                        layer.open({
+                            type: 2,
+                            title: '添加宿舍',
+                            shadeClose: true,
+                            shade: false,
+                            maxmin: true, //开启最大化最小化按钮
+                            area: ['460px','250px'],
+                            content: '/api/getPage?pageName=dormitory-manage/dormitory-add'
+                        });
+
+                        break;
+                    case 'LAYTABLE_TIPS':
+                        layer.alert('这是工具栏右侧自定义的一个图标按钮');
+                        break;
+                }
+            });
+
+            // 监听搜索和提交
+            form.on('submit(search)', function(data){
+                var id = data.field.id; //获取input里面的值
+                table.render({
+                    elem: '#test'
+                    ,url: '/dormitory/list' //数据接口
+                    ,page: true //开启分页
+                    ,where:{
+                        "id":id
+                    }
+                    ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+                    ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                        title: '提示'
+                        ,layEvent: 'LAYTABLE_TIPS'
+                        ,icon: 'layui-icon-tips'
+                    }]
+                    ,response: {
+                        dataName: 'datas' //规定数据列表的字段名称，默认：data
+                    }
+                    ,cols: [
+                        [
+                            {type: 'checkbox', fixed: 'left',id: 'idTest'}
+                            ,{field:'id', title:'宿舍号', width:120, fixed: 'left', unresize: true, sort: true}
+                            ,{field:'description', title:'描述'}
+                            ,{field:'ctime', title:'创建时间',  sort: true, templet: "<div>{{layui.util.toDateString(d.ctime, 'yyyy-MM-dd HH:mm:ss')}}</div>"}
+                            ,{field:'utime', title:'更新时间',  sort: true,templet: "<div>{{layui.util.toDateString(d.utime, 'yyyy-MM-dd HH:mm:ss')}}</div>"}
+                            ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:200}
+                        ]
+                    ]
+                });
+                return false;
+            });
+
+
+
+            //监听行工具事件
+            table.on('tool(test)', function(obj){
+                var data = obj.data;
+                //console.log(obj)
+                if(obj.event === 'del'){
+                    layer.confirm('真的删除吗?', function(index){
+                        $.ajax({
+                            url:"/dormitory/delete",
+                            type:"GET",
+                            data:{id:data.id},
+                            dataType:'json',
+                            success:function(result){
+
+                                if(result.code==200){
+                                    layer.alert("删除成功", {icon: 1},function (index1) {
+                                        layer.close(index1);
+                                        //整个页面刷新
+                                        // xadmin.father_reload();
+                                        //局部页面刷新
+                                        table.reload('test');
+                                    });
+                                }else {
+                                    layer.msg('删除失败');
+                                }
+                            },
+                            error:function (result) {
+                                layer.msg('系统错误,请联系管理员小姐姐');
+                            }
+                        });
+
+                    });
+                } else if(obj.event === 'edit'){
+                     xadmin.open('编辑宿舍信息','/dormitory/edit/?id='+data.id,460,260);
+                } else if(obj.event==='see'){
+                    xadmin.open('查看宿舍信息','/dormitory/info/?id='+data.id);
+                }
+            });
+
+        });
+
+    </script>
+
+</html>

@@ -1,8 +1,6 @@
 package com.jim.controller;
 
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.result.PageTableRequest;
 import com.jim.base.result.Results;
@@ -32,6 +30,7 @@ public class RepairmanController {
     public Results repairmanList(PageTableRequest pageTableRequest, @RequestParam(required = false) String id){
         return repairmanService.getAllRepairmanByPage(new Page(pageTableRequest.getPage(),pageTableRequest.getLimit()),id);
     }
+
 
 
 

@@ -13,8 +13,11 @@ public class Repairman {
   private Integer id;
   private String name;
   private Long phone;
+  private String password;
+  private Character flag;  // 1 在职  2 离职
   private Long ctime;
   private Long utime;
+
 
 
 }

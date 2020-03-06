@@ -86,4 +86,22 @@ public class AdminService {
         }
         return Results.failure(ResponseCode.INSERT_EXCEPTION.getCode(),ResponseCode.INSERT_EXCEPTION.getMessage());
     }
+
+    /**
+     * 根据id查找管理员
+     * @param id
+     * @return
+     */
+    public Admin findAdminById(String id) {
+        return adminMapper.selectById(id);
+    }
+
+    public Results editAdmin(Admin admin) {
+        admin.setUtime(System.currentTimeMillis());
+        int i = adminMapper.updateById(admin);
+        if(i>0){
+            return Results.ok();
+        }
+        return Results.failure(ResponseCode.UPDATE_FAIL.getCode(),ResponseCode.UPDATE_FAIL.getMessage());
+    }
 }

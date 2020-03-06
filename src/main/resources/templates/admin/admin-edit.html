@@ -3,7 +3,7 @@
     
     <head>
         <meta charset="UTF-8">
-        <title>编辑维修人员</title>
+        <title>编辑管理员</title>
         <header th:replace="header::html"></header>
         <link rel="stylesheet" th:href="@{/css/custom.css}" />
     </head>
@@ -16,7 +16,7 @@
                          姓名
                       </label>
                       <div class="layui-input-inline">
-                          <input type="text" id="L_name" name="name" required="" lay-verify="required" autocomplete="off" class="layui-input"  th:value="${repairman.name}">
+                          <input type="text" id="L_name" name="name" required="" lay-verify="required" autocomplete="off" class="layui-input"  th:value="${admin.name}">
                       </div>
                   </div>
                     <div class="layui-form-item">
@@ -24,15 +24,16 @@
                             号码
                         </label>
                         <div class="layui-input-inline">
-                            <input type="text" id="phone" name="phone" required="" autocomplete="off" class="layui-input" lay-verify="telephone" th:value="${repairman.phone}" >
+                            <input type="text" id="phone" name="phone" required="" autocomplete="off" class="layui-input" lay-verify="phone" th:value="${admin.phone}" >
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label for="L_flag" class="layui-form-label">
-                            职位状态
+                        <label  class="layui-form-label">
+                            性别
                         </label>
                         <div class="layui-input-inline">
-                            <input type="checkbox" id="L_flag" name="flag" required="" lay-skin="switch" lay-filter="switchTest" lay-text="在职|离职"  th:checked="${repairman.flag==1}"   th:value="${repairman.flag}">
+                            <input type="radio"  name="sex" value="0" required="" autocomplete="off" title="男" class="layui-input" th:checked="${admin.sex==0}">
+                            <input type="radio"  name="sex" value="1" required="" autocomplete="off"  title="女" class="layui-input" th:checked="${admin.sex==1}">
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -40,7 +41,7 @@
                             密码
                         </label>
                         <div class="layui-input-inline">
-                            <input type="password" id="L_pass" name="password" required="" lay-verify="pass" placeholder="请输入密码" th:value="${repairman.password}"
+                            <input type="password" id="L_pass" name="password" required="" lay-verify="pass" placeholder="请输入密码" th:value="${admin.password}"
                                    autocomplete="off" class="layui-input">
                         </div>
                         <div class="layui-form-mid layui-word-aux">
@@ -52,15 +53,15 @@
                             确认密码
                         </label>
                         <div class="layui-input-inline">
-                            <input type="password" id="L_repass" name="repass" required="" lay-verify="repass" placeholder="请确认密码" th:value="${repairman.password}"
+                            <input type="password" id="L_repass" name="repass" required="" lay-verify="repass" placeholder="请确认密码" th:value="${admin.password}"
                                    autocomplete="off" class="layui-input">
                         </div>
                     </div>
-                    <input type="hidden" name="ctime" th:value="${repairman.ctime}">
-                    <input type="hidden" name="utime" th:value="${repairman.utime}">
-                    <input type="hidden" name="id" th:value="${repairman.id}">
+                    <input type="hidden" name="ctime" th:value="${admin.ctime}">
+                    <input type="hidden" name="utime" th:value="${admin.utime}">
+                    <input type="hidden" name="id" th:value="${admin.id}">
                   <div class="layui-form-item">
-                      <label for="L_flag" class="layui-form-label"></label>
+                      <label for="L_repass" class="layui-form-label"></label>
                       <div class="layui-input-inline">
                           <button  class="layui-btn" lay-filter="add" lay-submit="">
                               添加
@@ -82,8 +83,7 @@
                         if ($('#L_pass').val() != $('#L_repass').val()) {
                             return '两次密码不一致';
                         }
-                    },
-                    telephone: [/(.+){6,12}$/, '电话号码必须6到12位']
+                    }
                 });
 
 
@@ -93,13 +93,13 @@
                 function(data) {
                     console.log(data);
                     $.ajax({
-                        url:"/repairman/edit",
+                        url:"/admin/edit",
                         type:"POST",
                         data:data.field,
                         dataType:'json',
                         success:function(result){
                             console.log(result)
-                            if(result.code === 500|| result.code === 1003){
+                            if(result.code === 500|| result.code === 1000){
                                 layer.alert(result.msg);
                             }else{
                                 layer.alert("编辑成功", {icon: 6},function () {

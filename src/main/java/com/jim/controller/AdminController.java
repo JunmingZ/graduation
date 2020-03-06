@@ -8,6 +8,7 @@ import com.jim.base.result.Results;
 import com.jim.model.Admin;
 import com.jim.service.AdminService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 
@@ -59,35 +60,38 @@ public class AdminController {
         return adminService.addAdmin(admin);
     }
 
-    ///**
-    // * 进入编辑页面
-    // * @param modelAndView
-    // * @param id
-    // * @return
-    // */
-    //@GetMapping("/edit")
-    //public ModelAndView toEditDormitory(ModelAndView modelAndView, String id){
-    //    modelAndView.setViewName("dormitory-manage/dormitory-edit");
-    //    Dormitory dormitory = dormitoryService.findDormitoryById(id);
-    //    modelAndView.addObject("dormitory",dormitory);
-    //    return modelAndView;
-    //}
-    //
-    ///**
-    // * 编辑宿舍
-    // * @param dormitory 宿舍
-    // * @return
-    // */
-    //@PostMapping("/edit")
-    //public Results editDormitory(Dormitory dormitory){
-    //    return dormitoryService.editDormitory(dormitory);
-    //}
-    //
-    ///**
-    // * 查看宿舍信息
-    // * @param id 宿舍号
-    // * @return
-    // */
+    /**
+     * 进入编辑页面
+     * @param modelAndView
+     * @param id
+     * @return
+     */
+    @GetMapping("/edit")
+    public ModelAndView toEditAdmin(ModelAndView modelAndView, String id){
+        modelAndView.setViewName("admin/admin-edit");
+        Admin admin = adminService.findAdminById(id);
+        modelAndView.addObject("admin",admin);
+        return modelAndView;
+    }
+
+    /**
+     * 编辑宿舍
+     * @param admin 宿舍
+     * @return
+     */
+    @PostMapping("/edit")
+    public Results editDormitory(Admin admin){
+        if(admin == null){
+            return Results.failure(ResponseCode.OBJECT_IS_NULL.getCode(),ResponseCode.OBJECT_IS_NULL.getMessage());
+        }
+        return adminService.editAdmin(admin);
+    }
+
+    /**
+     * 查看宿舍信息
+     * @param id 宿舍号
+     * @return
+     */
     //@GetMapping("/info")
     //public ModelAndView dormitoryInfo(ModelAndView modelAndView,String id){
     //    List<Student> dormitoryInfo = dormitoryService.findDormitoryInfo(id);

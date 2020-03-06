@@ -24,18 +24,18 @@ public class AdminController {
         return adminService.getAllAdminListByPage(new Page(pageTableRequest.getPage(),pageTableRequest.getLimit()),id);
     }
 
-    //
-    ///**
-    // * 通过id单个删除
-    // * @param id
-    // * @return
-    // */
-    //@GetMapping("/delete")
-    //public Results deleteDormitoryById(String id){
-    //    return dormitoryService.deleteDormitoryById(id);
-    //}
-    //
-    //
+
+    /**
+     * 通过id单个删除
+     * @param id
+     * @return
+     */
+    @GetMapping("/delete")
+    public Results deleteAdminById(String id){
+        return adminService.deleteAdminById(id);
+    }
+
+
     ///**
     // * 批量删除
     // * @param ids

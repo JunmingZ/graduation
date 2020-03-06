@@ -104,7 +104,7 @@
                         if(delList != ''||delList != []){
                             layer.confirm('确定删除所选项吗？',function (index) {
                                     $.ajax({
-                                        url: '/dormitory/delete',
+                                        url: '/admin/delete',
                                         type:'post',
                                         dataType:'json',
                                         data: 'ids='+delList,
@@ -134,7 +134,7 @@
                             shade: false,
                             maxmin: true, //开启最大化最小化按钮
                             area: ['460px','250px'],
-                            content: '/api/getPage?pageName=dormitory-manage/dormitory-add'
+                            content: '/api/getPage?pageName=admin/admin-add'
                         });
 
                         break;
@@ -179,12 +179,13 @@
                 if(obj.event === 'del'){
                     layer.confirm('真的删除吗?', function(index){
                         $.ajax({
-                            url:"/dormitory/delete",
+                            url:"/admin/delete",
                             type:"GET",
-                            data:{id:data.id},
+                            data:{
+                                id:data.id
+                            },
                             dataType:'json',
                             success:function(result){
-
                                 if(result.code==200){
                                     layer.alert("删除成功", {icon: 1},function (index1) {
                                         layer.close(index1);
@@ -193,7 +194,9 @@
                                         //单单表格刷新
                                         table.reload('test');
                                     });
-                                }else {
+                                }else if(result.code==500||result.code === 1004){
+                                    layer.msg(result.msg)
+                                }else{
                                     layer.msg('删除失败');
                                 }
                             },
@@ -204,9 +207,9 @@
 
                     });
                 } else if(obj.event === 'edit'){
-                     xadmin.open('编辑宿舍信息','/dormitory/edit/?id='+data.id,460,260);
+                     xadmin.open('编辑宿舍信息','/admin/edit/?id='+data.id,460,260);
                 } else if(obj.event==='see'){
-                    xadmin.open('查看宿舍信息','/dormitory/info/?id='+data.id);
+                    xadmin.open('查看宿舍信息','/admin/info/?id='+data.id);
                 }
             });
 

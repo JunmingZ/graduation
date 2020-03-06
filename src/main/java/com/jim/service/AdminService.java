@@ -3,6 +3,7 @@ package com.jim.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.jim.base.result.ResponseCode;
 import com.jim.base.result.Results;
 import com.jim.mapper.AdminMapper;
 import com.jim.model.Admin;
@@ -40,4 +41,16 @@ public class AdminService {
         return Results.success((int) iPage.getTotal(),iPage.getRecords());
     }
 
+    /**
+     * 通过id单个删除
+     * @param id
+     * @return
+     */
+    public Results deleteAdminById(String id) {
+        int i = adminMapper.deleteById(id);
+        if(i>0){
+            return Results.ok();
+        }
+        return Results.failure(ResponseCode.DELETE_FAIL.getCode(),ResponseCode.DELETE_FAIL.getMessage());
+    }
 }

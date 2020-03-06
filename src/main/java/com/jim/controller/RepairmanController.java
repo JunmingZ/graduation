@@ -10,6 +10,7 @@ import com.jim.model.Repairs;
 import com.jim.service.RepairmanService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -53,13 +54,29 @@ public class RepairmanController {
      */
     @PostMapping("/add")
     public Results addRepairs(Repairman repairman){
-        System.out.println(repairman);
 
         if(repairman.equals(null)){
             return Results.failure(ResponseCode.OBJECT_IS_NULL.getCode(),ResponseCode.OBJECT_IS_NULL.getMessage());
         }
 
         return repairmanService.addRepairman(repairman);
+    }
+
+    @GetMapping("/edit")
+    public ModelAndView toEditRepairman(ModelAndView modelAndView,Integer id){
+        Repairman repairman = repairmanService.getRepairmanById(id);
+        modelAndView.addObject("repairman",repairman);
+        modelAndView.setViewName("repairman/repairman-edit");
+         return modelAndView;
+    }
+
+
+    @PostMapping("/edit")
+    public Results editRepairman(Repairman repairman){
+        if(repairman.equals(null)){
+            return Results.failure(ResponseCode.OBJECT_IS_NULL.getCode(),ResponseCode.OBJECT_IS_NULL.getMessage());
+        }
+        return  repairmanService.updateRepairmanByModel(repairman);
     }
 
 }

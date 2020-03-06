@@ -12,7 +12,7 @@ public enum ResponseCode {
 	OBJECT_IS_NULL(1000,"对象为空"),
 	INSERT_EXCEPTION(1001,"异常插入"),
 	DELETE_ID_IS_NULL(1002,"删除的id为空"),
-
+	UPDATE_FAIL(1003,"更新失败"),
 
 	//信息
 	//5000100 - 5000200

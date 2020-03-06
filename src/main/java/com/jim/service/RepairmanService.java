@@ -91,4 +91,30 @@ public class RepairmanService {
         }
 
     }
+
+    /**
+     * 通过id获取维修人员
+     * @param id
+     */
+    public Repairman getRepairmanById(Integer id) {
+        Repairman repairman = repairmanMapper.selectById(id);
+        return repairman;
+    }
+
+    /**
+     * 更新维修人员
+     * @param repairman
+     */
+    public Results updateRepairmanByModel(Repairman repairman) {
+        if(repairman.getFlag()==null){
+            repairman.setFlag(2);
+        }
+        repairman.setUtime(System.currentTimeMillis());
+        int i = repairmanMapper.updateById(repairman);
+        if(i>0){
+            return Results.ok();
+        }else {
+            return Results.failure(ResponseCode.UPDATE_FAIL.getCode(),ResponseCode.UPDATE_FAIL.getMessage());
+        }
+    }
 }

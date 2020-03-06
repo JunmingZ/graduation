@@ -9,7 +9,7 @@ public class Admin {
   @TableId(type = IdType.AUTO)
   private Integer id;
   private String name;
-  private Integer phone;
+  private String  phone;
   private Integer sex;
   private String password;
   private Long ctime;

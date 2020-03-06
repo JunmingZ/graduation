@@ -3,7 +3,9 @@ package com.jim.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.result.PageTableRequest;
+import com.jim.base.result.ResponseCode;
 import com.jim.base.result.Results;
+import com.jim.model.Admin;
 import com.jim.service.AdminService;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,18 +44,21 @@ public class AdminController {
     public Results deleteAdminByIds(String ids){
         return adminService.deleteAdminByIds(ids);
     }
-    //
-    //
-    ///**
-    // * 添加宿舍
-    // * @param dormitory
-    // * @return
-    // */
-    //@PostMapping("/add")
-    //public Results addStudent(Dormitory dormitory){
-    //    return dormitoryService.addDormitory(dormitory);
-    //}
-    //
+
+
+    /**
+     * 添加管理员
+     * @param admin
+     * @return
+     */
+    @PostMapping("/add")
+    public Results addStudent(Admin admin){
+        if(admin == null){
+            return Results.failure(ResponseCode.OBJECT_IS_NULL.getCode(),ResponseCode.OBJECT_IS_NULL.getMessage());
+        }
+        return adminService.addAdmin(admin);
+    }
+
     ///**
     // * 进入编辑页面
     // * @param modelAndView

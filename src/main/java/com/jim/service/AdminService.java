@@ -71,4 +71,19 @@ public class AdminService {
         }
         return Results.ok();
     }
+
+    /**
+     * 添加管理员
+     * @param admin
+     * @return
+     */
+    public Results addAdmin(Admin admin) {
+        admin.setCtime(System.currentTimeMillis());
+        admin.setUtime(System.currentTimeMillis());
+        int insert = adminMapper.insert(admin);
+        if(insert>0){
+            return Results.ok();
+        }
+        return Results.failure(ResponseCode.INSERT_EXCEPTION.getCode(),ResponseCode.INSERT_EXCEPTION.getMessage());
+    }
 }

@@ -24,7 +24,7 @@
                             号码
                         </label>
                         <div class="layui-input-inline">
-                            <input type="text" id="phone" name="phone" required="" autocomplete="off" class="layui-input" lay-verify="telephone" placeholder="请输入号码" >
+                            <input type="text" id="phone" name="phone" required="" autocomplete="off" class="layui-input" lay-verify="phone" placeholder="请输入号码" >
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -80,22 +80,20 @@
                         if ($('#L_pass').val() != $('#L_repass').val()) {
                             return '两次密码不一致';
                         }
-                    },
-                    telephone: [/(.+){6,12}$/, '电话号码必须6到12位']
+                    }
                 });
 
                 //监听提交
                 form.on('submit(add)',
                 function(data) {
-                    console.log(data);
                     $.ajax({
-                        url:"/repairman/add",
+                        url:"/admin/add",
                         type:"POST",
                         data:data.field,
                         dataType:'json',
                         success:function(result){
                             console.log(result)
-                            if(result.code == 500||result.code == 5000201){
+                            if(result.code == 500||result.code == 1000||result.code ===1001){
                                 layer.alert(result.msg);
                             }else{
                                 layer.alert("设置成功", {icon: 6},function () {

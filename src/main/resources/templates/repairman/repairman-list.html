@@ -182,7 +182,7 @@
                 var id = data.field.id; //获取input里面的值
                 table.render({
                     elem: '#test'
-                    ,url: '/dormitory/list' //数据接口
+                    ,url: '/repairman/list' //数据接口
                     ,page: true //开启分页
                     ,where:{
                         "id":id
@@ -197,14 +197,7 @@
                         dataName: 'datas' //规定数据列表的字段名称，默认：data
                     }
                     ,cols: [
-                        [
-                            {type: 'checkbox', fixed: 'left',id: 'idTest'}
-                            ,{field:'id', title:'宿舍号', width:120, fixed: 'left', unresize: true, sort: true}
-                            ,{field:'description', title:'描述'}
-                            ,{field:'ctime', title:'创建时间',  sort: true, templet: "<div>{{layui.util.toDateString(d.ctime, 'yyyy-MM-dd HH:mm:ss')}}</div>"}
-                            ,{field:'utime', title:'更新时间',  sort: true,templet: "<div>{{layui.util.toDateString(d.utime, 'yyyy-MM-dd HH:mm:ss')}}</div>"}
-                            ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:200}
-                        ]
+                        rmdata
                     ]
                 });
                 return false;

@@ -40,7 +40,6 @@ public class RepairmanController {
         if(StringUtils.isEmpty(flag)||StringUtils.isEmpty(id)){
             return Results.failure(ResponseCode.REPAIRMAN_FLAG_NULL.getCode(),ResponseCode.REPAIRMAN_FLAG_NULL.getMessage());
         }
-
         return repairmanService.updateFlag(id,flag);
     }
 

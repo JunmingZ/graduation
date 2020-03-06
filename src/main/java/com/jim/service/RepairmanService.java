@@ -32,7 +32,7 @@ public class RepairmanService {
         IPage iPage = null;
         if(!StringUtils.isEmpty(id)){
             //模糊查询
-            wrapper.like("id",id);
+            wrapper.like("id",id).or().like("name",id);
         }
         iPage = repairmanMapper.selectPage(page,wrapper);
         return Results.success((int) iPage.getTotal(),iPage.getRecords());

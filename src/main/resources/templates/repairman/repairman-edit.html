@@ -103,6 +103,7 @@
                                 layer.alert(result.msg);
                             }else{
                                 layer.alert("编辑成功", {icon: 6},function () {
+                                    //更新表格
                                     parent.layui.table.reload('test');
                                     //关闭当前frame
                                     xadmin.close();

@@ -43,7 +43,9 @@ public class RepairmanService {
      * @return
      */
     public List<Repairman> getAllRepairman() {
-        return repairmanMapper.selectList(null);
+        QueryWrapper<Repairman> wrapper = new QueryWrapper();
+        wrapper.eq("flag",1);
+        return repairmanMapper.selectList(wrapper);
     }
 
     /**

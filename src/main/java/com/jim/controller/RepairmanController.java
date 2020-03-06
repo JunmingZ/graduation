@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.result.PageTableRequest;
 import com.jim.base.result.ResponseCode;
 import com.jim.base.result.Results;
+import com.jim.model.Repairman;
+import com.jim.model.Repairs;
 import com.jim.service.RepairmanService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -43,5 +45,21 @@ public class RepairmanController {
         return repairmanService.updateFlag(id,flag);
     }
 
+
+    /**
+     * 添加维修人员
+     * @param repairman
+     * @return
+     */
+    @PostMapping("/add")
+    public Results addRepairs(Repairman repairman){
+        System.out.println(repairman);
+
+        if(repairman.equals(null)){
+            return Results.failure(ResponseCode.OBJECT_IS_NULL.getCode(),ResponseCode.OBJECT_IS_NULL.getMessage());
+        }
+
+        return repairmanService.addRepairman(repairman);
+    }
 
 }

@@ -70,4 +70,25 @@ public class RepairmanService {
         }
 
     }
+
+    /**
+     * 添加维修人员
+     * @param repairman
+     * @return
+     */
+    public Results addRepairman(Repairman repairman) {
+        if(repairman.getFlag()==null){
+            repairman.setFlag(2);
+        }
+        //QueryWrapper<Repairman> wrapper = new QueryWrapper<>();
+        repairman.setCtime(System.currentTimeMillis());
+        repairman.setUtime(System.currentTimeMillis());
+        int insert = repairmanMapper.insert(repairman);
+        if(insert>0){
+            return Results.ok();
+        }else {
+            return Results.failure(ResponseCode.INSERT_EXCEPTION.getCode(),ResponseCode.INSERT_EXCEPTION.getMessage());
+        }
+
+    }
 }

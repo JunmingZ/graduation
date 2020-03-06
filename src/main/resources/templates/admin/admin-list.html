@@ -101,7 +101,7 @@
                         data.forEach(function(n,i){
                             delList.push(n.id);
                         });
-                        if(delList != ''||delList != []){
+                        if(delList.length > 0){
                             layer.confirm('确定删除所选项吗？',function (index) {
                                     $.ajax({
                                         url: '/admin/delete',
@@ -129,11 +129,11 @@
                     case 'add':
                         layer.open({
                             type: 2,
-                            title: '添加宿舍',
+                            title: '添加管理员',
                             shadeClose: true,
                             shade: false,
                             maxmin: true, //开启最大化最小化按钮
-                            area: ['460px','250px'],
+                            area: ['800px','600px'],
                             content: '/api/getPage?pageName=admin/admin-add'
                         });
 

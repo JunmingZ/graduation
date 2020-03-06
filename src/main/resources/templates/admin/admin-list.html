@@ -94,7 +94,7 @@
                 // console.log("obj--->  "+obj);
                 // console.log("obj.config--->  "+obj.config);
                 switch(obj.event){
-                    case 'getCheckData':
+                    case 'getCheckData':   //批量删除
                         var data = checkStatus.data;
                         var delList=[];
                         //将选中的id加入数组中
@@ -112,8 +112,8 @@
                                             if(data.code===200){
                                                 layer.msg('删除成功');
                                                 table.reload('test');
-                                            }else{
-                                                layer.msg('删除失败');
+                                            }else if(data.code ===1002|| data.code === 1004){
+                                                layer.msg(data.msg);
                                             }
                                         },
                                         error:function () {

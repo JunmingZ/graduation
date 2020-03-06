@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 
 /**
  * 宿舍业务层
@@ -52,5 +53,22 @@ public class AdminService {
             return Results.ok();
         }
         return Results.failure(ResponseCode.DELETE_FAIL.getCode(),ResponseCode.DELETE_FAIL.getMessage());
+    }
+
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    public Results deleteAdminByIds(String ids) {
+        if(StringUtils.isEmpty(ids)){
+            return Results.failure(ResponseCode.DELETE_ID_IS_NULL.getCode(),ResponseCode.DELETE_ID_IS_NULL.getMessage());
+        }
+        String[] split = ids.split(",");
+
+        if(adminMapper.deleteBatchIds(Arrays.asList(split))==0){
+            return Results.failure(ResponseCode.DELETE_FAIL.getCode(),ResponseCode.DELETE_FAIL.getMessage());
+        }
+        return Results.ok();
     }
 }

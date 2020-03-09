@@ -1,0 +1,71 @@
+<!doctype html>
+<html  class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>注册</title>
+    <link rel="stylesheet" th:href="@{/xadmin/css/login.css}">
+    <header th:replace="header::html"></header>
+</head>
+<body class="login-bg">
+    
+    <div class="login layui-anim layui-anim-up">
+        <div class="message">高校学生宿舍报修管理系统注册</div>
+        <div id="darkbannerwrap"></div>
+        
+        <form method="post" class="layui-form" >
+            <select name="sole" lay-filter="aihao">
+                <option value="">请选择身份</option>
+                <option value="1">学生</option>
+                <option value="2">维修员</option>
+                <option value="3">管理员</option>
+            </select>
+            <hr class="hr15">
+            <input value="注册" lay-submit lay-filter="register" style="width:100%;" type="submit" lay-verify="select">
+            <hr class="hr20" >
+        </form>
+    </div>
+
+    <script>
+        $(function  () {
+            layui.use('form', function(){
+              var form = layui.form;
+
+                form.verify({
+                    select: function(value, item){ //value：表单的值、item：表单的DOM对象
+                        if(new RegExp("").test(value)){
+                            return '身份不能为空';
+                        }
+                    }
+                });
+
+              form.on('submit(register)', function(data){
+                  console.log(data.field)
+                  // $.ajax({
+                  //     url: '/login',
+                  //     type:'post',
+                  //     dataType:'json',
+                  //     data: data.field,
+                  //     success:function (info) {
+                  //         console.log(info);
+                  //         if(info.code===200){
+                  //             layer.msg('登录成功');
+                  //             location.href = info.msg;
+                  //         }else if(info.code === 1000 ||info.code ===5000601){
+                  //             layer.msg(info.msg);
+                  //         }else {
+                  //             layer.msg('登录失败');
+                  //         }
+                  //     },
+                  //     error:function () {
+                  //         layer.msg('系统错误');
+                  //     }
+                  // });
+                return false;
+              });
+            });
+        })
+    </script>
+    <!-- 底部结束 -->
+
+</body>
+</html>

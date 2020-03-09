@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.result.ResponseCode;
 import com.jim.base.result.Results;
+import com.jim.dto.LoginDTO;
 import com.jim.mapper.AdminMapper;
 import com.jim.model.Admin;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -96,6 +98,11 @@ public class AdminService {
         return adminMapper.selectById(id);
     }
 
+    /**
+     * 编辑管理员
+     * @param admin
+     * @return
+     */
     public Results editAdmin(Admin admin) {
         admin.setUtime(System.currentTimeMillis());
         int i = adminMapper.updateById(admin);
@@ -103,5 +110,19 @@ public class AdminService {
             return Results.ok();
         }
         return Results.failure(ResponseCode.UPDATE_FAIL.getCode(),ResponseCode.UPDATE_FAIL.getMessage());
+    }
+
+    /**
+     * 检查
+     * @param login
+     */
+    public Results  checkAdmin(LoginDTO<Admin> login) {
+        QueryWrapper<Admin> wrapper = new QueryWrapper<>();
+        wrapper.eq("id",login.getId()).eq("password",login.getPassword());
+        Integer integer = adminMapper.selectCount(wrapper);
+        if(integer>0){
+            return Results.ok("/");
+        }
+        return Results.failure(ResponseCode.LOGIN_ACCPASS_NOT_FOUND.getCode(),ResponseCode.LOGIN_ACCPASS_NOT_FOUND.getMessage());
     }
 }

@@ -87,4 +87,8 @@ public class Results<T>  implements Serializable {
         return new Results(ResponseCode.SUCCESS.getCode(),ResponseCode.SUCCESS.getMessage());
     }
 
+    public static Results ok(String msg) {
+        return new Results(ResponseCode.SUCCESS.getCode(),msg);
+    }
+
 }

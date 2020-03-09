@@ -35,6 +35,10 @@ public enum ResponseCode {
 	//5000501 - 5000600
 	REPAIRMAN_UPDATE_FLAG(5000501,"错误操作，更新状态失败！！！"),
 	REPAIRMAN_FLAG_NULL(5000502,"维修人的职位状态为空"),
+
+	//登录
+	//5000601 - 5000700
+	LOGIN_ACCPASS_NOT_FOUND(5000601,"登录失败，账号密码错误")
 ;
 	private Integer code;
 	

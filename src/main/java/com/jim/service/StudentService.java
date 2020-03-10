@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.result.ResponseCode;
 import com.jim.base.result.Results;
+import com.jim.dto.LoginDTO;
 import com.jim.mapper.StudentMapper;
+import com.jim.model.Admin;
 import com.jim.model.Student;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -110,5 +112,20 @@ public class StudentService {
             return  Results.ok();
         }
         return Results.failure();
+    }
+
+    /**
+     * 验证学生登录
+     * @param login
+     * @return
+     */
+    public Results checkAdmin(LoginDTO login) {
+        QueryWrapper<Student> wrapper = new QueryWrapper<>();
+        wrapper.eq("sno",login.getId()).eq("password",login.getPassword());
+        Integer integer = studentMapper.selectCount(wrapper);
+        if(integer>0){
+            return Results.ok("student/istudent");
+        }
+        return Results.failure(ResponseCode.LOGIN_ACCPASS_NOT_FOUND.getCode(),ResponseCode.LOGIN_ACCPASS_NOT_FOUND.getMessage());
     }
 }

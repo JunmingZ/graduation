@@ -16,6 +16,11 @@ public class StudentController {
     @Resource
     private StudentService studentService;
 
+    @GetMapping("/istudent")
+    public ModelAndView toIstudent(ModelAndView modelAndView){
+        modelAndView.setViewName("student-manage/istudent");
+        return modelAndView;
+    }
     /**
      * 查出相应数据返回前端
      * @param pageTableRequest 分页初始处理

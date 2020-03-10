@@ -13,13 +13,19 @@
         <div id="darkbannerwrap"></div>
         
         <form method="post" class="layui-form" >
+            <input name="id" placeholder="请输入账号"  type="text" lay-verify="required" class="layui-input" >
+            <hr class="hr15">
+            <input name="password" lay-verify="required" placeholder="请输入密码"  type="password" class="layui-input">
+            <hr class="hr15">
+            <input name="password" lay-verify="required" placeholder="确认密码"  type="password" class="layui-input">
+            <hr class="hr15">
             <select name="sole" lay-filter="aihao">
+                <option value="">请选择身份</option>
                 <option value="1">学生</option>
                 <option value="2">维修员</option>
-                <option value="3" selected>管理员</option>
+                <option value="3">管理员</option>
             </select>
             <hr class="hr15">
-
             <input value="注册" lay-submit lay-filter="register" style="width:100%;" type="submit" lay-verify="select">
             <hr class="hr20" >
         </form>

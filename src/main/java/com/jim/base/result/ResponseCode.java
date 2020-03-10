@@ -9,7 +9,7 @@ public enum ResponseCode {
 	PARAMETER_MISSING(600,"参数缺失"),
 	UNAUTHORIZED(401,"未授权"),
 	// ..一真往后面加
-	OBJECT_IS_NULL(1000,"对象为空"),
+	OBJECT_IS_NULL(1000,"输入为空"),
 	INSERT_EXCEPTION(1001,"异常插入"),
 	DELETE_ID_IS_NULL(1002,"删除的id为空"),
 	UPDATE_FAIL(1003,"更新失败"),

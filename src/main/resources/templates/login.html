@@ -16,7 +16,7 @@
             <hr class="hr15">
             <input name="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input">
             <hr class="hr15">
-            <select name="sole" lay-filter="aihao">
+            <select name="sole" lay-verify="identity|required">
                 <option value="">请选择身份</option>
                 <option value="1">学生</option>
                 <option value="2">维修员</option>
@@ -29,42 +29,37 @@
         </form>
     </div>
 
-    <script>
-        $(function  () {
-            layui.use('form', function(){
-              var form = layui.form;
-              // layer.msg('玩命卖萌中', function(){
-              //   //关闭后的操作
-              //   });
-              //监听提交
-              form.on('submit(login)', function(data){
-                  console.log(data.field)
-                  $.ajax({
-                      url: '/login',
-                      type:'post',
-                      dataType:'json',
-                      data: data.field,
-                      success:function (info) {
-                          console.log(info);
-                          if(info.code===200){
-                              layer.msg('登录成功');
-                              location.href = info.msg;
-                          }else if(info.code === 1000 ||info.code ===5000601){
-                              layer.msg(info.msg);
-                          }else {
-                              layer.msg('登录失败');
-                          }
-                      },
-                      error:function () {
-                          layer.msg('系统错误');
-                      }
-                  });
-                return false;
-              });
-            });
-        })
-    </script>
-    <!-- 底部结束 -->
+<script>
+
+    layui.use('form', function(){
+        let form = layui.form;
+        form.on('submit(login)', function(data){
+          $.ajax({
+              url: '/login',
+              type:'post',
+              dataType:'json',
+              data: data.field,
+              success:function (info) {
+                  console.log(info);
+                  if(info.code===200){
+                      layer.msg('登录成功');
+                      location.href = info.msg;
+                  }else if(info.code === 1000 ||info.code ===5000601){
+                      layer.msg(info.msg);
+                  }else {
+                      layer.msg('登录失败');
+                  }
+              },
+              error:function () {
+                  layer.msg('系统错误');
+              }
+          });
+        return false;
+      });
+    });
+
+</script>
+<!-- 底部结束 -->
 
 </body>
 </html>

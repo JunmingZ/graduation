@@ -26,12 +26,12 @@ public class LoginController {
     @PostMapping("/login")
     @ResponseBody
     public Results login(LoginDTO login){
-        if(login==null){
+        if(login==null || login.getSole()==null || login.getSole() == 0){
             return Results.failure(ResponseCode.OBJECT_IS_NULL.getCode(),ResponseCode.OBJECT_IS_NULL.getMessage());
         }
 
         if(login.getSole().equals(3)){
-                return adminService.checkAdmin(login);
+            return adminService.checkAdmin(login);
         }
 
         return Results.failure();

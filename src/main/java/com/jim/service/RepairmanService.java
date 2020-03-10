@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.result.ResponseCode;
 import com.jim.base.result.Results;
+import com.jim.dto.LoginDTO;
 import com.jim.mapper.RepairmanMapper;
 import com.jim.model.Repairman;
+import com.jim.model.Student;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -118,5 +120,20 @@ public class RepairmanService {
         }else {
             return Results.failure(ResponseCode.UPDATE_FAIL.getCode(),ResponseCode.UPDATE_FAIL.getMessage());
         }
+    }
+
+    /**
+     * 检查维修员账号密码
+     * @param login
+     * @return
+     */
+    public Results checkAdmin(LoginDTO login) {
+        QueryWrapper<Repairman> wrapper = new QueryWrapper<>();
+        wrapper.eq("id",login.getId()).eq("password",login.getPassword());
+        Integer integer = repairmanMapper.selectCount(wrapper);
+        if(integer>0){
+            return Results.ok("repairman/irepairman");
+        }
+        return Results.failure(ResponseCode.LOGIN_ACCPASS_NOT_FOUND.getCode(),ResponseCode.LOGIN_ACCPASS_NOT_FOUND.getMessage());
     }
 }

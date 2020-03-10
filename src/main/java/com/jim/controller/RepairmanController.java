@@ -6,7 +6,6 @@ import com.jim.base.result.PageTableRequest;
 import com.jim.base.result.ResponseCode;
 import com.jim.base.result.Results;
 import com.jim.model.Repairman;
-import com.jim.model.Repairs;
 import com.jim.service.RepairmanService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +21,11 @@ public class RepairmanController {
     @Resource
     private RepairmanService repairmanService;
 
+    @GetMapping("/irepairman")
+    public ModelAndView repairmanList(ModelAndView modelAndView){
+        modelAndView.setViewName("repairman/irepairman");
+        return modelAndView;
+    }
 
     @GetMapping("/repairmans")
     public List repairmanList(){

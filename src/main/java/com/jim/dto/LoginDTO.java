@@ -7,4 +7,5 @@ public class LoginDTO<T> {
     private T id;
     private T password;
     private Integer sole;
+    private String url;
 }

@@ -13,20 +13,19 @@
         <div id="darkbannerwrap"></div>
         
         <form method="post" class="layui-form" >
-            <input name="id" placeholder="请输入账号"  type="text" lay-verify="required" class="layui-input" >
+            <input name="id" placeholder="请输入账号或学号"  type="text" lay-verify="required" class="layui-input" >
             <hr class="hr15">
-            <input name="password" lay-verify="required" placeholder="请输入密码"  type="password" class="layui-input">
+            <input name="password"  id="L_pass" lay-verify="required|pass" placeholder="请输入密码"  type="password" class="layui-input">
             <hr class="hr15">
-            <input name="password" lay-verify="required" placeholder="确认密码"  type="password" class="layui-input">
+            <input name="password"  id="L_repass"  lay-verify="required|repass" placeholder="确认密码"  type="password" class="layui-input">
             <hr class="hr15">
-            <select name="sole" lay-filter="aihao">
+            <select name="sole" lay-filter="aihao"  lay-verify="select">
                 <option value="">请选择身份</option>
                 <option value="1">学生</option>
-                <option value="2">维修员</option>
-                <option value="3">管理员</option>
+                <option value="2">管理员</option>
             </select>
             <hr class="hr15">
-            <input value="注册" lay-submit lay-filter="register" style="width:100%;" type="submit" lay-verify="select">
+            <input value="注册" lay-submit lay-filter="register" style="width:100%;" type="submit">
             <hr class="hr20" >
         </form>
     </div>
@@ -36,37 +35,43 @@
 <script>
     layui.use('form', function(){
         let form = layui.form;
-        form.render();
+
         form.verify({
+            pass: [/(.+){6,12}$/, '密码必须6到12位'],
+            repass: function(value) {
+                if ($('#L_pass').val() != $('#L_repass').val()) {
+                    return '两次密码不一致';
+                }
+            },
             select: function(value, item){ //value：表单的值、item：表单的DOM对象
-                if(new RegExp("").test(value)){
+                if(!new RegExp('[1-2]').test(value)){
                     return '身份不能为空';
                 }
             }
         });
 
       form.on('submit(register)', function(data){
-          console.log(data.field)
-          // $.ajax({
-          //     url: '/login',
-          //     type:'post',
-          //     dataType:'json',
-          //     data: data.field,
-          //     success:function (info) {
-          //         console.log(info);
-          //         if(info.code===200){
-          //             layer.msg('登录成功');
-          //             location.href = info.msg;
-          //         }else if(info.code === 1000 ||info.code ===5000601){
-          //             layer.msg(info.msg);
-          //         }else {
-          //             layer.msg('登录失败');
-          //         }
-          //     },
-          //     error:function () {
-          //         layer.msg('系统错误');
-          //     }
-          // });
+          $.ajax({
+              url: '/register',
+              type:'post',
+              dataType:'json',
+              data: data.field,
+              success:function (info) {
+                  if(info.code===200){
+                      console.log(info.msg)
+                      // layer.msg('注册成功，等待审核');
+                      // location.href = info.msg;
+                  }else if(info.code === 1000 ||info.code ===5000100){
+                      layer.msg(info.msg);
+                  }else {
+                      layer.msg('注册失败');
+                  }
+              },
+              error:function () {
+                  console.log("后端报错")
+                  layer.msg('系统错误');
+              }
+          });
         return false;
       });
     });

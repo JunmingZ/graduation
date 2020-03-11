@@ -4,7 +4,6 @@ package com.jim.controller;
 import com.jim.base.result.ResponseCode;
 import com.jim.base.result.Results;
 import com.jim.dto.LoginDTO;
-import com.jim.model.Repairman;
 import com.jim.service.AdminService;
 import com.jim.service.RepairmanService;
 import com.jim.service.StudentService;
@@ -40,7 +39,6 @@ public class LoginController {
         if(login==null || login.getSole()==null || login.getSole() == 0){
             return Results.failure(ResponseCode.OBJECT_IS_NULL.getCode(),ResponseCode.OBJECT_IS_NULL.getMessage());
         }
-
 
         switch (login.getSole()){
             case 1:

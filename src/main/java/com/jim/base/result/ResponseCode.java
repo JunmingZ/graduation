@@ -38,7 +38,9 @@ public enum ResponseCode {
 
 	//登录
 	//5000601 - 5000700
-	LOGIN_ACCPASS_NOT_FOUND(5000601,"登录失败，账号密码错误")
+	LOGIN_ACCPASS_NOT_FOUND(5000601,"登录失败，账号密码错误"),
+
+
 ;
 	private Integer code;
 	

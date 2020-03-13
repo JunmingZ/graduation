@@ -18,6 +18,7 @@ public class Student extends Model<Student>  {
   private String home;
   private String password;
   private Long dormitory;
+  private Integer flag;  // 1. 通过  2. 待审核
   private Long ctime;
   private Long utime;
 }

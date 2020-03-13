@@ -105,6 +105,7 @@ public class StudentService {
         if(studentMapper.selectById(student.getSno())!=null){
             return Results.failure(ResponseCode.SNO_REPEAT.getCode(),ResponseCode.SNO_REPEAT.getMessage());
         }
+        student.setFlag(1);
         student.setCtime(System.currentTimeMillis());
         student.setUtime(System.currentTimeMillis());
         int insert = studentMapper.insert(student);
@@ -119,7 +120,7 @@ public class StudentService {
      * @param login
      * @return
      */
-    public Results checkAdmin(LoginDTO login) {
+    public Results checkStudent(LoginDTO login) {
         QueryWrapper<Student> wrapper = new QueryWrapper<>();
         wrapper.eq("sno",login.getId()).eq("password",login.getPassword());
         Integer integer = studentMapper.selectCount(wrapper);

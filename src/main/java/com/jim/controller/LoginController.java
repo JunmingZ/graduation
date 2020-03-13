@@ -42,7 +42,7 @@ public class LoginController {
 
         switch (login.getSole()){
             case 1:
-                return studentService.checkAdmin(login);  //学生
+                return studentService.checkStudent(login);  //学生
             case 2:
                 return repairmanService.checkAdmin(login);    //维修员
             case 3:

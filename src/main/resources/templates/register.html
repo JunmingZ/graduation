@@ -13,11 +13,7 @@
         <div id="darkbannerwrap"></div>
         
         <form method="post" class="layui-form" >
-            <input name="id" placeholder="请输入账号或学号"  type="text" lay-verify="required" class="layui-input" >
-            <hr class="hr15">
-            <input name="password"  id="L_pass" lay-verify="required|pass" placeholder="请输入密码"  type="password" class="layui-input">
-            <hr class="hr15">
-            <input name="password"  id="L_repass"  lay-verify="required|repass" placeholder="确认密码"  type="password" class="layui-input">
+            <input name="id" placeholder="请输入账号或学号" id="username" type="text" lay-verify="required" class="layui-input" >
             <hr class="hr15">
             <select name="sole" lay-filter="aihao"  lay-verify="select">
                 <option value="">请选择身份</option>
@@ -35,14 +31,7 @@
 <script>
     layui.use('form', function(){
         let form = layui.form;
-
         form.verify({
-            pass: [/(.+){6,12}$/, '密码必须6到12位'],
-            repass: function(value) {
-                if ($('#L_pass').val() != $('#L_repass').val()) {
-                    return '两次密码不一致';
-                }
-            },
             select: function(value, item){ //value：表单的值、item：表单的DOM对象
                 if(!new RegExp('[1-2]').test(value)){
                     return '身份不能为空';
@@ -57,8 +46,17 @@
               dataType:'json',
               data: data.field,
               success:function (info) {
+
                   if(info.code===200){
-                      console.log(info.data.url)
+                      layer.open({
+                          type: 2,
+                          title: '学生注册',
+                          shadeClose: true,
+                          shade: false,
+                          maxmin: true, //开启最大化最小化按钮
+                          area: ['40%','70%'],
+                          content: '/api/getPage?pageName=register/student-register'
+                      });
                       // layer.msg('注册成功，等待审核');
                       // location.href = info.msg;
                   }else if(info.code === 1000 ||info.code ===5000100){

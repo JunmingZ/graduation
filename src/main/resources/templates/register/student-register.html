@@ -113,6 +113,9 @@
                 var form = layui.form,
                 layer = layui.layer;
 
+                console.log(parent.$("#username").val());
+
+
                 //自定义验证规则
                 form.verify({
                     pass: [/(.+){6,12}$/, '密码必须6到12位'],

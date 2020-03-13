@@ -5,6 +5,7 @@ import com.jim.base.result.PageTableRequest;
 import com.jim.base.result.Results;
 import com.jim.model.Student;
 import com.jim.service.StudentService;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -16,6 +17,21 @@ public class StudentController {
     @Resource
     private StudentService studentService;
 
+    @GetMapping("/setFlag")
+    public Results changeFlagById(String id){
+        if(StringUtils.isEmpty(id)){
+            return Results.failure();
+        }
+
+        return studentService.setFlagById(id);
+    }
+
+
+    /**
+     * 访问学生页面
+     * @param modelAndView
+     * @return
+     */
     @GetMapping("/istudent")
     public ModelAndView toIstudent(ModelAndView modelAndView){
         modelAndView.setViewName("student-manage/istudent");
@@ -27,8 +43,10 @@ public class StudentController {
      * @return
      */
     @GetMapping("/list")
-    public Results studentList(PageTableRequest pageTableRequest,@RequestParam(required = false) String username){
-        return studentService.getAllStudentsByPage(new Page(pageTableRequest.getPage(),pageTableRequest.getLimit()),username);
+    public Results studentList(PageTableRequest pageTableRequest
+                        ,@RequestParam(required = false) String username
+                        ,@RequestParam(required = false) Integer flag){
+        return studentService.getAllStudentsByPage(new Page(pageTableRequest.getPage(),pageTableRequest.getLimit()),username,flag);
     }
 
     /**

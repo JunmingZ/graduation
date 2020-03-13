@@ -23,9 +23,15 @@
                     <div class="layui-card">
                         <div class="layui-card-body ">
                             <form class="layui-form layui-col-space5">
-
+                                <div class="layui-input-inline">
+                                    <select name="flag" lay-verify="" >
+                                        <option value="">请选择状态</option>
+                                        <option value="1" >已审核</option>
+                                        <option value="2" >待审核</option>
+                                    </select>
+                                </div>
                                 <div class="layui-inline layui-show-xs-block">
-                                    <input type="text" name="username" placeholder="请输入姓名" autocomplete="off" class="layui-input"></div>
+                                    <input type="text" name="username" placeholder="请输入学号或姓名" autocomplete="off" class="layui-input"></div>
                                 <div class="layui-inline layui-show-xs-block">
                                     <button class="layui-btn" lay-submit="" lay-filter="search">
                                         <i class="layui-icon">&#xe615;</i></button>
@@ -56,6 +62,33 @@
         layui.use('table', function(){
             var table = layui.table;
             let form = layui.form;
+            let table_col = [
+                {type: 'checkbox', fixed: 'left',id: 'idTest'}
+                ,{field:'sno', title:'学号', width:120, fixed: 'left', unresize: true, sort: true}
+                ,{field:'name', title:'姓名', width:100}
+                ,{field:'phone', title:'电话', width:120 }
+                ,{field:'sex', title:'性别', width:80,templet:function (d) {
+                        return d.sex == 0 ? '男':'女';
+                    }}
+                ,{field:'major', title:'专业', width:150}
+                ,{field:'home', title:'家乡',width:150}
+                ,{field:'dormitory', title:'宿舍号', width:150, sort: true}
+                ,{field:'flag', title:'状态',  templet:function (d) {
+                        switch (d.flag) {
+                            case 1 :
+                                return '<span class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal">已审核</span>';
+                                break;
+                            case 2 :
+                                return '<span class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger"  lay-event="setFlag">待审核</span>';
+                                break;
+                        }
+                    }
+                }
+                ,{field:'ctime', title:'创建时间',  sort: true, templet: "<div>{{layui.util.toDateString(d.ctime, 'yyyy-MM-dd HH:mm:ss')}}</div>"}
+                ,{field:'utime', title:'更新时间',  sort: true,templet: "<div>{{layui.util.toDateString(d.utime, 'yyyy-MM-dd HH:mm:ss')}}</div>"}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+            ];
+
             table.render({
                 elem: '#test'
                 ,url:'/student/list'
@@ -70,24 +103,14 @@
                     dataName: 'datas' //规定数据列表的字段名称，默认：data
                 }
                 ,cols: [
-                    [
-                    {type: 'checkbox', fixed: 'left',id: 'idTest'}
-                    ,{field:'sno', title:'学号', width:120, fixed: 'left', unresize: true, sort: true}
-                    ,{field:'name', title:'姓名', width:100}
-                    ,{field:'phone', title:'电话', width:120 }
-                    ,{field:'sex', title:'性别', width:80,templet:function (d) {
-                            return d.sex == 0 ? '男':'女';
-                        }}
-                    ,{field:'major', title:'专业', width:150}
-                    ,{field:'home', title:'家乡',width:150}
-                    ,{field:'dormitory', title:'宿舍号', width:150, sort: true}
-                    ,{field:'ctime', title:'创建时间',  sort: true, templet: "<div>{{layui.util.toDateString(d.ctime, 'yyyy-MM-dd HH:mm:ss')}}</div>"}
-                    ,{field:'utime', title:'更新时间',  sort: true,templet: "<div>{{layui.util.toDateString(d.utime, 'yyyy-MM-dd HH:mm:ss')}}</div>"}
-                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
-                    ]
+                    table_col
                 ]
                 ,page: true
             });
+
+
+
+
 
             //头工具栏事件  批量删除
             table.on('toolbar(test)', function(obj){
@@ -134,7 +157,8 @@
 
             //监听搜索和提交
             form.on('submit(search)', function(data){
-                var username = data.field.username; //获取input里面的值
+                let username = data.field.username; //获取input里面的值
+                let flag=data.field.flag;
                 table.render({
                     elem: '#test'
                     ,url: '/student/list' //数据接口
@@ -147,26 +171,13 @@
                     }]
                     ,where:{
                         "username":username
+                        ,"flag":flag
                     }
                     ,response: {
                         dataName: 'datas' //规定数据列表的字段名称，默认：data
                     }
                     ,cols: [
-                        [
-                            {type: 'checkbox', fixed: 'left',id: 'idTest'}
-                            ,{field:'sno', title:'学号', width:120, fixed: 'left', unresize: true, sort: true}
-                            ,{field:'name', title:'姓名', width:100}
-                            ,{field:'phone', title:'电话', width:120 }
-                            ,{field:'sex', title:'性别', width:80,templet:function (d) {
-                                return d.sex == 0 ? '男':'女';
-                            }}
-                            ,{field:'major', title:'专业', width:150}
-                            ,{field:'home', title:'家乡',width:150}
-                            ,{field:'dormitory', title:'宿舍号', width:150, sort: true}
-                            ,{field:'ctime', title:'创建时间', sort: true, templet: "<div>{{layui.util.toDateString(d.ctime, 'yyyy-MM-dd HH:mm:ss')}}</div>"}
-                            ,{field:'utime', title:'更新时间',sort: true, templet: "<div>{{layui.util.toDateString(d.utime, 'yyyy-MM-dd HH:mm:ss')}}</div>"}
-                            ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
-                        ]
+                        table_col
                     ]
                 });
                 return false;
@@ -207,7 +218,30 @@
                 }
             });
 
+            table.on('tool(test)', function(obj){
+                let layEvent = obj.event;
+                if(layEvent === 'setFlag'){
+                    console.log(obj)
+                    $.ajax({
+                        url: '/student/setFlag',
+                        type:'get',
+                        dataType:'json',
+                        data: 'id='+obj.data.sno,
+                        success:function (data) {
+                            if(data.code===200){
+                                obj.del();
+                            }else {
+                                layer.msg("操作失败")
+                            }
+                        },
+                        error:function () {
+                            layer.msg('系统错误');
+                        }
+                    })
+                }
+            })
         });
+
 
     </script>
 

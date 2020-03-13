@@ -32,14 +32,18 @@ public class StudentService {
      * @param username  搜索条件
      * @return 返回总记录数和集合
      */
-    public Results getAllStudentsByPage(Page page, String username){
+    public Results getAllStudentsByPage(Page page, String username, Integer flag){
         Student student = new Student();
         QueryWrapper<Student> wrapper = new QueryWrapper<>();
         IPage iPage = null;
 
         if(!StringUtils.isEmpty(username)){
-            //模糊查询
-            wrapper.like("name",username);
+            // 模糊查询
+            wrapper.like("name",username).or().like("sno",username);
+        }
+        if(flag!=null){
+            // 审核状态
+            wrapper.eq("flag",flag);
         }
         iPage = student.selectPage(page, wrapper);
 
@@ -128,11 +132,27 @@ public class StudentService {
      */
     public Results checkStudent(LoginDTO login) {
         QueryWrapper<Student> wrapper = new QueryWrapper<>();
-        wrapper.eq("sno",login.getId()).eq("password",login.getPassword());
+        wrapper.eq("sno",login.getId()).eq("password",login.getPassword()).eq("flag",1);
         Integer integer = studentMapper.selectCount(wrapper);
         if(integer>0){
             return Results.ok("student/istudent");
         }
         return Results.failure(ResponseCode.LOGIN_ACCPASS_NOT_FOUND.getCode(),ResponseCode.LOGIN_ACCPASS_NOT_FOUND.getMessage());
+    }
+
+    /**
+     * 设置状态
+     * @param id
+     * @return
+     */
+    public Results setFlagById(String id) {
+        Student student = new Student();
+        student.setSno(Long.valueOf(id));
+        student.setFlag(1);
+        int i = studentMapper.updateById(student);
+        if(i>0){
+            return Results.success();
+        }
+        return Results.failure();
     }
 }

@@ -8,7 +8,6 @@ import com.jim.base.result.Results;
 import com.jim.dto.LoginDTO;
 import com.jim.mapper.RepairmanMapper;
 import com.jim.model.Repairman;
-import com.jim.model.Student;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;

@@ -4,14 +4,14 @@ package com.jim.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jim.base.result.ResponseCode;
 import com.jim.base.result.Results;
 import com.jim.dto.LoginDTO;
 import com.jim.mapper.DormitoryMapper;
 import com.jim.mapper.StudentMapper;
-import com.jim.model.Admin;
 import com.jim.model.Student;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -19,7 +19,7 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 
 @Service
-@Transactional   //加入事务
+@Transactional
 public class StudentService {
      @Resource
      private StudentMapper studentMapper;
@@ -150,6 +150,22 @@ public class StudentService {
         student.setSno(Long.valueOf(id));
         student.setFlag(1);
         int i = studentMapper.updateById(student);
+        if(i>0){
+            return Results.success();
+        }
+        return Results.failure();
+    }
+
+
+    public Results setFlagByIds(String ids) {
+        String[] split = ids.split(",");
+        int i =0;
+        for (String id : split) {
+            Student student = new Student();
+            student.setSno(Long.valueOf(id));
+            student.setFlag(1);
+            i = studentMapper.updateById(student);
+        }
         if(i>0){
             return Results.success();
         }

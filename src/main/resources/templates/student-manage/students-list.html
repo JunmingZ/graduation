@@ -55,6 +55,7 @@
         <div class="layui-btn-container">
             <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="getCheckData"> <i class="layui-icon"></i>批量删除</button>
             <button class="layui-btn" onclick="xadmin.open('添加学生','/api/getPage?pageName=student-manage/student-add',800,600)"><i class="layui-icon"></i>添加学生</button>
+            <button class="layui-btn" lay-event="setFlags"><i class="layui-icon"></i>批量审核</button>
         </div>
     </script>
 
@@ -149,6 +150,38 @@
                         }
                         // layer.alert(JSON.stringify(delList));
                         break;
+
+                    case  'setFlags':
+                        var data = checkStatus.data;
+                        var delList=[];
+                        data.forEach(function(n,i){
+                            delList.push(n.sno);
+                        });
+                        if(delList != ''||delList != []){
+                            layer.confirm('确定通过审核吗？',function (index) {
+                                $.ajax({
+                                    url: '/student/setFlag',
+                                    type:'post',
+                                    dataType:'json',
+                                    data: 'ids='+delList,
+                                    success:function (data) {
+                                        if(data.code===200){
+                                            table.reload('test');
+                                            layer.close(index)
+                                        }else{
+                                            layer.msg('操作失败');
+                                        }
+                                    },
+                                    error:function () {
+                                        layer.msg('系统错误');
+                                    }
+                                })
+                            })
+                        }else{
+                            layer.msg("你没有选中")
+                        }
+                        break;
+
                     case 'LAYTABLE_TIPS':
                         layer.alert('这是工具栏右侧自定义的一个图标按钮');
                         break;

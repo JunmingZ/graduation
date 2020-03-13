@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/student")
@@ -17,15 +19,26 @@ public class StudentController {
     @Resource
     private StudentService studentService;
 
+    /**
+     * 更新审核状态
+     * @param id
+     * @return
+     */
     @GetMapping("/setFlag")
     public Results changeFlagById(String id){
         if(StringUtils.isEmpty(id)){
             return Results.failure();
         }
-
         return studentService.setFlagById(id);
     }
 
+    @PostMapping("/setFlag")
+    public Results changeFlagByIds(String ids){
+        if(StringUtils.isEmpty(ids)){
+            return Results.failure();
+        }
+        return studentService.setFlagByIds(ids);
+    }
 
     /**
      * 访问学生页面

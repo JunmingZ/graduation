@@ -7,9 +7,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.result.ResponseCode;
 import com.jim.base.result.Results;
 import com.jim.dto.LoginDTO;
+import com.jim.mapper.DormitoryMapper;
 import com.jim.mapper.StudentMapper;
 import com.jim.model.Admin;
 import com.jim.model.Student;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -21,6 +23,9 @@ import javax.annotation.Resource;
 public class StudentService {
      @Resource
      private StudentMapper studentMapper;
+
+     @Resource
+     private DormitoryMapper dormitoryMapper;
     /**
      * 分页获取学生列表
      * @param page
@@ -105,7 +110,8 @@ public class StudentService {
         if(studentMapper.selectById(student.getSno())!=null){
             return Results.failure(ResponseCode.SNO_REPEAT.getCode(),ResponseCode.SNO_REPEAT.getMessage());
         }
-        student.setFlag(1);
+
+
         student.setCtime(System.currentTimeMillis());
         student.setUtime(System.currentTimeMillis());
         int insert = studentMapper.insert(student);

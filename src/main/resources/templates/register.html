@@ -15,7 +15,7 @@
         <form method="post" class="layui-form" >
             <input name="id" placeholder="请输入账号或学号" id="username" type="text" lay-verify="required" class="layui-input" >
             <hr class="hr15">
-            <select name="sole" lay-filter="aihao"  lay-verify="select">
+            <select name="sole" lay-filter="aihao"  lay-verify="select" >
                 <option value="">请选择身份</option>
                 <option value="1">学生</option>
                 <option value="2">管理员</option>
@@ -46,8 +46,14 @@
               dataType:'json',
               data: data.field,
               success:function (info) {
-
                   if(info.code===200){
+                      let url ='';
+                      console.log($(":selected").val())
+                      // 判断身份
+                      if($(":selected").val()==1){
+                          url = '/api/getPage?pageName=register/student-register'
+                      }
+
                       layer.open({
                           type: 2,
                           title: '学生注册',
@@ -55,7 +61,7 @@
                           shade: false,
                           maxmin: true, //开启最大化最小化按钮
                           area: ['40%','70%'],
-                          content: '/api/getPage?pageName=register/student-register'
+                          content: url
                       });
                       // layer.msg('注册成功，等待审核');
                       // location.href = info.msg;

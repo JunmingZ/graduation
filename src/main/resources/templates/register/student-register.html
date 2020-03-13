@@ -17,7 +17,7 @@
                       </label>
                       <div class="layui-input-inline">
                           <input type="text" id="sno" name="sno" required="" lay-verify="required"
-                          autocomplete="off" class="layui-input">
+                          autocomplete="off" class="layui-input layui-disabled" Readonly="true" >
                       </div>
                   </div>
                   <div class="layui-form-item">
@@ -44,7 +44,7 @@
                             号码
                         </label>
                         <div class="layui-input-inline">
-                            <input type="text" id="phone" name="phone" required="" autocomplete="off" class="layui-input" lay-verify="telephone"  >
+                            <input type="text" id="phone" name="phone" required="" autocomplete="off" class="layui-input" lay-verify="phone"  >
                         </div>
                     </div>
 
@@ -96,7 +96,7 @@
                           autocomplete="off" class="layui-input">
                       </div>
                   </div>
-                    <input type="hidden"  name="ctime" >
+                    <input type="hidden"  name="flag" value="2">
 
                   <div class="layui-form-item">
                       <label for="L_repass" class="layui-form-label"></label>
@@ -113,8 +113,9 @@
                 var form = layui.form,
                 layer = layui.layer;
 
-                console.log(parent.$("#username").val());
+                // console.log(parent.$("#username").val()); 获取父页面的值
 
+                $("#sno").val(parent.$("#username").val());  // 给学号赋值
 
                 //自定义验证规则
                 form.verify({
@@ -123,14 +124,13 @@
                         if ($('#L_pass').val() != $('#L_repass').val()) {
                             return '两次密码不一致';
                         }
-                    },
-                    telephone: [/(.+){6,12}$/, '电话号码必须6到12位']
+                    }
                 });
 
                 //监听提交
                 form.on('submit(add)',
                 function(data) {
-                    console.log(data);
+
                     $.ajax({
                         url:"/student/add",
                         type:"POST",
@@ -141,11 +141,9 @@
                             if(result.code == 500||result.code == 5000100){
                                 layer.alert(result.msg);
                             }else{
-                                layer.alert("设置成功", {icon: 6},function () {
+                                layer.alert("注册成功，请等待审核", {icon: 6},function () {
                                     //关闭当前frame
                                     xadmin.close();
-                                    // 可以对父窗口进行刷新
-                                    xadmin.father_reload();
                                 });
                             }
                         },

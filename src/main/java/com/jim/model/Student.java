@@ -13,7 +13,7 @@ public class Student extends Model<Student>  {
   private Long sno;
   private String name;
   private Integer sex;
-  private Integer phone;
+  private String phone;
   private String major;
   private String home;
   private String password;

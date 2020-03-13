@@ -221,7 +221,6 @@
             table.on('tool(test)', function(obj){
                 let layEvent = obj.event;
                 if(layEvent === 'setFlag'){
-                    console.log(obj)
                     $.ajax({
                         url: '/student/setFlag',
                         type:'get',
@@ -229,7 +228,12 @@
                         data: 'id='+obj.data.sno,
                         success:function (data) {
                             if(data.code===200){
-                                obj.del();
+                                //obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                                console.log(obj);
+                                //同步更新缓存对应的值
+                                obj.update({
+                                    flag:1
+                                });
                             }else {
                                 layer.msg("操作失败")
                             }

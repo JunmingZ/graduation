@@ -143,6 +143,7 @@
                             }else{
                                 layer.alert("注册成功，请等待审核", {icon: 6},function () {
                                     //关闭当前frame
+                                    parent.location.href = "/login";
                                     xadmin.close();
                                 });
                             }

@@ -115,6 +115,9 @@ public class StudentService {
             return Results.failure(ResponseCode.SNO_REPEAT.getCode(),ResponseCode.SNO_REPEAT.getMessage());
         }
 
+        if(dormitoryMapper.selectById(student.getDormitory())!=null){
+            return Results.failure(ResponseCode.DORMITORY_REPEAT.getCode(),ResponseCode.DORMITORY_REPEAT.getMessage());
+        }
 
         student.setCtime(System.currentTimeMillis());
         student.setUtime(System.currentTimeMillis());

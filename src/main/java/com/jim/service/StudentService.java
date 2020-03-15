@@ -4,14 +4,12 @@ package com.jim.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jim.base.result.ResponseCode;
 import com.jim.base.result.Results;
 import com.jim.dto.LoginDTO;
 import com.jim.mapper.DormitoryMapper;
 import com.jim.mapper.StudentMapper;
 import com.jim.model.Student;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -136,9 +134,9 @@ public class StudentService {
     public Results checkStudent(LoginDTO login) {
         QueryWrapper<Student> wrapper = new QueryWrapper<>();
         wrapper.eq("sno",login.getId()).eq("password",login.getPassword()).eq("flag",1);
-        Integer integer = studentMapper.selectCount(wrapper);
-        if(integer>0){
-            return Results.ok("student/istudent");
+        Student student = studentMapper.selectOne(wrapper);
+        if(student!=null){
+            return Results.ok("student/istudent/"+student.getSno());
         }
         return Results.failure(ResponseCode.LOGIN_ACCPASS_NOT_FOUND.getCode(),ResponseCode.LOGIN_ACCPASS_NOT_FOUND.getMessage());
     }

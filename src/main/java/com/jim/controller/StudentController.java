@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,8 +46,13 @@ public class StudentController {
      * @param modelAndView
      * @return
      */
-    @GetMapping("/istudent")
-    public ModelAndView toIstudent(ModelAndView modelAndView){
+    @GetMapping("/istudent/{id}")
+    public ModelAndView toIstudent(ModelAndView modelAndView
+                                    , @PathVariable("id")String  id
+                                    , HttpServletRequest request){
+        Student studentBySno = studentService.findStudentBySno(id);
+        // 1. a存入session中
+        request.getSession().setAttribute("object", studentBySno);
         modelAndView.setViewName("student-manage/istudent");
         return modelAndView;
     }

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>学生报修首页</title>
+    <header th:replace="header::html"></header>
+</head>
+<body>
+<div style="background-color:#393D49" th:fragment="test">
+    <div class="layui-container" >
+        <ul class="layui-nav" lay-filter="">
+            <li class="layui-nav-item "><a href="">首页</a></li>
+            <span class="site-right">
+            <li class="layui-nav-item"><a href="">故障申报</a></li>
+            <li class="layui-nav-item ">
+                <a href="javascript:;">解决方案</a>
+                <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                    <dd><a href="">个人信息</a></dd>
+                    <dd><a href="">退出</a></dd>
+                </dl>
+            </li>
+        </span>
+        </ul>
+            </div>
+    <script>
+        //注意：导航 依赖 element 模块，否则无法进行功能性操作
+        layui.use('element', function(){
+            var element = layui.element;
+
+            //…
+        });
+    </script>
+</div>
+
+
+
+
+</body>
+</html>

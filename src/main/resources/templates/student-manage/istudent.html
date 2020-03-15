@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>学生首页</title>
+    <title>学生报修首页</title>
+    <header th:replace="header::html"></header>
 </head>
 <body>
-    <h1>欢迎进入学生首页</h1>
+
+<div th:replace="common/snav::test"></div>
+
+
+
 </body>
 </html>

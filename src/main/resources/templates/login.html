@@ -40,7 +40,6 @@
               dataType:'json',
               data: data.field,
               success:function (info) {
-                  console.log(info);
                   if(info.code===200){
                       layer.msg('登录成功');
                       location.href = info.msg;

@@ -26,10 +26,17 @@ public class StudentController {
     @Resource
     private RepairsService repairsService;
 
+    @PostMapping("/repairCount")
+    public  Results getRepairsCountBySno(String sno, @RequestParam(required = false) String content){
+        return repairsService.selectRepairsCountBySno(sno,content);
+    }
+
+
     @PostMapping("/repair")
     public Results getRepairsBySnoPage(PageTableRequest pageTableRequest
-                                        , String sno){
-        return  repairsService.selectRepairsBySnoPage(pageTableRequest, sno);
+                                        , String sno
+                                        , @RequestParam(required = false) String content){
+        return  repairsService.selectRepairsBySnoPage(pageTableRequest, sno,content);
     }
 
     /**

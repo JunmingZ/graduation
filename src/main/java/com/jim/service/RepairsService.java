@@ -9,7 +9,6 @@ import com.jim.base.result.Results;
 import com.jim.dto.RepairStatisticsDTO;
 import com.jim.mapper.RepairTypeMapper;
 import com.jim.mapper.RepairsMapper;
-import com.jim.model.Dormitory;
 import com.jim.model.RepairType;
 import com.jim.model.Repairs;
 import org.springframework.stereotype.Service;
@@ -212,11 +211,26 @@ public class RepairsService {
         return count;
     }
 
-    public Results selectRepairsBySnoPage(PageTableRequest pageTableRequest, String sno) {
+    public Results selectRepairsBySnoPage(PageTableRequest pageTableRequest, String sno,String content) {
         Page page = new Page(pageTableRequest.getPage(),pageTableRequest.getLimit());
         QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
+        wrapper.orderByAsc("state");
         wrapper.eq("sno",sno);
+        if(!StringUtils.isEmpty(content)){
+            wrapper.like("content",content);
+        }
         IPage iPage = repairsMapper.selectPage(page,wrapper);
         return Results.success(iPage.getRecords());
+    }
+
+    public Results selectRepairsCountBySno(String sno, String content) {
+        QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
+        wrapper.orderByAsc("state");
+        wrapper.eq("sno",sno);
+        if(!StringUtils.isEmpty(content)){
+            wrapper.like("content",content);
+        }
+        Integer count = repairsMapper.selectCount(wrapper);
+        return Results.success(count);
     }
 }

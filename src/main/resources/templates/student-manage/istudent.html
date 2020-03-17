@@ -12,13 +12,18 @@
     <div class="layui-row">
         <div class="layui-card"  style="margin-top: 20px;" >
             <div class="layui-card-body">
-<!--                <blockquote class="layui-elem-quote" th:each="repair:${repairs}"  th:class="${repair.state == 1 ? 'layui-elem-quote layui-bg-orange':'layui-elem-quote layui-bg-blue'} ">-->
-<!--                    <span th:text="${repair.content}"></span>-->
-<!--                    <span class="site-right">-->
-<!--                        <span th:text="${#dates.format(repair.ctime, 'yyyy-MM-dd HH:mm')}"></span>-->
-<!--                    </span>-->
-<!--                </blockquote>-->
-                <div id="view"></div>
+                <div class="layui-row">
+                    <form class="layui-form">
+                        <span class="layui-inline">
+                            <input type="text" name="username" placeholder="" autocomplete="off" class="layui-input">
+                        </span>
+                        <span class="layui-inline">
+                            <button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
+                        </span>
+                    </form>
+                </div>
+                <!--  渲染内容              -->
+                <div id="view"  class="self-top"></div>
                 <!-- 分页               -->
                 <div id="test1"></div>
             </div>
@@ -31,12 +36,12 @@
         {{#  if(item.state === 1){ }}
         <blockquote class="layui-elem-quote layui-bg-orange" >
         {{#  } else { }}
-        <blockquote class="layui-elem-quote" >
+        <blockquote class="layui-elem-quote">
         {{#  } }}
             <span>{{item.content}}</span>
             <span class="site-right">{{layui.util.toDateString(item.ctime, 'yyyy-MM-dd HH:mm:ss')}}</span>
         </blockquote>
-    {{#  }); }}
+    {{#  }) }}
 
     {{#  if(d.length === 0){ }}
         <blockquote class="layui-elem-quote" >
@@ -47,9 +52,10 @@
 
 
 <script th:inline="javascript">
-    layui.use(['laypage','laytpl','util'], function(){
+    layui.use(['laypage','laytpl','util','form'], function(){
         let laytpl = layui.laytpl;
         let laypage = layui.laypage;
+        let  form = layui.form;
         let sno = [[${session.object.sno}]];
         //执行一个laypage实例
         laypage.render({
@@ -72,14 +78,12 @@
                         }else{
                             // 1. 数据赋值
                             let data = info.data;
-
                             // 2. 页面渲染
                             let getTpl = demo.innerHTML
                                 ,view = document.getElementById('view');
                             laytpl(getTpl).render(data, function(html){
                                 view.innerHTML = html;
                             });
-
                         }
                     },
                     error:function () {
@@ -87,6 +91,15 @@
                     }
                 });
             }
+        });
+
+        
+
+        form.on('submit(search)', function(data){
+            console.log(data.field.username)
+
+
+            return false; //禁止点击整个后页面刷新
         });
     });
 </script>

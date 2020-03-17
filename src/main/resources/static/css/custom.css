@@ -6,7 +6,11 @@
     text-align: center;
 }
 
-.site-right{
+.site-right {
     float: right;
+}
+
+.self-top {
+    margin-top: 20px;
 }
 

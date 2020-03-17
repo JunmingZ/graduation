@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class PageTableRequest implements Serializable {
+public class PageTableRequest  {
 
     private Integer page;  //当前页
     private Integer limit;  // 显示条数数目

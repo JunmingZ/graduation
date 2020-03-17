@@ -3,7 +3,9 @@ package com.jim.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.result.PageTableRequest;
 import com.jim.base.result.Results;
+import com.jim.model.Repairs;
 import com.jim.model.Student;
+import com.jim.service.RepairsService;
 import com.jim.service.StudentService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,16 @@ public class StudentController {
     @Resource
     private StudentService studentService;
 
+
+    @Resource
+    private RepairsService repairsService;
+
+    @PostMapping("/repair")
+    public Results getRepairsBySnoPage(PageTableRequest pageTableRequest
+                                        , String sno){
+        return  repairsService.selectRepairsBySnoPage(pageTableRequest, sno);
+    }
+
     /**
      * 更新审核状态
      * @param id
@@ -33,6 +45,11 @@ public class StudentController {
         return studentService.setFlagById(id);
     }
 
+    /**
+     * 批量修改审核状态
+     * @param ids
+     * @return
+     */
     @PostMapping("/setFlag")
     public Results changeFlagByIds(String ids){
         if(StringUtils.isEmpty(ids)){
@@ -50,9 +67,15 @@ public class StudentController {
     public ModelAndView toIstudent(ModelAndView modelAndView
                                     , @PathVariable("id")String  id
                                     , HttpServletRequest request){
+        //获取学生信息
         Student studentBySno = studentService.findStudentBySno(id);
-        // 1. a存入session中
+        // 1. 存入session中
         request.getSession().setAttribute("object", studentBySno);
+
+        //获取该学生报修总数
+        Integer count = repairsService.selectRepairCountBySno(id);
+        modelAndView.addObject("count",count);
+
         modelAndView.setViewName("student-manage/istudent");
         return modelAndView;
     }

@@ -35,16 +35,19 @@ public class StudentService {
         QueryWrapper<Student> wrapper = new QueryWrapper<>();
         IPage iPage = null;
 
+        // 增加查询学生姓名的条件
         if(!StringUtils.isEmpty(username)){
             // 模糊查询
             wrapper.like("name",username).or().like("sno",username);
         }
+        // 增加审核查询的条件
         if(flag!=null){
             // 审核状态
             wrapper.eq("flag",flag);
         }
         iPage = student.selectPage(page, wrapper);
 
+        //getTotal 总记录数  getRecords 信息集
         return Results.success((int) iPage.getTotal(),iPage.getRecords());
     }
 

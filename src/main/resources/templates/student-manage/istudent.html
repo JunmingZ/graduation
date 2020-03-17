@@ -8,8 +8,88 @@
 <body>
 
 <div th:replace="common/snav::test"></div>
+<div class="layui-container">
+    <div class="layui-row">
+        <div class="layui-card"  style="margin-top: 20px;" >
+            <div class="layui-card-body">
+<!--                <blockquote class="layui-elem-quote" th:each="repair:${repairs}"  th:class="${repair.state == 1 ? 'layui-elem-quote layui-bg-orange':'layui-elem-quote layui-bg-blue'} ">-->
+<!--                    <span th:text="${repair.content}"></span>-->
+<!--                    <span class="site-right">-->
+<!--                        <span th:text="${#dates.format(repair.ctime, 'yyyy-MM-dd HH:mm')}"></span>-->
+<!--                    </span>-->
+<!--                </blockquote>-->
+                <div id="view"></div>
+                <!-- 分页               -->
+                <div id="test1"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="demo" type="text/html">
+    {{#  layui.each(d, function(index, item){ }}
+        {{#  if(item.state === 1){ }}
+        <blockquote class="layui-elem-quote layui-bg-orange" >
+        {{#  } else { }}
+        <blockquote class="layui-elem-quote" >
+        {{#  } }}
+            <span>{{item.content}}</span>
+            <span class="site-right">{{layui.util.toDateString(item.ctime, 'yyyy-MM-dd HH:mm:ss')}}</span>
+        </blockquote>
+    {{#  }); }}
+
+    {{#  if(d.length === 0){ }}
+        <blockquote class="layui-elem-quote" >
+            无数据
+        </blockquote>
+    {{#  } }}
+</script>
 
 
+<script th:inline="javascript">
+    layui.use(['laypage','laytpl','util'], function(){
+        let laytpl = layui.laytpl;
+        let laypage = layui.laypage;
+        let sno = [[${session.object.sno}]];
+        //执行一个laypage实例
+        laypage.render({
+            elem: 'test1' //注意，这里的 test1 是 ID，不用加 # 号
+            ,count: [[${count}]] //数据总数，从服务端得到
+            ,jump: function(obj, first){
+                // 1. 获取分页数据
+                $.ajax({
+                    url: '/student/repair',
+                    type:'post',
+                    dataType:'json',
+                    data:{
+                        sno:sno,
+                        page:obj.curr,
+                        limit:obj.limit
+                    },
+                    success:function (info) {
+                        if(info.code == 500){
+                            layer.alert(info.msg);
+                        }else{
+                            // 1. 数据赋值
+                            let data = info.data;
+
+                            // 2. 页面渲染
+                            let getTpl = demo.innerHTML
+                                ,view = document.getElementById('view');
+                            laytpl(getTpl).render(data, function(html){
+                                view.innerHTML = html;
+                            });
+
+                        }
+                    },
+                    error:function () {
+                        layer.msg('系统错误');
+                    }
+                });
+            }
+        });
+    });
+</script>
 
 </body>
 </html>

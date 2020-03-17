@@ -3,11 +3,13 @@ package com.jim.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.jim.base.result.PageTableRequest;
 import com.jim.base.result.ResponseCode;
 import com.jim.base.result.Results;
 import com.jim.dto.RepairStatisticsDTO;
 import com.jim.mapper.RepairTypeMapper;
 import com.jim.mapper.RepairsMapper;
+import com.jim.model.Dormitory;
 import com.jim.model.RepairType;
 import com.jim.model.Repairs;
 import org.springframework.stereotype.Service;
@@ -185,5 +187,36 @@ public class RepairsService {
         }else {
             return Results.failure();
         }
+    }
+
+    /**
+     * 通过学号寻找维修信息
+     * @param sno
+     */
+    public  List<Repairs> selectRepairBySno(String sno) {
+        QueryWrapper<Repairs> wrapper = new QueryWrapper();
+        wrapper.eq("sno",sno);
+        List<Repairs> repairs = repairsMapper.selectList(wrapper);
+        return repairs;
+    }
+
+    /**
+     * 根据学号获取报修总数
+     * @param id
+     * @return
+     */
+    public Integer selectRepairCountBySno(String id) {
+        QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
+        wrapper.eq("sno",id);
+        Integer count = repairsMapper.selectCount(wrapper);
+        return count;
+    }
+
+    public Results selectRepairsBySnoPage(PageTableRequest pageTableRequest, String sno) {
+        Page page = new Page(pageTableRequest.getPage(),pageTableRequest.getLimit());
+        QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
+        wrapper.eq("sno",sno);
+        IPage iPage = repairsMapper.selectPage(page,wrapper);
+        return Results.success(iPage.getRecords());
     }
 }

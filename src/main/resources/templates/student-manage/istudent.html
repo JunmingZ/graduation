@@ -6,8 +6,23 @@
     <header th:replace="header::html"></header>
 </head>
 <body>
-
-<div th:replace="common/snav::test"></div>
+<div style="background-color:#393D49">
+    <div class="layui-container" >
+        <ul class="layui-nav" lay-filter="">
+            <li class="layui-nav-item "><a href="">首页</a></li>
+            <span class="site-right">
+            <li class="layui-nav-item"><a href="javascript:" onclick="sub()">故障申报</a></li>
+            <li class="layui-nav-item ">
+                <a href="javascript:;" th:text="${session.object.name}"></a>
+                <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                    <dd><a href="">个人信息</a></dd>
+                    <dd><a href="">退出</a></dd>
+                </dl>
+            </li>
+        </span>
+        </ul>
+    </div>
+</div>
 <div class="layui-container">
     <div class="layui-row">
         <div class="layui-card"  style="margin-top: 20px;" >
@@ -52,10 +67,28 @@
 
 
 <script th:inline="javascript">
-    layui.use(['laypage','laytpl','util','form'], function(){
+    function sub(){
+        console.log([[${session.object}]]);
+        layer.open({
+            type: 2,
+            title: '故障申报',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['90%','70%'],
+            content: "/repairs/declare",
+        });
+    }
+
+
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use(['laypage','laytpl','util','form','element'], function(){
         let laytpl = layui.laytpl;
         let laypage = layui.laypage;
         let  form = layui.form;
+        let element = layui.element;
+
+
         let sno = [[${session.object.sno}]];
         //执行一个laypage实例
         laypage.render({
@@ -101,7 +134,7 @@
                 url: '/student/repairCount',
                 type:'post',
                 dataType:'json',
-                async:false,
+                async:false,  // 关闭异步，不然全局变量无法接收
                 data:{
                     sno:sno,
                     content: data.field.content

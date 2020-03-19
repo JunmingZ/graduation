@@ -6,11 +6,15 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.result.PageTableRequest;
 import com.jim.base.result.ResponseCode;
 import com.jim.base.result.Results;
+import com.jim.dto.DeclareDTO;
 import com.jim.dto.RepairStatisticsDTO;
 import com.jim.mapper.RepairTypeMapper;
 import com.jim.mapper.RepairsMapper;
+import com.jim.mapper.StudentMapper;
 import com.jim.model.RepairType;
 import com.jim.model.Repairs;
+import com.jim.model.Student;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -23,6 +27,10 @@ import java.util.*;
 public class RepairsService {
     @Resource
     private RepairTypeMapper repairTypeMapper;
+
+    @Resource
+    private StudentMapper studentMapper;
+
 
     @Resource
     private RepairsMapper repairsMapper;
@@ -211,6 +219,13 @@ public class RepairsService {
         return count;
     }
 
+    /**
+     * 获取学生报修列表
+     * @param pageTableRequest
+     * @param sno
+     * @param content
+     * @return
+     */
     public Results selectRepairsBySnoPage(PageTableRequest pageTableRequest, String sno,String content) {
         Page page = new Page(pageTableRequest.getPage(),pageTableRequest.getLimit());
         QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
@@ -223,6 +238,12 @@ public class RepairsService {
         return Results.success(iPage.getRecords());
     }
 
+    /**
+     * 获取统计
+     * @param sno
+     * @param content
+     * @return
+     */
     public Results selectRepairsCountBySno(String sno, String content) {
         QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
         wrapper.orderByAsc("state");
@@ -232,5 +253,23 @@ public class RepairsService {
         }
         Integer count = repairsMapper.selectCount(wrapper);
         return Results.success(count);
+    }
+
+
+    /**
+     * 获取故障申报DeclareDTO相关数据
+     * @param sno
+     * @return
+     */
+    public DeclareDTO getDeclareDTOBySno(String sno) {
+        DeclareDTO declareDTO = new DeclareDTO();
+        // 1. 获取学号 宿舍号
+        QueryWrapper<Student> wrapper = new QueryWrapper<>();
+        wrapper.select("sno","dormitory").eq("sno",sno);
+        Student student = studentMapper.selectOne(wrapper);
+        BeanUtils.copyProperties(student,declareDTO);
+        // 2. 获取报修类型集
+        declareDTO.setRepairTypes( repairTypeMapper.selectList(null));
+        return declareDTO;
     }
 }

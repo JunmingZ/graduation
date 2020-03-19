@@ -1,10 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>故障申报</title>
+    <header th:replace="header::html"></header>
 </head>
 <body>
+<div class="layui-fluid">
+    <div class="layui-row">
+        <form class="layui-form">
+            <div class="layui-form-item">
+                <label for="L_Sno" class="layui-form-label">
+                    学号
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="L_Sno" name="sno" required="" lay-verify="required"  th:value="${declareDTO.sno}"
+                           autocomplete="off" class="layui-input layui-disabled" Readonly="true" >
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="L_dormitory" class="layui-form-label">
+                    宿舍号
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="L_dormitory" name="dormitory" required="" lay-verify="required" th:value="${declareDTO.dormitory}"
+                           autocomplete="off" class="layui-input layui-disabled" Readonly="true" >
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="L_repair_type" class="layui-form-label">
+                    报修类型
+                </label>
+                <div class="layui-input-inline">
+                    <select name="typeId" lay-verify="repair_type" id="L_repair_type">
+                        <option value="" >请选择报修类型</option>
+                        <option th:value="${type.id}" th:each="type:${declareDTO.repairTypes}"  th:text="${type.type}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="L_content" class="layui-form-label">
+                    报修内容
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="L_content" name="content" required="" lay-verify="required"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
 
+            <div class="layui-form-item">
+                <label for="L_content" class="layui-form-label"></label>
+                <button  class="layui-btn" lay-filter="add" lay-submit="">
+                    添加
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    layui.use(['form', 'layer'],
+    function() {
+        $ = layui.jquery;
+        var form = layui.form,
+            layer = layui.layer;
+
+        //自定义验证规则
+        form.verify({
+            pass: [/(.+){6,12}$/, '密码必须6到12位'],
+            repass: function(value) {
+                if ($('#L_pass').val() != $('#L_repass').val()) {
+                    return '两次密码不一致';
+                }
+            },
+            telephone: [/(.+){6,12}$/, '电话号码必须6到12位']
+        });
+
+        //监听提交
+        form.on('submit(edit)',function(data) {
+                console.log(data);
+
+
+                return false;
+            });
+
+    });</script>
 </body>
 </html>

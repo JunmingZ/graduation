@@ -74,9 +74,7 @@
         let  form = layui.form;
         let element = layui.element;
         let sno = [[${student.sno}]];
-
         sub = function(){
-            console.log([[${student.sno}]]);
             layer.open({
                 type: 2,
                 title: '故障申报',
@@ -84,9 +82,9 @@
                 shade: false,
                 maxmin: true, //开启最大化最小化按钮
                 area: ['90%','70%'],
-                content: "/repairs/declare/",
+                content: "/repairs/declare/"+sno,
             });
-        }
+        };
 
         //执行一个laypage实例
         laypage.render({

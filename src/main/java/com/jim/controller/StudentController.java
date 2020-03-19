@@ -32,6 +32,13 @@ public class StudentController {
     }
 
 
+    /**
+     * 获取学生报修列表
+     * @param pageTableRequest
+     * @param sno
+     * @param content
+     * @return
+     */
     @PostMapping("/repair")
     public Results getRepairsBySnoPage(PageTableRequest pageTableRequest
                                         , String sno

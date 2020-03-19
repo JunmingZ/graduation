@@ -5,12 +5,14 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.result.PageTableRequest;
 import com.jim.base.result.ResponseCode;
 import com.jim.base.result.Results;
+import com.jim.dto.DeclareDTO;
 import com.jim.model.RepairType;
 import com.jim.model.Repairman;
 import com.jim.model.Repairs;
 import com.jim.service.RepairTypeService;
 import com.jim.service.RepairmanService;
 import com.jim.service.RepairsService;
+import com.jim.service.StudentService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -34,9 +36,13 @@ public class RepairsController {
 
 
 
-    @GetMapping("/declare")
-    public ModelAndView toDeclare(ModelAndView modelAndView){
-        modelAndView.setViewName("");
+    @GetMapping("/declare/{sno}")
+    public ModelAndView toDeclare(ModelAndView modelAndView
+                                    ,@PathVariable("sno")String  sno){
+
+        DeclareDTO declareDTO = repairsService.getDeclareDTOBySno(sno);
+        modelAndView.addObject("declareDTO",declareDTO);
+        modelAndView.setViewName("repair-manage/declare");
         return modelAndView;
     }
 

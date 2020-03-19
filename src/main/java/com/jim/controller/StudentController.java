@@ -76,9 +76,9 @@ public class StudentController {
                                     , HttpServletRequest request){
         //获取学生信息
         Student studentBySno = studentService.findStudentBySno(id);
-        // 1. 存入session中
-        request.getSession().setAttribute("object", studentBySno);
-
+        // 1. 存入域
+        //request.getSession().setAttribute("object", studentBySno);
+        modelAndView.addObject("student",studentBySno);
         //获取该学生报修总数
         Integer count = repairsService.selectRepairCountBySno(id);
         modelAndView.addObject("count",count);

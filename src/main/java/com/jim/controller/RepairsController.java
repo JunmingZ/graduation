@@ -31,6 +31,17 @@ public class RepairsController {
     
     @Resource
     private RepairTypeService repairTypeService;
+
+
+
+    @GetMapping("/declare")
+    public ModelAndView toDeclare(ModelAndView modelAndView){
+        modelAndView.setViewName("");
+        return modelAndView;
+    }
+
+
+
     /**
      * 进入统计页面
      * @param modelAndView

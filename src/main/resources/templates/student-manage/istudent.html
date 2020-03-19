@@ -13,7 +13,7 @@
             <span class="site-right">
             <li class="layui-nav-item"><a href="javascript:" onclick="sub()">故障申报</a></li>
             <li class="layui-nav-item ">
-                <a href="javascript:;" th:text="${session.object.name}"></a>
+                <a href="javascript:;" th:text="${student.name}"></a>
                 <dl class="layui-nav-child"> <!-- 二级菜单 -->
                     <dd><a href="">个人信息</a></dd>
                     <dd><a href="">退出</a></dd>
@@ -67,29 +67,27 @@
 
 
 <script th:inline="javascript">
-    function sub(){
-        console.log([[${session.object}]]);
-        layer.open({
-            type: 2,
-            title: '故障申报',
-            shadeClose: true,
-            shade: false,
-            maxmin: true, //开启最大化最小化按钮
-            area: ['90%','70%'],
-            content: "/repairs/declare",
-        });
-    }
-
-
     //注意：导航 依赖 element 模块，否则无法进行功能性操作
     layui.use(['laypage','laytpl','util','form','element'], function(){
         let laytpl = layui.laytpl;
         let laypage = layui.laypage;
         let  form = layui.form;
         let element = layui.element;
+        let sno = [[${student.sno}]];
 
+        sub = function(){
+            console.log([[${student.sno}]]);
+            layer.open({
+                type: 2,
+                title: '故障申报',
+                shadeClose: true,
+                shade: false,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['90%','70%'],
+                content: "/repairs/declare/",
+            });
+        }
 
-        let sno = [[${session.object.sno}]];
         //执行一个laypage实例
         laypage.render({
             elem: 'test1' //注意，这里的 test1 是 ID，不用加 # 号

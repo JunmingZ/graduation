@@ -8,8 +8,9 @@
         <link rel="stylesheet" th:href="@{/css/custom.css}" />
     </head>
     <body>
+    <div class="layui-container">
+        <div class="layui-row">
         <div class="layui-fluid">
-            <div class="layui-row">
                 <form class="layui-form">
                   <div class="layui-form-item">
                       <label for="sno" class="layui-form-label">
@@ -44,7 +45,7 @@
                             号码
                         </label>
                         <div class="layui-input-inline">
-                            <input type="text" id="phone" name="phone" required="" autocomplete="off" class="layui-input" lay-verify="telephone" th:value="${studentDTO.phone}" >
+                            <input type="text" id="phone" name="phone" required="" autocomplete="off" class="layui-input" lay-verify="phone" th:value="${studentDTO.phone}" >
                         </div>
                     </div>
 
@@ -74,7 +75,7 @@
                             宿舍号
                         </label>
                         <div class="layui-input-inline">
-                            <input type="text" id="L_dormitory" name="dormitory" required=""  autocomplete="off" class="layui-input" th:value="${studentDTO.dormitory}">
+                            <input type="text" id="L_dormitory" name="dormitory" required="" lay-verify="required|number" autocomplete="off" class="layui-input" th:value="${studentDTO.dormitory}">
                         </div>
                     </div>
 
@@ -108,8 +109,10 @@
                       </button>
                   </div>
               </form>
-            </div>
+
         </div>
+        </div>
+    </div>
         <script>layui.use(['form', 'layer'],
             function() {
                 $ = layui.jquery;
@@ -124,7 +127,6 @@
                             return '两次密码不一致';
                         }
                     },
-                    telephone: [/(.+){6,12}$/, '电话号码必须6到12位']
                 });
 
                 //监听提交

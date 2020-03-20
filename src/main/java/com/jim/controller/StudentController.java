@@ -131,8 +131,8 @@ public class StudentController {
      * @param sno
      * @return
      */
-    @GetMapping("/edit")
-    public ModelAndView toEditStudent(ModelAndView modelAndView,String sno){
+    @GetMapping("/edit/{sno}")
+    public ModelAndView toEditStudent(ModelAndView modelAndView,@PathVariable String sno){
         modelAndView.setViewName("student-manage/student-edit");
         Student studentBySno = studentService.findStudentBySno(sno);
         modelAndView.addObject("studentDTO",studentBySno);

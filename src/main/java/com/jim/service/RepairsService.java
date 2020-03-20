@@ -183,6 +183,7 @@ public class RepairsService {
         int insert =0;
         repairs.setCtime(System.currentTimeMillis());
         repairs.setUtime(System.currentTimeMillis());
+        repairs.setState(1);
         if(repairs.getId() == null){
             insert = repairsMapper.insert(repairs);
         }else {
@@ -190,7 +191,7 @@ public class RepairsService {
             return  Results.failure(ResponseCode.INSERT_EXCEPTION.getCode(),ResponseCode.INSERT_EXCEPTION.getMessage());
         }
         if(insert>0){
-            return Results.ok();
+            return Results.success();
         }else {
             return Results.failure();
         }
@@ -229,7 +230,7 @@ public class RepairsService {
     public Results selectRepairsBySnoPage(PageTableRequest pageTableRequest, String sno,String content) {
         Page page = new Page(pageTableRequest.getPage(),pageTableRequest.getLimit());
         QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
-        wrapper.orderByAsc("state");
+        wrapper.orderByAsc("state").orderByDesc("ctime");
         wrapper.eq("sno",sno);
         if(!StringUtils.isEmpty(content)){
             wrapper.like("content",content);

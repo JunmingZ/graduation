@@ -6,57 +6,61 @@
     <header th:replace="header::html"></header>
 </head>
 <body>
-<div class="layui-fluid">
+<div class="layui-container">
     <div class="layui-row">
-        <form class="layui-form">
-            <div class="layui-form-item">
-                <label for="L_Sno" class="layui-form-label">
-                    学号
-                </label>
-                <div class="layui-input-inline">
-                    <input type="text" id="L_Sno" name="sno" required="" lay-verify="required"  th:value="${declareDTO.sno}"
-                           autocomplete="off" class="layui-input layui-disabled" Readonly="true" >
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label for="L_dormitory" class="layui-form-label">
-                    宿舍号
-                </label>
-                <div class="layui-input-inline">
-                    <input type="text" id="L_dormitory" name="dormitory" required="" lay-verify="required" th:value="${declareDTO.dormitory}"
-                           autocomplete="off" class="layui-input layui-disabled" Readonly="true" >
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label for="L_repair_type" class="layui-form-label">
-                    报修类型
-                </label>
-                <div class="layui-input-inline">
-                    <select name="typeId" lay-verify="repair_type" id="L_repair_type">
-                        <option value="" >请选择报修类型</option>
-                        <option th:value="${type.id}" th:each="type:${declareDTO.repairTypes}"  th:text="${type.type}"></option>
-                    </select>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label for="L_content" class="layui-form-label">
-                    报修内容
-                </label>
-                <div class="layui-input-inline">
-                    <input type="text" id="L_content" name="content" required="" lay-verify="required"
-                           autocomplete="off" class="layui-input">
-                </div>
-            </div>
+        <div class="layui-fluid">
+            <div class="layui-row">
+                <form class="layui-form">
+                    <div class="layui-form-item">
+                        <label for="L_Sno" class="layui-form-label">
+                            学号
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="L_Sno" name="sno" required="" lay-verify="required"  th:value="${declareDTO.sno}"
+                                   autocomplete="off" class="layui-input layui-disabled" Readonly="true" >
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="L_dormitory" class="layui-form-label">
+                            宿舍号
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="L_dormitory" name="dormitory" required="" lay-verify="required" th:value="${declareDTO.dormitory}"
+                                   autocomplete="off" class="layui-input layui-disabled" Readonly="true" >
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="L_repair_type" class="layui-form-label">
+                            报修类型
+                        </label>
+                        <div class="layui-input-inline">
+                            <select name="typeId" lay-verify="repair_type" id="L_repair_type">
+                                <option value="" >请选择报修类型</option>
+                                <option th:value="${type.id}" th:each="type:${declareDTO.repairTypes}"  th:text="${type.type}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="L_content" class="layui-form-label">
+                            报修内容
+                        </label>
+                        <div class="layui-input-inline">
+                            <textarea placeholder="请输入内容" class="layui-textarea" id="L_content" name="content" lay-verify="required"></textarea>
+                        </div>
+                    </div>
 
-            <div class="layui-form-item">
-                <label for="L_content" class="layui-form-label"></label>
-                <button  class="layui-btn" lay-filter="add" lay-submit="">
-                    添加
-                </button>
+                    <div class="layui-form-item">
+                        <label for="L_content" class="layui-form-label"></label>
+                        <button  class="layui-btn" lay-filter="add" lay-submit="">
+                            提交
+                        </button>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
 </div>
+
 <script>
     layui.use(['form', 'layer'],
     function() {
@@ -66,23 +70,51 @@
 
         //自定义验证规则
         form.verify({
-            pass: [/(.+){6,12}$/, '密码必须6到12位'],
-            repass: function(value) {
-                if ($('#L_pass').val() != $('#L_repass').val()) {
-                    return '两次密码不一致';
+            repair_type:function(value, item){
+                if(value == ''){
+                    return '未选择报修类型!!!!!!'
                 }
             },
-            telephone: [/(.+){6,12}$/, '电话号码必须6到12位']
         });
 
         //监听提交
-        form.on('submit(edit)',function(data) {
-                console.log(data);
-
-
-                return false;
+        form.on('submit(add)',function(data) {
+            console.log(data);
+            $.ajax({
+                url:"/repairs/add",
+                type:"POST",
+                data:data.field,
+                dataType:'json'
+            }).done(function( msg ) {
+                if(msg.code == 500 || msg.code ==1000 || msg.code == 1001){
+                    layer.alert(msg.msg);
+                }else if(msg.code==200){
+                    layer.msg("设置成功"
+                        , {
+                            icon: 6
+                            ,time: 1000 //1秒关闭
+                        }
+                        ,function () {
+                        // parent.layui.table.reload('test');
+                        //关闭当前frame
+                        xadmin.close();
+                        // 可以对父窗口进行刷新
+                        xadmin.father_reload();
+                    });
+                }else {
+                    layer.alert("申报失败")
+                }
+            }).fail(function( i, textStatus ) {
+                layer.alert("系统错误")
             });
 
-    });</script>
+            return false;
+        });
+
+
+
+
+    });
+</script>
 </body>
 </html>

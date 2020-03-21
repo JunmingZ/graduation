@@ -72,7 +72,8 @@
 
                         </div>
                     </div>
-                    <div class="layui-form-item">
+                    <!--       待处理状态的时候不显示， 直接选人进入待处理            -->
+                    <div class="layui-form-item" th:if="${repairs.state==0 || repairs.state==2 || repairs.state==null}">
                         <label for="L_repair_state" class="layui-form-label">
                             维修状态
                         </label>

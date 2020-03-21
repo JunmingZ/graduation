@@ -210,21 +210,41 @@ public class RepairsService {
      * @return
      */
     public Results addRepairs(Repairs repairs) {
-        int insert =0;
-        repairs.setCtime(System.currentTimeMillis());
-        repairs.setUtime(System.currentTimeMillis());
-        repairs.setState(1);  // 待分配
-        if(repairs.getId() == null){
-            insert = repairsMapper.insert(repairs);
+        // 1. 检查学生是否存在
+        Student student = studentMapper.selectById(repairs.getSno());
+        if(student==null){
+            return Results.failure(ResponseCode.SNO_NOT_EXIST);
         }else {
-            // 异常插入
-            return  Results.failure(ResponseCode.INSERT_EXCEPTION.getCode(),ResponseCode.INSERT_EXCEPTION.getMessage());
+            // 2. 学生不为空判断宿舍是否存在
+            if(student.getDormitory().equals(repairs.getDormitory())){
+                int insert =0;
+                repairs.setCtime(System.currentTimeMillis());
+                repairs.setUtime(System.currentTimeMillis());
+                // 3. 判断是否分配维修人员
+                if(repairs.getRepairmanId()==null||repairs.getRepairmanId()==0){
+                    repairs.setState(1);  // 待分配
+                }else {
+                    repairs.setState(2); //待处理
+                }
+
+
+                if(repairs.getId() == null){
+                    insert = repairsMapper.insert(repairs);
+                }else {
+                    // 异常插入
+                    return  Results.failure(ResponseCode.INSERT_EXCEPTION.getCode(),ResponseCode.INSERT_EXCEPTION.getMessage());
+                }
+                if(insert>0){
+                    return Results.success();
+                }else {
+                    return Results.failure();
+                }
+            }else {
+                return Results.failure(ResponseCode.DORMITORY_NOT_EXIST);
+            }
         }
-        if(insert>0){
-            return Results.success();
-        }else {
-            return Results.failure();
-        }
+
+
     }
 
     /**

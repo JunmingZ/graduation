@@ -61,23 +61,23 @@
                             </select>
                         </div>
                     </div>
-                    <div class="layui-form-item">
-                        <label for="L_repair_state" class="layui-form-label">
-                            维修状态
-                        </label>
-                        <div class="layui-input-inline">
-                            <select name="state" lay-verify="L_repair_state" id="L_repair_state">
-                                <option value="" >请选择维修状态</option>
-                                <option value="1" >待分配</option>
-                                <option value="2" >待处理</option>
-                                <option value="3" >已处理</option>
-                            </select>
-                        </div>
-                    </div>
+<!--                    <div class="layui-form-item">-->
+<!--                        <label for="L_repair_state" class="layui-form-label">-->
+<!--                            维修状态-->
+<!--                        </label>-->
+<!--                        <div class="layui-input-inline">-->
+<!--                            <select name="state" lay-verify="L_repair_state" id="L_repair_state">-->
+<!--                                <option value="" >请选择维修状态</option>-->
+<!--                                <option value="1" >待分配</option>-->
+<!--                                <option value="2" >待处理</option>-->
+<!--                                <option value="3" >已处理</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                    </div>-->
 
 
                     <div class="layui-form-item">
-                        <label for="L_repair_state" class="layui-form-label"></label>
+                        <label for="L_repairman" class="layui-form-label"></label>
                         <button  class="layui-btn" lay-filter="add" lay-submit="">
                             添加
                         </button>
@@ -101,16 +101,18 @@
                             data:data.field,
                             dataType:'json',
                             success:function(result){
-                                if(result.code == 500 || result.code ==1000 || result.code == 5000401){
-                                    layer.alert(result.msg);
-                                }else{
-                                    layer.alert("设置成功", {icon: 6},function () {
+                                if(result.code == 500 || result.code ==1000 || result.code == 5000401 ||result.code == 5000101 || result.code == 5000202){
+                                    layer.msg(result.msg);
+                                }else if(result.code ==200){
+                                    layer.msg("设置成功", {icon: 6},function () {
                                         parent.layui.table.reload('test');
                                         //关闭当前frame
                                         xadmin.close();
                                         // 可以对父窗口进行刷新
                                         // xadmin.father_reload();
                                     });
+                                }else {
+                                    layer.msg("添加失败！！！请联系管理员")
                                 }
                             },
                             error:function () {
@@ -133,11 +135,11 @@
                             return '未选择报修类型!!!!!!'
                         }
                     },
-                    L_repair_state:function (value,item) {
-                        if(value == ''){
-                            return '未选择维修状态!!!!!!'
-                        }
-                    }
+                    // L_repair_state:function (value,item) {
+                    //     if(value == ''){
+                    //         return '未选择维修状态!!!!!!'
+                    //     }
+                    // }
                 });
             });
         </script>

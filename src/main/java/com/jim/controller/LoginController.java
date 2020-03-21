@@ -1,7 +1,7 @@
 package com.jim.controller;
 
 
-import com.jim.base.result.ResponseCode;
+import com.jim.base.enums.ResponseCode;
 import com.jim.base.result.Results;
 import com.jim.dto.LoginDTO;
 import com.jim.service.AdminService;

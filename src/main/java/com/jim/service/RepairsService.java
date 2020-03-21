@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.result.PageTableRequest;
-import com.jim.base.result.ResponseCode;
+import com.jim.base.enums.ResponseCode;
 import com.jim.base.result.Results;
 import com.jim.dto.DeclareDTO;
 import com.jim.dto.RepairStatisticsDTO;
@@ -54,44 +54,71 @@ public class RepairsService {
      * 统计页面
      * @return
      */
-    public Map<String,List<RepairStatisticsDTO>> getRepairStatisticsDTO() {
+    public Map<String,RepairStatisticsDTO> getRepairStatisticsDTO() {
 
-        List<RepairStatisticsDTO> list = new ArrayList();
+
         Map map = new HashMap();
         // 1. 查出所有维修类型
         List<RepairType> repairTypes = repairTypeMapper.selectList(null);
-        // 2. 存储每个类型的维修统计
+
+        RepairStatisticsDTO repairStatisticsDTO = new RepairStatisticsDTO();
+
+        // 2. 遍历每个维修类型,按类型分配
         for (RepairType repairType : repairTypes) {
-            RepairStatisticsDTO repairStatisticsDTO = new RepairStatisticsDTO();
-            //3. 获取维修id
-            Integer id = repairType.getId();
-            repairStatisticsDTO.setType(id);
-            // 4. 进行统计
-            // 4.1 统计 待分配
-            QueryWrapper<Repairs> wrapper1 = new QueryWrapper<>();
-            wrapper1.eq("state",1).eq("type_id",id);
-            repairStatisticsDTO.setInit(repairsMapper.selectCount(wrapper1));
-            // 4.2 待处理
-            QueryWrapper<Repairs> wrapper2 = new QueryWrapper<>();
-            wrapper2.eq("state",2).eq("type_id",id);;
-            repairStatisticsDTO.setWait(repairsMapper.selectCount(wrapper2));
-
-            // 4.3 已处理
-            QueryWrapper<Repairs> wrapper3 = new QueryWrapper<>();
-            wrapper3.eq("state",3).eq("type_id",id);;
-            repairStatisticsDTO.setFinish(repairsMapper.selectCount(wrapper3));
-
-            // 4.3 该类型总记录数
-            QueryWrapper<Repairs> wrapper4 = new QueryWrapper<>();
-            wrapper4.eq("type_id",id);
-            repairStatisticsDTO.setTotal(repairsMapper.selectCount(wrapper4));
-
-            list.add(repairStatisticsDTO);
-
+            // 2.1 待分配
+            QueryWrapper<Repairs> init = new QueryWrapper<>();
+            init.eq("state",1).eq("type_id",repairType.getId());
+            repairStatisticsDTO.getInit().add(repairsMapper.selectCount(init));
+            // 2.2 待处理
+            QueryWrapper<Repairs> wait = new QueryWrapper<>();
+            wait.eq("state",2).eq("type_id",repairType.getId());
+            repairStatisticsDTO.getWait().add(repairsMapper.selectCount(wait));
+             // 2.3 已处理
+            QueryWrapper<Repairs> finish = new QueryWrapper<>();
+            finish.eq("state",3).eq("type_id",repairType.getId());
+            repairStatisticsDTO.getFinish().add(repairsMapper.selectCount(finish));
+            // 2.4 总数
+            QueryWrapper<Repairs> total = new QueryWrapper<>();
+            total.eq("type_id",repairType.getId());
+            repairStatisticsDTO.getTotal().add(repairsMapper.selectCount(total));
         }
 
+        ArrayList list = new ArrayList();
+        list.add(repairStatisticsDTO.getInit());
+        list.add(repairStatisticsDTO.getWait());
+        list.add(repairStatisticsDTO.getFinish());
+        list.add(repairStatisticsDTO.getTotal());
+        // 2. 存储每个类型的维修统计
+        //for (RepairType repairType : repairTypes) {
+        //    RepairStatisticsDTO repairStatisticsDTO = new RepairStatisticsDTO();
+        //    //3. 获取维修id
+        //    Integer id = repairType.getId();
+        //    repairStatisticsDTO.setType(id);
+        //    // 4. 进行统计
+        //    // 4.1 统计 待分配
+        //    QueryWrapper<Repairs> wrapper1 = new QueryWrapper<>();
+        //    wrapper1.eq("state",1).eq("type_id",id);
+        //    repairStatisticsDTO.setInit(repairsMapper.selectCount(wrapper1));
+        //    // 4.2 待处理
+        //    QueryWrapper<Repairs> wrapper2 = new QueryWrapper<>();
+        //    wrapper2.eq("state",2).eq("type_id",id);;
+        //    repairStatisticsDTO.setWait(repairsMapper.selectCount(wrapper2));
+        //
+        //    // 4.3 已处理
+        //    QueryWrapper<Repairs> wrapper3 = new QueryWrapper<>();
+        //    wrapper3.eq("state",3).eq("type_id",id);;
+        //    repairStatisticsDTO.setFinish(repairsMapper.selectCount(wrapper3));
+        //
+        //    // 4.3 该类型总记录数
+        //    QueryWrapper<Repairs> wrapper4 = new QueryWrapper<>();
+        //    wrapper4.eq("type_id",id);
+        //    repairStatisticsDTO.setTotal(repairsMapper.selectCount(wrapper4));
+        //
+        //    list.add(repairStatisticsDTO);
+        //
+        //}
 
-        map.put("RepairStatistics", list);
+        map.put("repairStatisticsDTO",list);
         map.put("types",repairTypes);
 
         return map;

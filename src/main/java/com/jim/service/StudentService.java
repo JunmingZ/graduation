@@ -4,7 +4,7 @@ package com.jim.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jim.base.result.ResponseCode;
+import com.jim.base.enums.ResponseCode;
 import com.jim.base.result.Results;
 import com.jim.dto.LoginDTO;
 import com.jim.mapper.DormitoryMapper;

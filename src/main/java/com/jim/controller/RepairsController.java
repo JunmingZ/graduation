@@ -3,7 +3,7 @@ package com.jim.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.result.PageTableRequest;
-import com.jim.base.result.ResponseCode;
+import com.jim.base.enums.ResponseCode;
 import com.jim.base.result.Results;
 import com.jim.dto.DeclareDTO;
 import com.jim.model.RepairType;
@@ -61,7 +61,7 @@ public class RepairsController {
     public ModelAndView toRepairStatistics(ModelAndView modelAndView){
         Map map = repairsService.getRepairStatisticsDTO();
         modelAndView.addObject("types",map.get("types"));
-        modelAndView.addObject("RepairStatistics",map.get("RepairStatistics"));
+        modelAndView.addObject("repairStatisticsDTO",map.get("repairStatisticsDTO"));
         modelAndView.setViewName("repair-manage/repair-statistics");
         return modelAndView;
     }

@@ -3,7 +3,7 @@ package com.jim.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.result.PageTableRequest;
-import com.jim.base.result.ResponseCode;
+import com.jim.base.enums.ResponseCode;
 import com.jim.base.result.Results;
 import com.jim.model.Admin;
 import com.jim.service.AdminService;

@@ -1,5 +1,6 @@
 package com.jim.base.result;
 
+import com.jim.base.enums.ResponseCode;
 import lombok.Data;
 
 import java.io.Serializable;

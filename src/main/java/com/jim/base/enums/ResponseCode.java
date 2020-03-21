@@ -1,4 +1,4 @@
-package com.jim.base.result;
+package com.jim.base.enums;
 
 public enum ResponseCode {
 

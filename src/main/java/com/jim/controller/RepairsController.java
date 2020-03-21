@@ -12,7 +12,6 @@ import com.jim.model.Repairs;
 import com.jim.service.RepairTypeService;
 import com.jim.service.RepairmanService;
 import com.jim.service.RepairsService;
-import com.jim.service.StudentService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -35,7 +34,12 @@ public class RepairsController {
     private RepairTypeService repairTypeService;
 
 
-
+    /**
+     * 进入故障申报页面
+     * @param modelAndView
+     * @param sno
+     * @return
+     */
     @GetMapping("/declare/{sno}")
     public ModelAndView toDeclare(ModelAndView modelAndView
                                     ,@PathVariable("sno")String  sno){
@@ -124,6 +128,7 @@ public class RepairsController {
         }else {
             modelAndView.setViewName("repair-manage/repair-task-edit");
             Repairs repairs = repairsService.findRepairById(id);
+            // 已处理的
             modelAndView.addObject("repairs",repairs);
         }
 

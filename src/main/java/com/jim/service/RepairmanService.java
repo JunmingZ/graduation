@@ -45,7 +45,7 @@ public class RepairmanService {
      */
     public List<Repairman> getAllRepairman() {
         QueryWrapper<Repairman> wrapper = new QueryWrapper();
-        wrapper.eq("flag",1);
+        wrapper.eq("flag",1).select("id","name");
         return repairmanMapper.selectList(wrapper);
     }
 

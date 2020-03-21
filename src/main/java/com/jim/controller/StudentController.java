@@ -3,7 +3,6 @@ package com.jim.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.result.PageTableRequest;
 import com.jim.base.result.Results;
-import com.jim.model.Repairs;
 import com.jim.model.Student;
 import com.jim.service.RepairsService;
 import com.jim.service.StudentService;
@@ -13,8 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/student")
@@ -26,6 +23,12 @@ public class StudentController {
     @Resource
     private RepairsService repairsService;
 
+    /**
+     * 获取维修总数
+     * @param sno
+     * @param content
+     * @return
+     */
     @PostMapping("/repairCount")
     public  Results getRepairsCountBySno(String sno, @RequestParam(required = false) String content){
         return repairsService.selectRepairsCountBySno(sno,content);

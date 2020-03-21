@@ -124,4 +124,5 @@ public class RepairTypeService  {
     public List<RepairType> getAllRepairType() {
         return repairTypeMapper.selectList(null);
     }
+
 }

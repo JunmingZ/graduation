@@ -6,6 +6,7 @@
         <title>编辑报修类型</title>
         <header th:replace="header::html"></header>
         <link rel="stylesheet" th:href="@{/css/custom.css}" />
+
     </head>
     <body>
         <div class="layui-fluid">
@@ -64,10 +65,11 @@
                             维修人
                         </label>
                         <div class="layui-input-inline">
-                            <select name="repairmanId" lay-verify="L_repairman" id="L_repairman">
+                            <select name="repairmanId" lay-verify="L_repairman" id="L_repairman" >
                                 <option value="" >请选择维修人</option>
                                 <option th:value="${man.id}" th:each="man:${allRepairman}"  th:text="${man.name}" th:selected="${man.id==repairs.repairmanId}"></option>
                             </select>
+
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -77,8 +79,9 @@
                         <div class="layui-input-inline">
                             <select name="state" lay-verify="L_repair_state" id="L_repair_state">
                                 <option value="" >请选择维修状态</option>
-                                <option value="1"  th:selected="${repairs.state==1}">未处理</option>
-                                <option value="2"  th:selected="${repairs.state==2}">已处理</option>
+                                <option value="1"  th:selected="${repairs.state==1}">待分配</option>
+                                <option value="2"  th:selected="${repairs.state==2}">待处理</option>
+                                <option value="3"  th:selected="${repairs.state==3}">已处理</option>
                             </select>
                         </div>
                     </div>
@@ -94,16 +97,16 @@
               </form>
             </div>
         </div>
-        <script>layui.use(['form', 'layer'],
+        <script>
+            layui.use(['form', 'layer'],
             function() {
                 $ = layui.jquery;
                 var form = layui.form,
                 layer = layui.layer;
-
                 //监听提交
                 form.on('submit(add)',
                 function(data) {
-                    console.log(data)
+                    console.log(data);
                     $.ajax({
                         url:"/repairs/edit",
                         type:"POST",

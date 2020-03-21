@@ -8,10 +8,13 @@ import com.jim.base.result.ResponseCode;
 import com.jim.base.result.Results;
 import com.jim.dto.DeclareDTO;
 import com.jim.dto.RepairStatisticsDTO;
+import com.jim.dto.RepairsDTO;
 import com.jim.mapper.RepairTypeMapper;
+import com.jim.mapper.RepairmanMapper;
 import com.jim.mapper.RepairsMapper;
 import com.jim.mapper.StudentMapper;
 import com.jim.model.RepairType;
+import com.jim.model.Repairman;
 import com.jim.model.Repairs;
 import com.jim.model.Student;
 import org.springframework.beans.BeanUtils;
@@ -31,6 +34,8 @@ public class RepairsService {
     @Resource
     private StudentMapper studentMapper;
 
+    @Resource
+    private RepairmanMapper repairmanMapper;
 
     @Resource
     private RepairsMapper repairsMapper;
@@ -100,9 +105,31 @@ public class RepairsService {
             wrapper.eq("state",state);
         }
         iPage = repairsMapper.selectPage(page,wrapper);
-        return Results.success((int) iPage.getTotal(),iPage.getRecords());  //getRecords()是获取记录
+        List<Repairs> repairs = iPage.getRecords();
+        List<RepairsDTO> repairsDTOS = new ArrayList<>();
+        for (Repairs repair : repairs) {
+            RepairsDTO repairsDTO = new RepairsDTO();
+            BeanUtils.copyProperties(repair,repairsDTO);
+            // 1 获取维修人员名称并存入
+            Repairman repairman = repairmanMapper.selectById(repair.getRepairmanId());
+            if(repairman==null){
+                repairsDTO.setRepairman("未分配维修员");
+            }else {
+                repairsDTO.setRepairman(repairman.getName());
+            }
+            // 2. 获取维修类型名称并存入
+            RepairType repairType = repairTypeMapper.selectById(repair.getTypeId());
+            if(repairType == null){
+                repairsDTO.setType("未分配类型");
+            }else {
+                repairsDTO.setType(repairType.getType());
+            }
+            repairsDTOS.add(repairsDTO);
+        }
+        return Results.success((int) iPage.getTotal(),repairsDTOS);  //getRecords()是获取记录
 
     }
+
 
     /**
      * 分配任务
@@ -111,10 +138,13 @@ public class RepairsService {
      * @return
      */
     public Results taskAllocation(Integer type, Integer repairman) {
+        // 1. 根据 报修类型 id 获取
         QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
         wrapper.eq("type_id",type);
         Repairs repairs = new Repairs();
         repairs.setRepairmanId(repairman);
+        // 2. 更新状状态为待处理
+        repairs.setState(2);
         int update = repairsMapper.update(repairs, wrapper);
         if(update>0){
             return Results.ok();
@@ -183,7 +213,7 @@ public class RepairsService {
         int insert =0;
         repairs.setCtime(System.currentTimeMillis());
         repairs.setUtime(System.currentTimeMillis());
-        repairs.setState(1);
+        repairs.setState(1);  // 待分配
         if(repairs.getId() == null){
             insert = repairsMapper.insert(repairs);
         }else {
@@ -247,7 +277,7 @@ public class RepairsService {
      */
     public Results selectRepairsCountBySno(String sno, String content) {
         QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
-        wrapper.orderByAsc("state");
+        wrapper.orderByAsc("state"); //升序
         wrapper.eq("sno",sno);
         if(!StringUtils.isEmpty(content)){
             wrapper.like("content",content);

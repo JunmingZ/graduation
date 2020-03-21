@@ -20,9 +20,11 @@ public class RepairTypeController {
     private RepairTypeService repairTypeService;
 
     @GetMapping("/types")
-    public List RepairTypeList(){
-        return repairTypeService.getAllRepairType();
+    public List getRepairTypeOnlyNames(){
+        return repairTypeService. getAllRepairType();
     }
+
+
 
 
 

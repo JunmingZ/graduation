@@ -5,8 +5,9 @@ import lombok.Data;
 
 @Data
 public class RepairStatisticsDTO<T> {
-    public Integer type;
-    public Integer untreated;        //未处理数
-    public Integer finish;           //已处理
-    public Integer total;            //总数
+    private Integer type;
+    private Integer init;             // 待分配
+    private Integer wait;             // 待处理
+    private Integer finish;           //已处理
+    private Integer total;            //总数
 }

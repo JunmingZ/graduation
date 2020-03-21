@@ -20,7 +20,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -64,19 +67,24 @@ public class RepairsService {
             Integer id = repairType.getId();
             repairStatisticsDTO.setType(id);
             // 4. 进行统计
-            // 4.1 统计 未处理
+            // 4.1 统计 待分配
             QueryWrapper<Repairs> wrapper1 = new QueryWrapper<>();
             wrapper1.eq("state",1).eq("type_id",id);
-            repairStatisticsDTO.setUntreated(repairsMapper.selectCount(wrapper1));
-            // 4.2 已处理
+            repairStatisticsDTO.setInit(repairsMapper.selectCount(wrapper1));
+            // 4.2 待处理
+            QueryWrapper<Repairs> wrapper2 = new QueryWrapper<>();
+            wrapper2.eq("state",2).eq("type_id",id);;
+            repairStatisticsDTO.setWait(repairsMapper.selectCount(wrapper2));
+
+            // 4.3 已处理
             QueryWrapper<Repairs> wrapper3 = new QueryWrapper<>();
-            wrapper3.eq("state",2).eq("type_id",id);;
+            wrapper3.eq("state",3).eq("type_id",id);;
             repairStatisticsDTO.setFinish(repairsMapper.selectCount(wrapper3));
-            // 4.3 总记录数
+
+            // 4.3 该类型总记录数
             QueryWrapper<Repairs> wrapper4 = new QueryWrapper<>();
             wrapper4.eq("type_id",id);
             repairStatisticsDTO.setTotal(repairsMapper.selectCount(wrapper4));
-
 
             list.add(repairStatisticsDTO);
 

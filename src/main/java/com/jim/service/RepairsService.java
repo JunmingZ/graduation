@@ -9,10 +9,7 @@ import com.jim.base.result.Results;
 import com.jim.dto.DeclareDTO;
 import com.jim.dto.RepairStatisticsDTO;
 import com.jim.dto.RepairsDTO;
-import com.jim.mapper.RepairTypeMapper;
-import com.jim.mapper.RepairmanMapper;
-import com.jim.mapper.RepairsMapper;
-import com.jim.mapper.StudentMapper;
+import com.jim.mapper.*;
 import com.jim.model.RepairType;
 import com.jim.model.Repairman;
 import com.jim.model.Repairs;
@@ -39,6 +36,11 @@ public class RepairsService {
 
     @Resource
     private RepairsMapper repairsMapper;
+
+
+    @Resource
+    private EvaluateMapper evaluateMapper;
+
 
     public List<RepairType> getTypes() {
         return repairTypeMapper.selectList(null);
@@ -181,8 +183,22 @@ public class RepairsService {
      * @return
      */
     public Results deleteRepairsById(String id) {
+        // 1. 判断评价表是否存在
+        Repairs repairs = repairsMapper.selectById(id);
+        if(repairs == null){
+            return Results.failure(ResponseCode.OBJECT_IS_NULL);
+        }
+
+        if(repairs.getEvaluationId()!=0){
+            // 2. 存在,删除该评价
+            if(evaluateMapper.deleteById(repairs.getEvaluationId())<0){
+                // 3. 删除评价失败，
+                return Results.failure(ResponseCode.DELETE_EVALUATE_IS_FAIL);
+            }
+        }
+        // 4. 删除报修任务
         if(repairsMapper.deleteById(id)>0){
-            return Results.ok();
+            return Results.success();
         }
         return Results.failure();
     }
@@ -198,10 +214,13 @@ public class RepairsService {
         }
         String[] split = ids.split(",");
 
-        if(repairsMapper.deleteBatchIds(Arrays.asList(split))==0){
-            return Results.failure();
+        for (String s : split) {
+            Results results = this.deleteRepairsById(s);
+            if(results.getCode()!=200){
+                return Results.failure();
+            }
         }
-        return Results.ok();
+        return Results.success();
     }
 
     /**
@@ -220,13 +239,14 @@ public class RepairsService {
                 int insert =0;
                 repairs.setCtime(System.currentTimeMillis());
                 repairs.setUtime(System.currentTimeMillis());
+                repairs.setEvaluationId(0L);
+                repairs.setRepairmanId(0);
                 // 3. 判断是否分配维修人员
                 if(repairs.getRepairmanId()==null||repairs.getRepairmanId()==0){
                     repairs.setState(1);  // 待分配
                 }else {
                     repairs.setState(2); //待处理
                 }
-
 
                 if(repairs.getId() == null){
                     insert = repairsMapper.insert(repairs);

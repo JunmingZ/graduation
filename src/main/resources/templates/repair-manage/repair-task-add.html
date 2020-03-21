@@ -104,7 +104,7 @@
                                 if(result.code == 500 || result.code ==1000 || result.code == 5000401 ||result.code == 5000101 || result.code == 5000202){
                                     layer.msg(result.msg);
                                 }else if(result.code ==200){
-                                    layer.msg("设置成功", {icon: 6},function () {
+                                    layer.alert("设置成功", {icon: 6,anim: 6},function () {
                                         parent.layui.table.reload('test');
                                         //关闭当前frame
                                         xadmin.close();
@@ -112,11 +112,11 @@
                                         // xadmin.father_reload();
                                     });
                                 }else {
-                                    layer.msg("添加失败！！！请联系管理员")
+                                    layer.msg("添加失败！！！请联系管理员",{icon: 2,anim: 6})
                                 }
                             },
                             error:function () {
-                                layer.msg('系统错误,请联系管理员');
+                                layer.msg('系统错误,请联系管理员',{icon: 2,anim: 6});
                             }
                         });
                         return false;

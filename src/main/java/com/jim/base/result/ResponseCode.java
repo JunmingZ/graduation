@@ -31,6 +31,7 @@ public enum ResponseCode {
 	//报修任务
 	//5000401 - 5000500
 	REPAIRS_REPEAT(5000401,"错误操作，该报修任务已存在！！！"),
+	DELETE_REPAIRS_IS_FAIL(5000401,"删除报修任务失败！！！"),
 
 	//维修人员
 	//5000501 - 5000600
@@ -41,6 +42,10 @@ public enum ResponseCode {
 	//5000601 - 5000700
 	LOGIN_ACCPASS_NOT_FOUND(5000601,"登录失败，账号密码错误或者待审核中"),
 
+
+	//评价
+	//5000701 - 5000800
+	DELETE_EVALUATE_IS_FAIL(5000701,"删除评价失败"),
 
 ;
 	private Integer code;

@@ -57,7 +57,12 @@
         </div>
     </script>
     <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        {{#  if(d.state==3){ }}
+            <a class="layui-btn layui-btn-xs" lay-event="see" >查看</a>
+        {{#  } else { }}
+            <a class="layui-btn layui-btn-xs" lay-event="edit" >编辑</a>
+        {{#  } }}
+
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     </script>
 
@@ -124,7 +129,7 @@
                                 return '<span class="layui-btn layui-btn-sm layui-btn-radius  layui-btn-warm">待处理</span>';
                                 break;
                             case 3 :
-                                return '<span class="layui-btn layui-btn-sm layui-btn-radius  layui-btn-warm">已处理</span>';
+                                return '<span class="layui-btn layui-btn-sm layui-btn-radius  layui-btn-normal">已处理</span>';
                                 break;
                         }
                     }

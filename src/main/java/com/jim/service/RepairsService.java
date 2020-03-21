@@ -97,7 +97,8 @@ public class RepairsService {
      */
     public Results getAllRepairsByPage(Page page, String sno,Integer state) {
         QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
-        wrapper.orderByDesc("id");
+        wrapper.orderByAsc("state").orderByDesc("ctime");
+
         IPage iPage = null;
         if(!StringUtils.isEmpty(sno)){
             //模糊查询

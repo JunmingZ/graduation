@@ -49,11 +49,11 @@
 <script id="demo" type="text/html">
     {{#  layui.each(d, function(index, item){ }}
         {{#  if(item.state === 1||item.state === 2){ }}
-        <blockquote class="layui-elem-quote layui-bg-orange" >
+        <blockquote class="layui-elem-quote layui-bg-orange"  >
         {{#  } else { }}
         <blockquote class="layui-elem-quote">
         {{#  } }}
-            <span>{{item.content}}</span>
+            <span><a href="javascript:" onclick="seeRepair({{ item.id }})" >{{item.content}}</a></span>
             <span class="site-right">{{layui.util.toDateString(item.ctime, 'yyyy-MM-dd HH:mm:ss')}}</span>
         </blockquote>
     {{#  }) }}
@@ -75,7 +75,9 @@
         let element = layui.element;
         let sno = [[${student.sno}]];
 
-
+        seeRepair = function(value){
+            console.log(value)
+        };
         // 编辑个人信息
         selfInfo = function(){
             layer.open({
@@ -88,9 +90,6 @@
                 content: "/student/edit/"+sno,
             });
         };
-
-
-
 
         // 故障申报
         failure = function(){
@@ -121,7 +120,7 @@
                         limit:obj.limit
                     },
                     success:function (info) {
-                        if(info.code == 500){
+                        if(info.code === 500){
                             layer.alert(info.msg);
                         }else{
                             // 1. 数据赋值
@@ -145,6 +144,7 @@
 
         form.on('submit(search)', function(data){
             let count = 0;
+            // 获取数量
             $.ajax({
                 url: '/student/repairCount',
                 type:'post',
@@ -176,7 +176,7 @@
                         success:function (info) {
                             if(info.code == 500){
                                 layer.alert(info.msg);
-                            }else{
+                            }else {
                                 // 1. 数据赋值
                                 let data = info.data;
                                 // 2. 页面渲染

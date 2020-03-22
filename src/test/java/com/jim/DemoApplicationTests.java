@@ -15,9 +15,8 @@ class DemoApplicationTests {
 
     @Test
     void contextLoads() {
-        Student student = new Student();
-        List<Student> students = student.selectAll();
-        students.stream().forEach(System.out::println);
+       Long a = 3l;
+        System.out.println(a==3);
     }
 
 }

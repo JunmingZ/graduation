@@ -6,6 +6,7 @@ import com.jim.base.result.PageTableRequest;
 import com.jim.base.enums.ResponseCode;
 import com.jim.base.result.Results;
 import com.jim.dto.DeclareDTO;
+import com.jim.dto.RepairsDTO;
 import com.jim.model.RepairType;
 import com.jim.model.Repairman;
 import com.jim.model.Repairs;
@@ -35,6 +36,24 @@ public class RepairsController {
 
 
     /**
+     * 查看已完成的报修信息
+     * @param modelAndView
+     * @param id
+     * @return
+     */
+    @GetMapping("/see/{id}")
+    public ModelAndView toSeeRepairById(ModelAndView modelAndView,@PathVariable String id){
+        RepairsDTO repairsDTO = repairsService.getRepairsDTO(id);
+        modelAndView.addObject("repairsDTO",repairsDTO);
+        modelAndView.setViewName("repair-manage/repair-info");
+        return modelAndView;
+    }
+
+
+
+
+
+    /**
      * 进入故障申报页面
      * @param modelAndView
      * @param sno
@@ -43,7 +62,6 @@ public class RepairsController {
     @GetMapping("/declare/{sno}")
     public ModelAndView toDeclare(ModelAndView modelAndView
                                     ,@PathVariable("sno")String  sno){
-
         DeclareDTO declareDTO = repairsService.getDeclareDTOBySno(sno);
         modelAndView.addObject("declareDTO",declareDTO);
         modelAndView.setViewName("repair-manage/declare");

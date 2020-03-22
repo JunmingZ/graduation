@@ -10,10 +10,7 @@ import com.jim.dto.DeclareDTO;
 import com.jim.dto.RepairStatisticsDTO;
 import com.jim.dto.RepairsDTO;
 import com.jim.mapper.*;
-import com.jim.model.RepairType;
-import com.jim.model.Repairman;
-import com.jim.model.Repairs;
-import com.jim.model.Student;
+import com.jim.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -384,5 +381,48 @@ public class RepairsService {
         // 2. 获取报修类型集
         declareDTO.setRepairTypes( repairTypeMapper.selectList(null));
         return declareDTO;
+    }
+
+
+    /**
+     * 获取已完成的报修信息
+     * @param id
+     * @return
+     */
+    public RepairsDTO getRepairsDTO(String id) {
+        // 1. 先获取维修任务进行封装
+        Repairs repairs = repairsMapper.selectById(id);
+        RepairsDTO repairsDTO = new RepairsDTO();
+        BeanUtils.copyProperties(repairs,repairsDTO);
+
+        // 2. 获取维修类型
+        if(repairs.getTypeId()!=0){
+            RepairType repairType = repairTypeMapper.selectById(repairs.getTypeId());
+            repairsDTO.setType(repairType.getType());
+        }else {
+            repairsDTO.setType("未分配类型");
+        }
+
+        // 3. 不是空时获取维修人名
+        if(repairs.getRepairmanId()!=0){
+            Repairman repairman = repairmanMapper.selectById(repairs.getRepairmanId());
+            repairsDTO.setRepairman(repairman.getName());
+        }else {
+            repairsDTO.setRepairman("未分配维修员");
+        }
+
+        // 4. 不是空时获取评价
+        if(repairs.getEvaluationId()!=0){
+            Evaluate evaluate = evaluateMapper.selectById(repairs.getEvaluationId());
+            repairsDTO.setEvaluation(evaluate.getContent());
+            repairsDTO.setStar(evaluate.getStar());
+        }else {
+            repairsDTO.setEvaluation("尚未评价");
+            repairsDTO.setStar(0);
+        }
+
+
+
+        return repairsDTO;
     }
 }

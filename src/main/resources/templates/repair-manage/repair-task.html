@@ -235,7 +235,7 @@
 
             //监听行工具事件
             table.on('tool(test)', function(obj){
-                var data = obj.data;
+                let data = obj.data;
                 if(obj.event === 'del'){
                     layer.confirm('真的删除吗?', function(index){
                         $.ajax({
@@ -265,7 +265,9 @@
 
                     });
                 } else if(obj.event === 'edit'){
-                    xadmin.open('编辑报修类型','/repairs/edit?id='+data.id,800,600);
+                    xadmin.open('编辑报修','/repairs/edit?id='+data.id,800,600);
+                } else if(obj.event === 'see'){
+                    xadmin.open('查看报修信息','/repairs/see/'+data.id,800,600);
                 }
             });
 

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>报修信息</title>
+    <title>Title</title>
     <header th:replace="header::html"></header>
 </head>
 <body>
@@ -10,7 +10,11 @@
     <div class="layui-row">
         <div class="layui-fluid">
             <div class="layui-row">
-                <table class="layui-table " lay-size="sm">
+                <table class="layui-table " >
+                    <colgroup>
+                        <col width="100">
+                        <col width="100">
+                    </colgroup>
                     <thead>
                     <tr>
                         <th colspan="2" style="text-align: center;">报修信息</th>
@@ -19,7 +23,7 @@
                     <tbody>
                     <tr>
                         <td>报修ID</td>
-                        <td th:text="${repairsDTO.id}"></td>
+                        <td th:text="${repairsDTO.id}" id="repairId"></td>
                     </tr>
                     <tr>
                         <td>报修学号</td>
@@ -41,13 +45,20 @@
                         <td>维修员</td>
                         <td th:text="${repairsDTO.repairman}"></td>
                     </tr>
-
                     <tr>
-                        <td>评价等级</td>
+                        <td>维修状态</td>
+                        <td >
+                            <span class="layui-btn layui-btn-xs  layui-btn-danger" th:if="${repairsDTO.state==1}">待分配</span>
+                            <span class="layui-btn layui-btn-xs   layui-btn-warm" th:if="${repairsDTO.state==2}">待处理</span>
+                            <span class="layui-btn layui-btn-xs   layui-btn-normal" th:if="${repairsDTO.state==3}">已处理</span>
+                        </td>
+                    </tr>
+                    <tr th:if="${repairsDTO.state==3}">
+                        <td>等级</td>
                         <td ><span id="test1"></span></td>
                     </tr>
-                    <tr>
-                        <td>评价内容</td>
+                    <tr th:if="${repairsDTO.state==3}">
+                        <td>评价</td>
                         <td th:text="${repairsDTO.evaluation}"></td>
                     </tr>
                     <tr>
@@ -58,19 +69,24 @@
                         <td>更新时间</td>
                         <td th:text="${#dates.format(repairsDTO.utime,'yyyy-MM-dd HH:mm')}"></td>
                     </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: center;">
+                            <span class="layui-btn  layui-btn-radius  layui-btn-normal" th:if="${repairsDTO.state==3}"  th:onclick="'javascript:eval('+${repairsDTO.star}+')'">评价</span>
+                        </td>
+                    </tr>
 
                     </tbody>
                 </table>
+
             </div>
         </div>
     </div>
 </div>
-
+</body>
 
 <script th:inline="javascript">
     layui.use('rate', function(){
         var rate = layui.rate;
-
         //渲染
         rate.render({
             elem: '#test1'  //绑定元素
@@ -78,7 +94,27 @@
             , length: 5
             ,readonly:true
         });
+
+        // 打开评价
+        eval = function(value){
+
+            if(value>0){
+                layer.msg("对不起，已评价过",{icon: 2,anim: 6});
+                return false;
+            }
+            layer.open({
+                type: 2,
+                title: '评价',
+                id: 'layerDemo', //防止重复点击
+                shadeClose: true,
+                shade: false,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['50%','70%'],
+                content: "/api/getPage?pageName=evaluation/evaluation"
+            });
+        };
+
+
     });
 </script>
-</body>
 </html>

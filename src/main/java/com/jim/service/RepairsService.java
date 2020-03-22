@@ -414,15 +414,16 @@ public class RepairsService {
         // 4. 不是空时获取评价
         if(repairs.getEvaluationId()!=0){
             Evaluate evaluate = evaluateMapper.selectById(repairs.getEvaluationId());
+            repairsDTO.setEvaluationId(evaluate.getId());
             repairsDTO.setEvaluation(evaluate.getContent());
             repairsDTO.setStar(evaluate.getStar());
         }else {
             repairsDTO.setEvaluation("尚未评价");
             repairsDTO.setStar(0);
+            repairsDTO.setEvaluationId(0L);
         }
-
-
 
         return repairsDTO;
     }
+
 }

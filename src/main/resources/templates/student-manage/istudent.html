@@ -74,10 +74,20 @@
         let  form = layui.form;
         let element = layui.element;
         let sno = [[${student.sno}]];
-
+        // 查看个人报修信息
         seeRepair = function(value){
-            console.log(value)
+            layer.open({
+                type: 2,
+                title: '个人报修信息',
+                shadeClose: true,
+                shade: false,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['70%','70%'],
+                content: "/repairs/studentRepairInfo/"+value,
+            });
         };
+
+
         // 编辑个人信息
         selfInfo = function(){
             layer.open({
@@ -86,7 +96,7 @@
                 shadeClose: true,
                 shade: false,
                 maxmin: true, //开启最大化最小化按钮
-                area: ['90%','70%'],
+                area: ['50%','70%'],
                 content: "/student/edit/"+sno,
             });
         };
@@ -99,7 +109,7 @@
                 shadeClose: true,
                 shade: false,
                 maxmin: true, //开启最大化最小化按钮
-                area: ['90%','70%'],
+                area: ['50%','70%'],
                 content: "/repairs/declare/"+sno,
             });
         };

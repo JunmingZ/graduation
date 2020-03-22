@@ -13,6 +13,7 @@ public class RepairsDTO {
     private Integer state;
     private Integer star;   // 星级
     private String  evaluation;  // 评价
+    private Long evaluationId;
     private Long ctime;
     private Long utime;
 }

@@ -46,6 +46,7 @@ public enum ResponseCode {
 	//评价
 	//5000701 - 5000800
 	DELETE_EVALUATE_IS_FAIL(5000701,"删除评价失败"),
+	EVALUATE_OF_REPAIRID_NULL(5000702,"评价对应的报修号为空")
 
 ;
 	private Integer code;

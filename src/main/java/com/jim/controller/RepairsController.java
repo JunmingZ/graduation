@@ -34,6 +34,20 @@ public class RepairsController {
     @Resource
     private RepairTypeService repairTypeService;
 
+    /**
+     * 通过学号获取学生报修的信息
+     * @param modelAndView
+     * @param id
+     * @return
+     */
+    @GetMapping("/studentRepairInfo/{id}")
+    public ModelAndView toStudentRepairInfoById(ModelAndView modelAndView,@PathVariable String id){
+        RepairsDTO repairsDTO = repairsService.getRepairsDTO(id);
+        modelAndView.addObject("repairsDTO",repairsDTO);
+        modelAndView.setViewName("student-manage/student-repairs");
+        return modelAndView;
+    }
+
 
     /**
      * 查看已完成的报修信息

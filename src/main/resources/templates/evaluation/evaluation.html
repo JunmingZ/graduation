@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>评价</title>
+    <header th:replace="header::html"></header>
+</head>
+<body>
+<div class="layui-container">
+    <div class="layui-row">
+        <div class="layui-fluid">
+            <div class="layui-row">
+                <form class="layui-form">
+                    <div class="layui-form-item">
+                        <label for="test1" class="layui-form-label">
+                            星级
+                        </label>
+                        <div class="layui-input-inline">
+                            <span id="test1"></span>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="L_content" class="layui-form-label">
+                            评价
+                        </label>
+                        <div class="layui-input-inline">
+<!--                            <input type="text" id="L_content" name="content" required="" lay-verify="required" autocomplete="off" class="layui-input" >-->
+                            <textarea placeholder="请给出你的评价" class="layui-textarea" id="L_content" name="content" lay-verify="required" autocomplete="off"></textarea>
+                        </div>
+                    </div>
+
+
+                    <div class="layui-form-item">
+                        <label for="L_content" class="layui-form-label"></label>
+                        <button  class="layui-btn" lay-filter="add" lay-submit="">
+                            评价
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>layui.use(['form', 'layer','rate'],
+    function() {
+        $ = layui.jquery;
+        let form = layui.form,
+            layer = layui.layer;
+        let rate = layui.rate;
+        //渲染
+        let starMethod = rate.render({
+            elem: '#test1'  //绑定元素
+            ,value: 1
+            , length: 5
+        });
+
+
+        //监听提交
+        form.on('submit(add)', function(data) {
+            //获取评分星级
+            let star = starMethod.config.value;
+            //获取父页面的值
+            let repairId = parent.$('#repairId').text();
+            $.ajax({
+                url:"/evaluate/add",
+                type:"POST",
+                data:{
+                    content:data.field.content,
+                    star:star,
+                    repairId:repairId
+                },
+                dataType:'json',
+                success:function(result){
+                    if(result.code === 500){
+                        layer.msg(result.msg);
+                    }else if(result.code === 200){
+                        layer.msg("设置成功", {icon: 6,anim: 6,time:2000},function () {
+                            parent.location.reload();
+                            //关闭当前frame
+                            xadmin.close();
+                            // 可以对父窗口进行刷新
+                            // xadmin.father_reload();
+                        });
+                    }else {
+                        layer.msg("评价失败")
+                    }
+                },
+                error:function () {
+                    layer.msg('系统错误,请联系管理员小姐姐');
+                }
+            });
+
+            return false;
+        });
+    });</script>
+</body>
+</html>

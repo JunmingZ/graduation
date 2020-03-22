@@ -13,6 +13,7 @@ import com.jim.model.Evaluate;
 import com.jim.model.Repairs;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -22,6 +23,7 @@ import java.util.*;
  * 报修评价业务层
  */
 @Service
+@Transactional
 public class EvaluateService {
 
     @Resource
@@ -127,5 +129,31 @@ public class EvaluateService {
         map.put("evaluate",evaluate);
         map.put("repairs",repairs);
         return map;
+    }
+
+    /**
+     * 添加评价
+     * @param evaluate
+     * @param repairId
+     */
+    public Results addEvaluation(Evaluate evaluate, Long repairId) {
+        // 1. 添加评价
+        evaluate.setCtime(System.currentTimeMillis());
+        evaluate.setRepairsId(repairId);
+        int insert = evaluateMapper.insert(evaluate);
+        System.out.println(insert);
+        if(insert<=0){
+            return Results.failure(ResponseCode.INSERT_EXCEPTION);
+        }
+        QueryWrapper<Evaluate> wrapper = new QueryWrapper<>();
+        wrapper.eq("repairs_id",evaluate.getRepairsId());
+        Evaluate e = evaluateMapper.selectOne(wrapper);
+        // 2. 将评价id存储到对应的报修表中
+        Repairs repairs = repairsMapper.selectById(e.getRepairsId());
+        repairs.setEvaluationId(e.getId());
+        if(repairsMapper.updateById(repairs)>0){
+            return Results.success();
+        }
+        return Results.failure();
     }
 }

@@ -1,10 +1,12 @@
 package com.jim.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.jim.base.enums.ResponseCode;
 import com.jim.base.result.PageTableRequest;
 import com.jim.base.result.Results;
 import com.jim.model.Evaluate;
 import com.jim.service.EvaluateService;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -16,6 +18,24 @@ import java.util.Map;
 public class EvaluateController {
     @Resource
     private EvaluateService evaluateService;
+
+    /**
+     * 添加评价
+     * @param evaluate
+     * @param repairId
+     * @return
+     */
+    @PostMapping("/add")
+    public Results addEvaluation(Evaluate evaluate, Long repairId){
+        if(evaluate==null){
+            return Results.failure(ResponseCode.OBJECT_IS_NULL);
+        }
+        if(repairId==null || repairId == 0){
+            return Results.failure(ResponseCode.EVALUATE_OF_REPAIRID_NULL);
+        }
+
+        return evaluateService.addEvaluation(evaluate,repairId);
+    }
 
     /**
      * 获取评价列表

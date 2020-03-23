@@ -73,16 +73,19 @@ public class EvaluateService {
         if(StringUtils.isEmpty(id)){
             return Results.failure(ResponseCode.DELETE_ID_IS_NULL.getCode(),ResponseCode.DELETE_ID_IS_NULL.getMessage());
         }
-        if(evaluateMapper.deleteById(id)>0){
-            QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
-            wrapper.eq("evaluation_id",id);
-            Repairs repairs = new Repairs();
-            repairs.setEvaluationId(0L);
-            repairsMapper.update(repairs,wrapper);
-            return Results.ok();
-        }else {
-            return Results.failure();
+        QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
+        wrapper.eq("evaluation_id",id);
+        Repairs repairs = new Repairs();
+        repairs.setEvaluationId(0L);
+        // 1. 先更新维修表
+        if(repairsMapper.update(repairs, wrapper)>0){
+            // 2. 再删除
+            if(evaluateMapper.deleteById(id)>0){
+                return Results.success();
+            }
         }
+        return Results.failure();
+
     }
 
 
@@ -102,14 +105,16 @@ public class EvaluateService {
             wrapper.eq("evaluation_id", id);
             Repairs repairs = new Repairs();
             repairs.setEvaluationId(0L);
-            repairsMapper.update(repairs, wrapper);
-            return null;
+            int update = repairsMapper.update(repairs, wrapper);
+            if(update<=0){
+                return Results.failure();
+            }
         }
 
         if(evaluateMapper.deleteBatchIds(Arrays.asList(split))==0){
             return Results.failure();
         }
-        return Results.ok();
+        return Results.success();
     }
 
 

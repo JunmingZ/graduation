@@ -107,9 +107,8 @@
 
             //头工具栏事件
             table.on('toolbar(test)', function(obj){
+                // 获取选中行
                 var checkStatus = table.checkStatus(obj.config.id);
-                // console.log("obj--->  "+obj);
-                // console.log("obj.config--->  "+obj.config);
                 switch(obj.event){
                     case 'getCheckData':
                         var data = checkStatus.data;
@@ -193,7 +192,7 @@
                             success:function(result){
 
                                 if(result.code==200){
-                                    layer.alert("删除成功", {icon: 1},function (index1) {
+                                    layer.msg("删除成功", {icon: 1},function (index1) {
                                         layer.close(index1);
                                         //整个页面刷新
                                         // xadmin.father_reload();
@@ -201,7 +200,7 @@
                                         table.reload('test');
                                     });
                                 } else if(result.code ==1002){
-                                    layer.alert(result.msg);
+                                    layer.msg(result.msg);
                                 }
                                 else {
                                     layer.msg('删除失败');

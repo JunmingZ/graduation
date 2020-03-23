@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.enums.ResponseCode;
 import com.jim.base.result.PageTableRequest;
 import com.jim.base.result.Results;
+import com.jim.dto.RepairsDTO;
 import com.jim.model.Evaluate;
 import com.jim.service.EvaluateService;
 import org.springframework.util.StringUtils;
@@ -79,8 +80,8 @@ public class EvaluateController {
      */
     @GetMapping("/info")
     public ModelAndView toEvaluateInfo(String id,ModelAndView modelAndView){
-        Map evaluateInfo = evaluateService.getEvaluateInfo(id);
-        modelAndView.addAllObjects(evaluateInfo);
+        RepairsDTO evaluateInfo = evaluateService.getEvaluateInfo(id);
+        modelAndView.addObject("evaluateInfo",evaluateInfo);
         modelAndView.setViewName("evaluation/evaluation-info");
         return modelAndView;
     }

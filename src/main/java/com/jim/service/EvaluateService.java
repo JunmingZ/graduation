@@ -7,9 +7,14 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.enums.ResponseCode;
 import com.jim.base.result.Results;
 import com.jim.dto.EvaluateDTO;
+import com.jim.dto.RepairsDTO;
 import com.jim.mapper.EvaluateMapper;
+import com.jim.mapper.RepairTypeMapper;
+import com.jim.mapper.RepairmanMapper;
 import com.jim.mapper.RepairsMapper;
 import com.jim.model.Evaluate;
+import com.jim.model.RepairType;
+import com.jim.model.Repairman;
 import com.jim.model.Repairs;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -32,6 +37,11 @@ public class EvaluateService {
     @Resource
     private RepairsMapper repairsMapper;
 
+    @Resource
+    private RepairmanMapper repairmanMapper;
+
+    @Resource
+    private RepairTypeMapper repairTypeMapper;
     /**
      * 获取评价列表
      * @param page
@@ -119,21 +129,29 @@ public class EvaluateService {
 
 
     /**
-     * 获取评价信息
+     * 获取评价详细信息
      * @param id
      * @return
      */
-    public Map getEvaluateInfo(String id) {
+    public RepairsDTO getEvaluateInfo(String id) {
+        // 1. 查出评价
         Evaluate evaluate = evaluateMapper.selectById(id);
 
-        QueryWrapper<Repairs> wrapper = new QueryWrapper();
-        wrapper.eq("evaluation_id",id);
-        Repairs repairs = repairsMapper.selectOne(wrapper);
-
-        Map map = new HashMap();
-        map.put("evaluate",evaluate);
-        map.put("repairs",repairs);
-        return map;
+        // 2. 查出对应的报修
+        Repairs repairs = repairsMapper.selectById(evaluate.getRepairsId());
+        RepairsDTO repairsDTO = new RepairsDTO();
+        BeanUtils.copyProperties(repairs,repairsDTO);
+        System.out.println(repairsDTO);
+        // 3. 搜索维修类型
+        RepairType repairType = repairTypeMapper.selectById(repairs.getTypeId());
+        repairsDTO.setType(repairType.getType());
+        // 4. 搜索维修人
+        Repairman repairman = repairmanMapper.selectById(repairs.getRepairmanId());
+        repairsDTO.setRepairman(repairman.getName());
+        // 5. 封装评价
+        repairsDTO.setStar(evaluate.getStar());
+        repairsDTO.setEvaluation(evaluate.getContent());
+        return repairsDTO;
     }
 
     /**
@@ -146,7 +164,7 @@ public class EvaluateService {
         evaluate.setCtime(System.currentTimeMillis());
         evaluate.setRepairsId(repairId);
         int insert = evaluateMapper.insert(evaluate);
-        System.out.println(insert);
+
         if(insert<=0){
             return Results.failure(ResponseCode.INSERT_EXCEPTION);
         }
@@ -156,6 +174,7 @@ public class EvaluateService {
         // 2. 将评价id存储到对应的报修表中
         Repairs repairs = repairsMapper.selectById(e.getRepairsId());
         repairs.setEvaluationId(e.getId());
+        repairs.setUtime(System.currentTimeMillis());
         if(repairsMapper.updateById(repairs)>0){
             return Results.success();
         }

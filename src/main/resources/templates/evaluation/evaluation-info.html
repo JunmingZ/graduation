@@ -23,27 +23,31 @@
                     <tbody>
                     <tr>
                         <td>报修ID</td>
-                        <td th:text="${repairs.id}"></td>
+                        <td th:text="${evaluateInfo.id}"></td>
                     </tr>
                     <tr>
                         <td>报修学号</td>
-                        <td th:text="${repairs.sno}"></td>
-                    </tr>
-                    <tr>
-                        <td>报修类型ID</td>
-                        <td th:text="${repairs.typeId}"></td>
-                    </tr>
-                    <tr>
-                        <td>报修内容</td>
-                        <td th:text="${repairs.content}"></td>
+                        <td th:text="${evaluateInfo.sno}"></td>
                     </tr>
                     <tr>
                         <td>宿舍号</td>
-                        <td th:text="${repairs.dormitory}"></td>
+                        <td th:text="${evaluateInfo.dormitory}"></td>
                     </tr>
                     <tr>
-                        <td>维修工号</td>
-                        <td th:text="${repairs.repairmanId}"></td>
+                        <td>报修类型ID</td>
+                        <td th:text="${evaluateInfo.type}"></td>
+                    </tr>
+                    <tr>
+                        <td>报修内容</td>
+                        <td th:text="${evaluateInfo.content}"></td>
+                    </tr>
+                    <tr>
+                        <td>维修人工号</td>
+                        <td th:text="${evaluateInfo.repairmanId}"></td>
+                    </tr>
+                    <tr>
+                        <td>维修人</td>
+                        <td th:text="${evaluateInfo.repairman}"></td>
                     </tr>
 
                     <tr>
@@ -52,13 +56,16 @@
                     </tr>
                     <tr>
                         <td>评价内容</td>
-                        <td th:text="${evaluate.content}"></td>
+                        <td th:text="${evaluateInfo.evaluation}"></td>
                     </tr>
                     <tr>
-                        <td>评价创建时间</td>
-                        <td th:text="${#dates.format(evaluate.ctime,'yyyy-MM-dd HH:mm')}"></td>
+                        <td>创建时间</td>
+                        <td th:text="${#dates.format(evaluateInfo.ctime,'yyyy-MM-dd HH:mm')}"></td>
                     </tr>
-
+                    <tr>
+                        <td>更新时间</td>
+                        <td th:text="${#dates.format(evaluateInfo.utime,'yyyy-MM-dd HH:mm')}"></td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -71,7 +78,7 @@
                 //渲染
                 rate.render({
                     elem: '#test1'  //绑定元素
-                    ,value: [[${evaluate.star}]]
+                    ,value: [[${evaluateInfo.star}]]
                     , length: 5
                     ,readonly:true
                 });

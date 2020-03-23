@@ -115,7 +115,7 @@ public class AdminService {
      * 检查
      * @param login
      */
-    public Results  checkAdmin(LoginDTO<Admin> login) {
+    public Results  checkAdmin(LoginDTO login) {
         QueryWrapper<Admin> wrapper = new QueryWrapper<>();
         wrapper.eq("id",login.getId()).eq("password",login.getPassword());
         Integer integer = adminMapper.selectCount(wrapper);

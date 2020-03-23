@@ -126,13 +126,21 @@ public class RepairmanService {
      * @param login
      * @return
      */
-    public Results checkAdmin(LoginDTO login) {
-        QueryWrapper<Repairman> wrapper = new QueryWrapper<>();
-        wrapper.eq("id",login.getId()).eq("password",login.getPassword());
-        Integer integer = repairmanMapper.selectCount(wrapper);
-        if(integer>0){
-            return Results.ok("repairman/irepairman");
+    public Results checkRepairman(LoginDTO login) {
+        // 1. 检查是否在职
+        Repairman repairman = repairmanMapper.selectById(login.getId());
+        if(repairman==null){
+            return Results.failure(ResponseCode.REPAIRMAN_NOT_EXIST);
         }
-        return Results.failure(ResponseCode.LOGIN_ACCPASS_NOT_FOUND.getCode(),ResponseCode.LOGIN_ACCPASS_NOT_FOUND.getMessage());
+        if(repairman.getFlag()!=1){
+            return Results.failure(ResponseCode.REPAIRMAN_QUIT);
+        }
+
+        if(login.getPassword().equals(repairman.getPassword())){
+            return Results.success("repairman/irepairman");
+        }
+        return Results.failure(ResponseCode.LOGIN_ACCPASS_NOT_FOUND);
     }
+
+
 }

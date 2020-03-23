@@ -44,7 +44,7 @@ public class LoginController {
             case 1:
                 return studentService.checkStudent(login);  //学生
             case 2:
-                return repairmanService.checkAdmin(login);    //维修员
+                return repairmanService.checkRepairman(login);    //维修员
             case 3:
                 return adminService.checkAdmin(login);  // 管理员
         }

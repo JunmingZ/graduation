@@ -24,6 +24,7 @@ public enum ResponseCode {
 	//5000201 - 5000300
 	DORMITORY_REPEAT(5000201,"错误操作，该宿舍已存在！！！"),
 	DORMITORY_NOT_EXIST(5000202,"该学生不在该宿舍！！！"),
+
 	//报修类型
 	//5000301 - 5000400
 	REPAIR_TYPE_REPEAT(5000301,"错误操作，该报修类型已存在！！！"),
@@ -37,10 +38,11 @@ public enum ResponseCode {
 	//5000501 - 5000600
 	REPAIRMAN_UPDATE_FLAG(5000501,"错误操作，更新状态失败！！！"),
 	REPAIRMAN_FLAG_NULL(5000502,"维修人的职位状态为空"),
-
+	REPAIRMAN_QUIT(5000503,"你已离职"),
+	REPAIRMAN_NOT_EXIST(5000504,"你的工号不存在"),
 	//登录
 	//5000601 - 5000700
-	LOGIN_ACCPASS_NOT_FOUND(5000601,"登录失败，账号密码错误或者待审核中"),
+	LOGIN_ACCPASS_NOT_FOUND(5000601,"登录失败，账号密码错误"),
 
 
 	//评价

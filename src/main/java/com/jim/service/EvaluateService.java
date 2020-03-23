@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.enums.ResponseCode;
 import com.jim.base.result.Results;
-import com.jim.dto.EvaluateDTO;
 import com.jim.dto.RepairsDTO;
 import com.jim.mapper.EvaluateMapper;
 import com.jim.mapper.RepairTypeMapper;
@@ -22,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.Arrays;
 
 /**
  * 报修评价业务层
@@ -45,34 +44,21 @@ public class EvaluateService {
     /**
      * 获取评价列表
      * @param page
-     * @param id
+     * @param repairsId
      * @return
      */
-    public Results getEvaluateListByPage(Page page, String id) {
+    public Results getEvaluateListByPage(Page page, String  repairsId) {
         QueryWrapper<Evaluate> wrapper = new QueryWrapper<>();
         IPage iPage = null;
-        if(!StringUtils.isEmpty(id)){
-            //模糊查询
-            wrapper.like("id",id);
-        }
-        iPage = evaluateMapper.selectPage(page,wrapper);
-        List<Evaluate> records = iPage.getRecords();
-        List<EvaluateDTO> list  = new ArrayList<>();
-
-        for (Evaluate record : records) {
-            EvaluateDTO evaluateDTO = new EvaluateDTO();
-            QueryWrapper<Repairs> evaluateId = new QueryWrapper<>();
-            evaluateId.eq("evaluation_id",record.getId());
-            Repairs repairs = repairsMapper.selectOne(evaluateId);  //通过evaluation_id查找报修任务表的相关信息
-            BeanUtils.copyProperties(record,evaluateDTO);
-            if(repairs!=null){
-                evaluateDTO.setSno(repairs.getSno());
-                evaluateDTO.setRepairmanId(repairs.getRepairmanId());
-            }
-            list.add(evaluateDTO);
+        //
+        if(!StringUtils.isEmpty(repairsId)){
+            // 1. 按报修号查询
+            wrapper.like("repairs_id",repairsId);
         }
 
-        return Results.success((int) iPage.getTotal(),list);
+
+        iPage = evaluateMapper.selectPage(page, wrapper);
+        return Results.success((int) iPage.getTotal(),iPage.getRecords());
     }
     /**
      * 通过id单个删除

@@ -41,12 +41,12 @@ public class EvaluateController {
     /**
      * 获取评价列表
      * @param pageTableRequest
-     * @param id
+     * @param repairsId
      * @return
      */
     @GetMapping("/list")
-    public Results getEvaluateList(PageTableRequest pageTableRequest, @RequestParam(required = false) String id){
-        return evaluateService.getEvaluateListByPage(new Page(pageTableRequest.getPage(),pageTableRequest.getLimit()),id);
+    public Results getEvaluateList(PageTableRequest pageTableRequest, @RequestParam(required = false) String repairsId){
+        return evaluateService.getEvaluateListByPage(new Page(pageTableRequest.getPage(),pageTableRequest.getLimit()),repairsId);
     }
 
 

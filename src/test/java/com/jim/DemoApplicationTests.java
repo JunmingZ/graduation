@@ -1,5 +1,6 @@
 package com.jim;
 
+import com.jim.model.Dormitory;
 import com.jim.model.Student;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -15,8 +16,12 @@ class DemoApplicationTests {
 
     @Test
     void contextLoads() {
-       Long a = 3l;
-        System.out.println(a==3);
+       Student student = new Student();
+       student.setSno(4L);
+        Dormitory dormitory = new Dormitory();
+        dormitory.setId(4L);
+
+       System.out.println(student.getSno().equals(dormitory.getId()));
     }
 
 }

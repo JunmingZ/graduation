@@ -24,7 +24,7 @@
                             <form class="layui-form layui-col-space5">
 
                                 <div class="layui-inline layui-show-xs-block">
-                                    <input type="text" name="id" placeholder="请输入ID" autocomplete="off" class="layui-input"></div>
+                                    <input type="text" name="id" placeholder="请输入报修号" autocomplete="off" class="layui-input"></div>
                                 <div class="layui-inline layui-show-xs-block">
                                     <button class="layui-btn" lay-submit="" lay-filter="search">
                                         <i class="layui-icon">&#xe615;</i></button>
@@ -60,8 +60,7 @@
             let list =  [
                 {type: 'checkbox', fixed: 'left',id: 'idTest'}
                 ,{field:'id', title:'ID', width:120, fixed: 'left', unresize: true, sort: true}
-                ,{field:'sno', title:'学号'}
-                ,{field:'repairmanId', title:'维修人员工号'}
+                ,{field:'repairsId', title:'报修号'}
                 ,{field:'star', title:'等级',id: 'z',templet: function (d) {
                         return '<div id="avgScore'+d.id+'"  style="line-height: 0px"></div>'
                     }}
@@ -84,7 +83,7 @@
                     });
 
                 }
-            }
+            };
             table.render({
                 elem: '#test'
                 ,url:'/evaluate/list'
@@ -156,7 +155,7 @@
                     ,url: '/evaluate/list' //数据接口
                     ,page: true //开启分页
                     ,where:{
-                        "id":id
+                        repairsId:id
                     }
                     ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
                     ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可

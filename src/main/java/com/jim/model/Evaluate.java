@@ -15,6 +15,4 @@ public class Evaluate {
   private Integer star;      //评价等级
   private String  content;   //评价内容
   private Long ctime;
-
-
 }

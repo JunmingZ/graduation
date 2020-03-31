@@ -23,6 +23,7 @@
         </ul>
     </div>
 </div>
+
 <div class="layui-container">
     <div class="layui-row">
         <div class="layui-card"  style="margin-top: 20px;" >
@@ -133,6 +134,8 @@
                         if(info.code === 500){
                             layer.alert(info.msg);
                         }else{
+                            // 取自layui模板引擎
+                            // 渲染目把
                             // 1. 数据赋值
                             let data = info.data;
                             // 2. 页面渲染
@@ -190,8 +193,8 @@
                                 // 1. 数据赋值
                                 let data = info.data;
                                 // 2. 页面渲染
-                                let getTpl = demo.innerHTML
-                                    ,view = document.getElementById('view');
+                                let getTpl = demo.innerHTML, view = document.getElementById('view');
+
                                 laytpl(getTpl).render(data, function(html){
                                     view.innerHTML = html;
                                 });

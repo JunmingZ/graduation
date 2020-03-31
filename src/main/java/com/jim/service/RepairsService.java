@@ -426,4 +426,33 @@ public class RepairsService {
         return repairsDTO;
     }
 
+    /**
+     * 通过维修员id获取该维修人统计数
+     * @param id
+     * @return
+     */
+    public Integer selectRepairCountByRepairmanId(Integer id) {
+        QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
+        wrapper.eq("repairman_id",id);
+        return repairsMapper.selectCount(wrapper);
+    }
+
+    /**
+     * 关于该维修员所涉及获取分页信息
+     * @param pageTableRequest
+     * @param repairmanId
+     * @param content
+     */
+    public Results<List> selectRepairsCountByRepairmanId(PageTableRequest pageTableRequest, Integer repairmanId, String content) {
+        Page page = new Page(pageTableRequest.getPage(),pageTableRequest.getLimit());
+        QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
+        wrapper.orderByAsc("state").orderByDesc("ctime");
+        wrapper.eq("repairman_id",repairmanId);
+        if(!StringUtils.isEmpty(content)){
+            wrapper.like("content",content);
+        }
+        IPage iPage = repairsMapper.selectPage(page,wrapper);
+        System.out.println(iPage.getRecords());
+        return Results.success(iPage.getRecords());
+    }
 }

@@ -99,7 +99,7 @@ public class RepairmanService {
      * 通过id获取维修人员
      * @param id
      */
-    public Repairman getRepairmanById(Integer id) {
+    public Repairman getRepairmanById(Integer  id) {
         Repairman repairman = repairmanMapper.selectById(id);
         return repairman;
     }
@@ -127,17 +127,18 @@ public class RepairmanService {
      * @return
      */
     public Results checkRepairman(LoginDTO login) {
-        // 1. 检查是否在职
+        // 1. 检查账号是否存在
         Repairman repairman = repairmanMapper.selectById(login.getId());
         if(repairman==null){
             return Results.failure(ResponseCode.REPAIRMAN_NOT_EXIST);
         }
+        // 2 检查是否在职
         if(repairman.getFlag()!=1){
             return Results.failure(ResponseCode.REPAIRMAN_QUIT);
         }
 
         if(login.getPassword().equals(repairman.getPassword())){
-            return Results.success("repairman/irepairman");
+            return Results.success("repairman/irepairman/"+repairman.getId());
         }
         return Results.failure(ResponseCode.LOGIN_ACCPASS_NOT_FOUND);
     }

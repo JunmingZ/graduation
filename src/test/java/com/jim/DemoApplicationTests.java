@@ -16,12 +16,10 @@ class DemoApplicationTests {
 
     @Test
     void contextLoads() {
-       Student student = new Student();
-       student.setSno(4L);
-        Dormitory dormitory = new Dormitory();
-        dormitory.setId(4L);
+       String a= "11111";
+       String b = "11111";
 
-       System.out.println(student.getSno().equals(dormitory.getId()));
+       System.out.println(a==b);
     }
 
 }

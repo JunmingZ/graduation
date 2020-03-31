@@ -83,7 +83,7 @@ public class StudentController {
     @GetMapping("/istudent/{id}")
     public ModelAndView toIstudent(ModelAndView modelAndView
                                     , @PathVariable("id")String  id
-                                    , HttpServletRequest request){
+                                    ){
         //获取学生信息
         Student studentBySno = studentService.findStudentBySno(id);
         // 1. 存入域
@@ -96,6 +96,7 @@ public class StudentController {
         modelAndView.setViewName("student-manage/istudent");
         return modelAndView;
     }
+
     /**
      * 查出相应数据返回前端
      * @param pageTableRequest 分页初始处理

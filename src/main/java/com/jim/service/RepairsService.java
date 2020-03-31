@@ -446,6 +446,7 @@ public class RepairsService {
     public Results<List> selectRepairsCountByRepairmanId(PageTableRequest pageTableRequest, Integer repairmanId, String content) {
         Page page = new Page(pageTableRequest.getPage(),pageTableRequest.getLimit());
         QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
+        // 根据维修状态升序，创建时间降序
         wrapper.orderByAsc("state").orderByDesc("ctime");
         wrapper.eq("repairman_id",repairmanId);
         if(!StringUtils.isEmpty(content)){

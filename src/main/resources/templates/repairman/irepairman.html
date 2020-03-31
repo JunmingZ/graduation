@@ -51,10 +51,15 @@
     <blockquote class="layui-elem-quote">
         <div class="layui-row">
             <h1 class="site-left product-buyer-name"><a href="javascript:" class="">{{item.dormitory}} {{item.content}}</a></h1>
-            <span class="layui-btn layui-btn-xs layui-btn-radius  layui-btn-danger site-right">待处理</span>
+            {{# if(item.state === 2){  }}
+            <span class="layui-btn layui-btn-xs layui-btn-radius  layui-btn-danger site-right" >待处理</span>
+            {{#  } }}
+            {{# if(item.state === 3){  }}
+            <span class="layui-btn layui-btn-xs layui-btn-radius  layui-btn-normal site-right" >已处理</span>
+            {{#  } }}
         </div>
         <div class="layui-row self-top">
-            <span> {{layui.util.toDateString(item.ctime, 'yyyy-MM-dd HH:mm:ss')}} </span>
+            <span> {{ layui.util.toDateString(item.ctime, 'yyyy-MM-dd HH:mm:ss')}} </span>
         </div>
     </blockquote>
     {{#  }) }}

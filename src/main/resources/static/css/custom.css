@@ -10,7 +10,19 @@
     float: right;
 }
 
+.site-left {
+    float: left;
+}
+
 .self-top {
     margin-top: 20px;
+}
+
+/*限制文本长度*/
+.product-buyer-name {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis; /* 省略*/
+    white-space: nowrap; /*文本内的换行无效。*/
 }
 

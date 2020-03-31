@@ -34,7 +34,9 @@ public class RepairsController {
     @Resource
     private RepairTypeService repairTypeService;
 
-    /**
+
+
+   /**
      * 通过学号获取学生报修的信息
      * @param modelAndView
      * @param id

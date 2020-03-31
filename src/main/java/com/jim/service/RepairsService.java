@@ -85,35 +85,7 @@ public class RepairsService {
         list.add(repairStatisticsDTO.getWait());
         list.add(repairStatisticsDTO.getFinish());
         list.add(repairStatisticsDTO.getTotal());
-        // 2. 存储每个类型的维修统计
-        //for (RepairType repairType : repairTypes) {
-        //    RepairStatisticsDTO repairStatisticsDTO = new RepairStatisticsDTO();
-        //    //3. 获取维修id
-        //    Integer id = repairType.getId();
-        //    repairStatisticsDTO.setType(id);
-        //    // 4. 进行统计
-        //    // 4.1 统计 待分配
-        //    QueryWrapper<Repairs> wrapper1 = new QueryWrapper<>();
-        //    wrapper1.eq("state",1).eq("type_id",id);
-        //    repairStatisticsDTO.setInit(repairsMapper.selectCount(wrapper1));
-        //    // 4.2 待处理
-        //    QueryWrapper<Repairs> wrapper2 = new QueryWrapper<>();
-        //    wrapper2.eq("state",2).eq("type_id",id);;
-        //    repairStatisticsDTO.setWait(repairsMapper.selectCount(wrapper2));
-        //
-        //    // 4.3 已处理
-        //    QueryWrapper<Repairs> wrapper3 = new QueryWrapper<>();
-        //    wrapper3.eq("state",3).eq("type_id",id);;
-        //    repairStatisticsDTO.setFinish(repairsMapper.selectCount(wrapper3));
-        //
-        //    // 4.3 该类型总记录数
-        //    QueryWrapper<Repairs> wrapper4 = new QueryWrapper<>();
-        //    wrapper4.eq("type_id",id);
-        //    repairStatisticsDTO.setTotal(repairsMapper.selectCount(wrapper4));
-        //
-        //    list.add(repairStatisticsDTO);
-        //
-        //}
+
 
         map.put("repairStatisticsDTO",list);
         map.put("types",repairTypes);
@@ -349,7 +321,7 @@ public class RepairsService {
     }
 
     /**
-     * 获取统计
+     * 通过学生学号和内容获取统计
      * @param sno
      * @param content
      * @return
@@ -438,22 +410,21 @@ public class RepairsService {
     }
 
     /**
-     * 关于该维修员所涉及获取分页信息
+     * 关于该维修员所涉及获取分页信息和计数
      * @param pageTableRequest
      * @param repairmanId
      * @param content
      */
-    public Results<List> selectRepairsCountByRepairmanId(PageTableRequest pageTableRequest, Integer repairmanId, String content) {
+    public Results selectRepairsCountByRepairmanId(PageTableRequest pageTableRequest, Integer repairmanId, String content) {
         Page page = new Page(pageTableRequest.getPage(),pageTableRequest.getLimit());
         QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
         // 根据维修状态升序，创建时间降序
         wrapper.orderByAsc("state").orderByDesc("ctime");
-        wrapper.eq("repairman_id",repairmanId);
+        wrapper.eq("repairman_id",repairmanId).notIn("state",1);
         if(!StringUtils.isEmpty(content)){
-            wrapper.like("content",content);
+            wrapper.like("dormitory",content);
         }
         IPage iPage = repairsMapper.selectPage(page,wrapper);
-        System.out.println(iPage.getRecords());
-        return Results.success(iPage.getRecords());
+        return Results.success((int) iPage.getTotal(),iPage.getRecords());
     }
 }

@@ -81,6 +81,7 @@
         let laypage = layui.laypage;
         let  form = layui.form;
         let element = layui.element;
+
         let repairmanId = [[${repairman.id}]]
         // 初始分页
         laypage.render({
@@ -98,11 +99,13 @@
                         limit:obj.limit
                     },
                     success:function (info) {
+                        console.log(info)
                         if(info.code === 500){
                             layer.alert(info.msg);
-                        }else if(info.code === 200){
+                        }else if(info.code === 200|| info.code===0){
+                            console.log(info)
                             // 1. 数据赋值
-                            let data = info.data;
+                            let data = info.datas;
                             // console.log(data);
                             // 2. 页面渲染
                             let getTpl = demo.innerHTML
@@ -119,6 +122,68 @@
                     }
                 });
             }
+        });
+
+        // 搜索
+        form.on('submit(search)', function(data){
+            // 记录后端获取的统计数
+            let count = 0;
+            // 获取数量
+            $.ajax({
+                url: '/repairman/task',
+                type:'post',
+                dataType:'json',
+                async:false,  // 关闭异步，不然全局变量无法接收
+                data:{
+                    repairmanId:repairmanId,
+                    content: data.field.content,
+                    page: 1,
+                    limit: 10
+                },
+                success:function (info) {
+                    console.log(info);
+                    // 获取统计数
+                    count=info.count;
+                }
+            });
+            laypage.render({
+                elem: 'test1' //注意，这里的 test1 是 ID，不用加 # 号
+                ,count: count //数据总数，从服务端得到
+                ,jump: function(obj, first){
+                    // 1. 获取分页数据
+                    $.ajax({
+                        url: '/repairman/task',
+                        type:'post',
+                        dataType:'json',
+                        data:{
+                            repairmanId:repairmanId,
+                            page:obj.curr,
+                            limit:obj.limit,
+                            content: data.field.content
+                        },
+                        success:function (info) {
+                            if(info.code == 500){
+                                layer.alert(info.msg);
+                            }else {
+                                // 1. 数据赋值
+                                let data = info.datas;
+                                // 2. 页面渲染
+                                let getTpl = demo.innerHTML, view = document.getElementById('view');
+
+                                laytpl(getTpl).render(data, function(html){
+                                    view.innerHTML = html;
+                                });
+                            }
+                        },
+                        error:function () {
+                            layer.msg('系统错误');
+                        }
+                    });
+                }
+
+            });
+
+            return false; //禁止点击整个后页面刷新
         });
 
     })

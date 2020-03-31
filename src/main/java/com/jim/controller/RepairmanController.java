@@ -36,8 +36,6 @@ public class RepairmanController {
     public Results getRepairsByRepairmanId(PageTableRequest pageTableRequest
                                             , Integer repairmanId
                                             , @RequestParam(required = false) String content){
-
-
         return  repairsService.selectRepairsCountByRepairmanId(pageTableRequest, repairmanId,content);
     }
 

@@ -20,6 +20,7 @@
 
 /*限制文本长度*/
 .product-buyer-name {
+    line-height: 30px;
     max-width: 200px;
     overflow: hidden;
     text-overflow: ellipsis; /* 省略*/

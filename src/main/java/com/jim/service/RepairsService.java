@@ -422,7 +422,8 @@ public class RepairsService {
         wrapper.orderByAsc("state").orderByDesc("ctime");
         wrapper.eq("repairman_id",repairmanId).notIn("state",1);
         if(!StringUtils.isEmpty(content)){
-            wrapper.like("dormitory",content);
+            //wrapper.like("dormitory",content);
+            wrapper.and(q-> q.like("dormitory",content).or().like("content", content));
         }
         IPage iPage = repairsMapper.selectPage(page,wrapper);
         return Results.success((int) iPage.getTotal(),iPage.getRecords());

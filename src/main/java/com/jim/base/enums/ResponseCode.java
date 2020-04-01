@@ -14,6 +14,7 @@ public enum ResponseCode {
 	DELETE_ID_IS_NULL(1002,"删除的id为空"),
 	UPDATE_FAIL(1003,"更新失败"),
 	DELETE_FAIL(1004,"删除失败"),
+	ID_IS_NULL(1005,"id为空"),
 
 	//信息
 	//5000100 - 5000200

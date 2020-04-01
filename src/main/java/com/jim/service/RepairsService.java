@@ -178,8 +178,6 @@ public class RepairsService {
             return Results.failure(ResponseCode.OBJECT_IS_NULL);
         }
         repairs.setUtime(System.currentTimeMillis());
-        // 1. 进入待处理状态
-        repairs.setState(2);
 
         int i = repairsMapper.updateById(repairs);
         if(i>0){

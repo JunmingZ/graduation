@@ -50,9 +50,9 @@
     {{#  layui.each(d, function(index, item){ }}
     <blockquote class="layui-elem-quote">
         <div class="layui-row">
-            <h1 class="site-left product-buyer-name"><a href="javascript:" class="">{{item.dormitory}} {{item.content}}</a></h1>
+            <h1 class="site-left product-buyer-name"><a href="javascript:" onclick="seeRepair({{ item.id }})">{{item.dormitory}} {{item.content}}</a></h1>
             {{# if(item.state === 2){  }}
-            <span class="layui-btn layui-btn-xs layui-btn-radius  layui-btn-danger site-right" >待处理</span>
+            <span class="layui-btn layui-btn-xs layui-btn-radius  layui-btn-warm site-right" >待处理</span>
             {{#  } }}
             {{# if(item.state === 3){  }}
             <span class="layui-btn layui-btn-xs layui-btn-radius  layui-btn-normal site-right" >已处理</span>
@@ -82,7 +82,21 @@
         let  form = layui.form;
         let element = layui.element;
 
-        let repairmanId = [[${repairman.id}]]
+        let repairmanId = [[${repairman.id}]];
+
+        seeRepair = function(value){
+            layer.open({
+                id: value,
+                type: 2,
+                title: '个人报修信息',
+                maxmin: true, //开启最大化最小化按钮
+                area: ['70%','70%'],
+                content: "/repairman/repairInfo/"+value,
+            });
+        };
+
+
+
         // 初始分页
         laypage.render({
             elem: 'test1' //注意，这里的 test1 是 ID，不用加 # 号
@@ -99,14 +113,11 @@
                         limit:obj.limit
                     },
                     success:function (info) {
-                        console.log(info)
                         if(info.code === 500){
                             layer.alert(info.msg);
                         }else if(info.code === 200|| info.code===0){
-                            console.log(info)
                             // 1. 数据赋值
                             let data = info.datas;
-                            // console.log(data);
                             // 2. 页面渲染
                             let getTpl = demo.innerHTML
                                 ,view = document.getElementById('view');
@@ -141,7 +152,6 @@
                     limit: 10
                 },
                 success:function (info) {
-                    console.log(info);
                     // 获取统计数
                     count=info.count;
                 }

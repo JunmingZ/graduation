@@ -2,10 +2,12 @@ package com.jim.controller;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jim.base.result.PageTableRequest;
 import com.jim.base.enums.ResponseCode;
+import com.jim.base.result.PageTableRequest;
 import com.jim.base.result.Results;
+import com.jim.dto.RepairsDTO;
 import com.jim.model.Repairman;
+import com.jim.model.Repairs;
 import com.jim.service.RepairmanService;
 import com.jim.service.RepairsService;
 import org.springframework.util.StringUtils;
@@ -13,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @RestController
 @RequestMapping("/repairman")
@@ -24,6 +25,25 @@ public class RepairmanController {
 
     @Resource
     private RepairsService repairsService;
+
+    @GetMapping("/ack/{id}")
+    public Results ackRepairInfoById(@PathVariable String id){
+        if(StringUtils.isEmpty(id)){
+            return Results.failure(ResponseCode.ID_IS_NULL);
+        }
+        Repairs repairs = new Repairs();
+        repairs.setId(Long.valueOf(id));
+        repairs.setState(3); // 设置为完成
+        return repairsService.updateRepairsByEntity(repairs);
+    }
+
+    @GetMapping("/repairInfo/{id}")
+    public ModelAndView toRepairmanRepairInfoById(ModelAndView modelAndView,@PathVariable String id){
+        RepairsDTO repairsDTO = repairsService.getRepairsDTO(id);
+        modelAndView.addObject("repairsDTO",repairsDTO);
+        modelAndView.setViewName("repairman/repairman-repairs");
+        return modelAndView;
+    }
 
 
     /**

@@ -122,8 +122,8 @@ public class RepairmanController {
         return repairmanService.addRepairman(repairman);
     }
 
-    @GetMapping("/edit")
-    public ModelAndView toEditRepairman(ModelAndView modelAndView,Integer id){
+    @GetMapping("/edit/{id}")
+    public ModelAndView toEditRepairman(ModelAndView modelAndView,@PathVariable Integer id){
         Repairman repairman = repairmanService.getRepairmanById(id);
         modelAndView.addObject("repairman",repairman);
         modelAndView.setViewName("repairman/repairman-edit");

@@ -106,13 +106,12 @@
                         data:data.field,
                         dataType:'json',
                         success:function(result){
-                            console.log(result)
                             if(result.code === 500|| result.code === 1003){
                                 layer.alert(result.msg);
                             }else{
                                 layer.alert("编辑成功", {icon: 6},function () {
                                     //更新表格
-                                    parent.layui.table.reload('test');
+                                    xadmin.father_reload();
                                     //关闭当前frame
                                     xadmin.close();
                                     // 可以对父窗口进行刷新

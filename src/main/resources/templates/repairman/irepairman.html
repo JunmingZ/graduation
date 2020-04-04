@@ -96,16 +96,15 @@
 
         // 编辑个人信息
         selfInfo = function(){
-            layer.open({
+            const self_info = layer.open({
                 id: "info"+ repairmanId,
                 type: 2,
                 title: '个人信息编辑',
-                shadeClose: true,
-                shade: false,
                 maxmin: true, //开启最大化最小化按钮
-                area: ['50%','70%'],
+                area: ['70%','70%'],
                 content: "/repairman/edit/"+repairmanId,
             });
+            layer.full(self_info); // 弹出即全屏
         };
 
         // 初始分页

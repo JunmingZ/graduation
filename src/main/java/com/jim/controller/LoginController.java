@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class LoginController {
@@ -39,7 +40,7 @@ public class LoginController {
         if(login==null || login.getSole()==null || login.getSole() == 0){
             return Results.failure(ResponseCode.OBJECT_IS_NULL.getCode(),ResponseCode.OBJECT_IS_NULL.getMessage());
         }
-
+        //确定角色
         switch (login.getSole()){
             case 1:
                 return studentService.checkStudent(login);  //学生

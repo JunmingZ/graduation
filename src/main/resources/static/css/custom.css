@@ -27,3 +27,7 @@
     white-space: nowrap; /*文本内的换行无效。*/
 }
 
+.logo-font {
+    font-family:"楷体";
+}
+

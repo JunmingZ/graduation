@@ -99,9 +99,9 @@ body{
 .container .logo a{
     float: left;
     font-size: 18px;
-    padding-left: 20px;
+    /*padding-left: 20px;*/
     line-height: 45px;
-    width: 200px;
+    width: 216px;
 }
 .container .right{
     background-color:rgba(0,0,0,0);

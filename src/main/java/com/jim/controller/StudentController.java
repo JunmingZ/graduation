@@ -6,6 +6,8 @@ import com.jim.base.result.Results;
 import com.jim.model.Student;
 import com.jim.service.RepairsService;
 import com.jim.service.StudentService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -82,8 +84,14 @@ public class StudentController {
      */
     @GetMapping("/istudent/{id}")
     public ModelAndView toIstudent(ModelAndView modelAndView
-                                    , @PathVariable("id")String  id
-                                    ){
+                                    , @PathVariable("id")String  id){
+        // 获取当前登录对象
+        Subject subject = SecurityUtils.getSubject();
+        Student student = (Student) subject.getPrincipal();
+        if(!student.getSno().toString().equals(id)){
+            modelAndView.setViewName("login");
+            return modelAndView;
+        }
         //获取学生信息
         Student studentBySno = studentService.findStudentBySno(id);
         // 1. 存入域

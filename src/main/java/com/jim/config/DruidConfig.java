@@ -12,8 +12,6 @@ import javax.sql.DataSource;
  */
 @Configuration
 public class DruidConfig {
-
-
     //加入初始化init和close，不然会进入死循环
     @Bean(destroyMethod = "close",initMethod = "init")
     //引入application.yml中前缀"spring.datasource"的相关配置

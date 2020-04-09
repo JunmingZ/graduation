@@ -10,11 +10,16 @@ import com.jim.dto.LoginDTO;
 import com.jim.mapper.DormitoryMapper;
 import com.jim.mapper.StudentMapper;
 import com.jim.model.Student;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 @Service
 @Transactional
@@ -135,13 +140,25 @@ public class StudentService {
      * @return
      */
     public Results checkStudent(LoginDTO login) {
-        QueryWrapper<Student> wrapper = new QueryWrapper<>();
-        wrapper.eq("sno",login.getId()).eq("password",login.getPassword()).eq("flag",1);
-        Student student = studentMapper.selectOne(wrapper);
-        if(student!=null){
+        // 1.获取Subject
+        Subject subject = SecurityUtils.getSubject();
+        // 2. 分装用户数据
+        UsernamePasswordToken token = new UsernamePasswordToken(login.getId(),login.getPassword());
+        // 3. 执行登录方法
+        try {
+            subject.login(token);
+            Student student = (Student)subject.getPrincipal();
             return Results.ok("student/istudent/"+student.getSno());
+        }catch (Exception e){
+            return Results.failure(ResponseCode.LOGIN_ACCPASS_NOT_FOUND);
         }
-        return Results.failure(ResponseCode.LOGIN_ACCPASS_NOT_FOUND.getCode(),ResponseCode.LOGIN_ACCPASS_NOT_FOUND.getMessage());
+        //QueryWrapper<Student> wrapper = new QueryWrapper<>();
+        //wrapper.eq("sno",login.getId()).eq("password",login.getPassword()).eq("flag",1);
+        //Student student = studentMapper.selectOne(wrapper);
+        //if(student!=null){
+        //    return Results.ok("student/istudent/"+student.getSno());
+        //}
+        //return Results.failure(ResponseCode.LOGIN_ACCPASS_NOT_FOUND.getCode(),ResponseCode.LOGIN_ACCPASS_NOT_FOUND.getMessage());
     }
 
     /**

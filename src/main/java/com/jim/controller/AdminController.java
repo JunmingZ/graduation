@@ -19,6 +19,18 @@ public class AdminController {
     @Resource
     public AdminService adminService;
 
+    /**
+     * 进入欢迎页
+     * @param modelAndView
+     * @return
+     */
+    @GetMapping("/welcome")
+    public ModelAndView toWelcome(ModelAndView modelAndView){
+        modelAndView.setViewName("admin/welcome");
+        return modelAndView;
+    }
+
+
     @GetMapping("/list")
     public Results getAdminList(PageTableRequest pageTableRequest, @RequestParam(required = false) String id){
         return adminService.getAllAdminListByPage(new Page(pageTableRequest.getPage(),pageTableRequest.getLimit()),id);

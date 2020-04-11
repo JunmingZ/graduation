@@ -5,15 +5,17 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.enums.ResponseCode;
 import com.jim.base.result.Results;
+import com.jim.config.UserToken;
 import com.jim.dto.LoginDTO;
 import com.jim.mapper.RepairmanMapper;
 import com.jim.model.Repairman;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Service
@@ -127,23 +129,32 @@ public class RepairmanService {
      * @param login
      * @return
      */
-    public Results checkRepairman(LoginDTO login, HttpSession session) {
-
-        // 1. 检查账号是否存在
-        Repairman repairman = repairmanMapper.selectById(login.getId());
-        if(repairman==null){
-            return Results.failure(ResponseCode.REPAIRMAN_NOT_EXIST);
-        }
-        // 2 检查是否在职
-        if(repairman.getFlag()!=1){
-            return Results.failure(ResponseCode.REPAIRMAN_QUIT);
-        }
-        // 3. 检查密码
-        if(login.getPassword().equals(repairman.getPassword())){
-            session.setAttribute("loginDTO",login);
+    public Results checkRepairman(LoginDTO login) {
+        // 1.获取Subject
+        Subject subject = SecurityUtils.getSubject();
+        // 3. 执行登录方法
+        try {
+            subject.login(new UserToken(login.getId(),login.getPassword(),login.getSole()));
+            Repairman repairman = (Repairman)subject.getPrincipal();
             return Results.success("repairman/irepairman/"+repairman.getId());
+        }catch (Exception e){
+            return Results.failure(ResponseCode.LOGIN_ACCPASS_NOT_FOUND);
         }
-        return Results.failure(ResponseCode.LOGIN_ACCPASS_NOT_FOUND);
+
+        //// 1. 检查账号是否存在
+        //Repairman repairman = repairmanMapper.selectById(login.getId());
+        //if(repairman==null){
+        //    return Results.failure(ResponseCode.REPAIRMAN_NOT_EXIST);
+        //}
+        //// 2 检查是否在职
+        //if(repairman.getFlag()!=1){
+        //    return Results.failure(ResponseCode.REPAIRMAN_QUIT);
+        //}
+        //
+        //if(login.getPassword().equals(repairman.getPassword())){
+        //    return Results.success("repairman/irepairman/"+repairman.getId());
+        //}
+        //return Results.failure(ResponseCode.LOGIN_ACCPASS_NOT_FOUND);
     }
 
 

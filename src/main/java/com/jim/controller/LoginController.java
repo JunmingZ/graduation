@@ -36,18 +36,18 @@ public class LoginController {
 
     @PostMapping("/login")
     @ResponseBody
-    public Results login(LoginDTO login,HttpSession session){
-        if(login==null || login.getSole()==null || login.getSole() == 0){
+    public Results login(LoginDTO login){
+        if(login==null || login.getSole()==null || login.getSole() == null){
             return Results.failure(ResponseCode.OBJECT_IS_NULL.getCode(),ResponseCode.OBJECT_IS_NULL.getMessage());
         }
         //确定角色
         switch (login.getSole()){
-            case 1:
-                return studentService.checkStudent(login,session);  //学生
-            case 2:
-                return repairmanService.checkRepairman(login,session);    //维修员
-            case 3:
-                return adminService.checkAdmin(login,session);  // 管理员
+            case "Student":
+                return studentService.checkStudent(login);  //学生
+            case "Repairman":
+                return repairmanService.checkRepairman(login);    //维修员
+            case "Admin":
+                return adminService.checkAdmin(login);  // 管理员
         }
 
         return Results.failure();

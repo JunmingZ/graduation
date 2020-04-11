@@ -5,18 +5,19 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.enums.ResponseCode;
 import com.jim.base.result.PageTableRequest;
 import com.jim.base.result.Results;
-import com.jim.dto.LoginDTO;
 import com.jim.dto.RepairsDTO;
 import com.jim.model.Repairman;
 import com.jim.model.Repairs;
+import com.jim.model.Student;
 import com.jim.service.RepairmanService;
 import com.jim.service.RepairsService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/repairman")
@@ -69,15 +70,15 @@ public class RepairmanController {
      * @return
      */
     @GetMapping("/irepairman/{id}")
-    public ModelAndView toRepairman(ModelAndView modelAndView,@PathVariable Integer id, HttpSession session){
-        LoginDTO login = (LoginDTO)session.getAttribute("loginDTO");
-        System.out.println(login);
-        //判断进入id是否登录
-        if(!id.toString().equals(login.getId())){
-            //重定向
+    public ModelAndView toRepairman(ModelAndView modelAndView,@PathVariable Integer id){
+        // 获取当前登录对象
+        Subject subject = SecurityUtils.getSubject();
+        Repairman login = (Repairman) subject.getPrincipal();
+        if(!login.getId().toString().equals(id)){
             modelAndView.setViewName("redirect:/login");
             return modelAndView;
         }
+
         // 1. 获取登录人
         Repairman repairman = repairmanService.getRepairmanById(id);
         modelAndView.addObject("repairman",repairman);

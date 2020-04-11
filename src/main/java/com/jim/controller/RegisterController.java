@@ -28,11 +28,11 @@ public class RegisterController {
     @PostMapping("/register")
     public Results toRegister(LoginDTO register){
         // 校验注册用户
-        if(register==null || register.getSole()==null || register.getSole() == 0){
+        if(register==null || register.getSole()==null || register.getSole() == null){
             return Results.failure(ResponseCode.OBJECT_IS_NULL.getCode(),ResponseCode.OBJECT_IS_NULL.getMessage());
         }
         // 学生
-        if(register.getSole() == 1){
+        if(register.getSole().equals("Student")){
             // 检查注册学生是否在主表已经存在
             Student studentBySno = studentService.findStudentBySno(register.getId().toString());
 

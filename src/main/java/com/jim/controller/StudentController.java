@@ -3,18 +3,16 @@ package com.jim.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.result.PageTableRequest;
 import com.jim.base.result.Results;
-import com.jim.dto.LoginDTO;
 import com.jim.model.Student;
 import com.jim.service.RepairsService;
 import com.jim.service.StudentService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/student")
@@ -85,13 +83,11 @@ public class StudentController {
      */
     @GetMapping("/istudent/{id}")
     public ModelAndView toIstudent(ModelAndView modelAndView
-                                    , @PathVariable("id")String  id
-                                    , HttpSession session) {
-        LoginDTO login = (LoginDTO)session.getAttribute("loginDTO");
-        System.out.println(login);
-        //判断进入id是否登录
-        if(!id.equals(login.getId())){
-            //重定向
+                                    , @PathVariable("id")String  id){
+        // 获取当前登录对象
+        Subject subject = SecurityUtils.getSubject();
+        Student student = (Student) subject.getPrincipal();
+        if(!student.getSno().toString().equals(id)){
             modelAndView.setViewName("redirect:/login");
             return modelAndView;
         }

@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Service
@@ -126,7 +127,8 @@ public class RepairmanService {
      * @param login
      * @return
      */
-    public Results checkRepairman(LoginDTO login) {
+    public Results checkRepairman(LoginDTO login, HttpSession session) {
+
         // 1. 检查账号是否存在
         Repairman repairman = repairmanMapper.selectById(login.getId());
         if(repairman==null){
@@ -136,8 +138,9 @@ public class RepairmanService {
         if(repairman.getFlag()!=1){
             return Results.failure(ResponseCode.REPAIRMAN_QUIT);
         }
-
+        // 3. 检查密码
         if(login.getPassword().equals(repairman.getPassword())){
+            session.setAttribute("loginDTO",login);
             return Results.success("repairman/irepairman/"+repairman.getId());
         }
         return Results.failure(ResponseCode.LOGIN_ACCPASS_NOT_FOUND);

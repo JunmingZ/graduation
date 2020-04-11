@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 
 /**
@@ -115,12 +116,13 @@ public class AdminService {
      * 检查
      * @param login
      */
-    public Results  checkAdmin(LoginDTO login) {
+    public Results  checkAdmin(LoginDTO login, HttpSession session) {
         QueryWrapper<Admin> wrapper = new QueryWrapper<>();
         wrapper.eq("id",login.getId()).eq("password",login.getPassword());
         Integer integer = adminMapper.selectCount(wrapper);
         if(integer>0){
-            return Results.ok("/");
+            session.setAttribute("loginDTO",login);
+            return Results.success("/");
         }
         return Results.failure(ResponseCode.LOGIN_ACCPASS_NOT_FOUND.getCode(),ResponseCode.LOGIN_ACCPASS_NOT_FOUND.getMessage());
     }

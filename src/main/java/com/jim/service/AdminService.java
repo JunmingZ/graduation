@@ -5,9 +5,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jim.base.enums.ResponseCode;
 import com.jim.base.result.Results;
+import com.jim.config.UserToken;
 import com.jim.dto.LoginDTO;
 import com.jim.mapper.AdminMapper;
 import com.jim.model.Admin;
+import com.jim.model.Repairman;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -113,15 +117,19 @@ public class AdminService {
 
     /**
      * 检查
-     * @param login
+     * @param subject
      */
-    public Results  checkAdmin(LoginDTO login) {
-        QueryWrapper<Admin> wrapper = new QueryWrapper<>();
-        wrapper.eq("id",login.getId()).eq("password",login.getPassword());
-        Integer integer = adminMapper.selectCount(wrapper);
-        if(integer>0){
-            return Results.ok("/");
-        }
-        return Results.failure(ResponseCode.LOGIN_ACCPASS_NOT_FOUND.getCode(),ResponseCode.LOGIN_ACCPASS_NOT_FOUND.getMessage());
+    public Results  checkAdmin(Subject subject ) {
+
+        Admin admin = (Admin)subject.getPrincipal();
+        return Results.success("/");
+
+        //QueryWrapper<Admin> wrapper = new QueryWrapper<>();
+        //wrapper.eq("id",login.getId()).eq("password",login.getPassword());
+        //Integer integer = adminMapper.selectCount(wrapper);
+        //if(integer>0){
+        //    return Results.ok("/");
+        //}
+        //return Results.failure(ResponseCode.LOGIN_ACCPASS_NOT_FOUND.getCode(),ResponseCode.LOGIN_ACCPASS_NOT_FOUND.getMessage());
     }
 }

@@ -54,6 +54,6 @@ public class StudentRealm extends AuthorizingRealm {
             return null;
         }
         // 密码认证shiro做了
-        return new SimpleAuthenticationInfo(student,student.getPassword(),"");
+        return new SimpleAuthenticationInfo(student,student.getPassword(),"StudentRealm");
     }
 }

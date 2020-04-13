@@ -134,20 +134,14 @@ public class StudentService {
 
     /**
      * 验证学生登录
-     * @param login
+     * @param subject
      * @return
      */
-    public Results checkStudent(LoginDTO login) {
-        // 1.获取Subject
-        Subject subject = SecurityUtils.getSubject();
-        // 3. 执行登录方法
-        try {
-            subject.login(new UserToken(login.getId(),login.getPassword(),login.getSole()));
-            Student student = (Student)subject.getPrincipal();
-            return Results.ok("student/istudent/"+student.getSno());
-        }catch (Exception e){
-            return Results.failure(ResponseCode.LOGIN_ACCPASS_NOT_FOUND);
-        }
+    public Results checkStudent(Subject subject ) {
+
+        Student student = (Student)subject.getPrincipal();
+        return Results.success("student/istudent/"+student.getSno());
+
         //QueryWrapper<Student> wrapper = new QueryWrapper<>();
         //wrapper.eq("sno",login.getId()).eq("password",login.getPassword()).eq("flag",1);
         //Student student = studentMapper.selectOne(wrapper);

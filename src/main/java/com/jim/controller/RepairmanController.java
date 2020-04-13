@@ -74,7 +74,7 @@ public class RepairmanController {
         // 获取当前登录对象
         Subject subject = SecurityUtils.getSubject();
         Repairman login = (Repairman) subject.getPrincipal();
-        if(!login.getId().toString().equals(id)){
+        if(!login.getId().equals(id)){
             modelAndView.setViewName("redirect:/login");
             return modelAndView;
         }

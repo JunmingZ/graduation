@@ -1,14 +1,12 @@
 package com.jim.config;
 
-import com.jim.base.realm.RepairmanRealm;
-import com.jim.base.realm.StudentRealm;
+import com.jim.base.realm.*;
 import org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy;
 import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -40,15 +38,19 @@ public class ShiroConfig {
         filterMap.put("/css/**","anon");
         filterMap.put("/js/**","anon");
         filterMap.put("/xadmin/**","anon");
-        filterMap.put("/**","authc");
+        filterMap.put("/login","anon");
+
+        filterMap.put("/","roles[Admin]");
+
         //配置退出 过滤器,其中的具体的退出代码Shiro已经替我们实现了
         filterMap.put("/logout", "logout");
+        filterMap.put("/**","authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);
 
         // 设置登录页面
         shiroFilterFactoryBean.setLoginUrl("/login");
         // 设置未授权提示页面
-        shiroFilterFactoryBean.setUnauthorizedUrl("/error");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/noAuth");
         return shiroFilterFactoryBean;
     }
 
@@ -66,7 +68,13 @@ public class ShiroConfig {
         //添加多个Realm
         realms.add(getStudentRealm());
         realms.add(getRepairmanRealm());
+        realms.add(getAdminRealm());
         securityManager.setRealms(realms);
+
+        //自定义ModularRealmAuthorizer，用于多realm授权
+        UserModularRealmAuthorizer authorizer = new UserModularRealmAuthorizer();
+        authorizer.setRealms(realms);
+        securityManager.setAuthorizer(authorizer);
 
         return securityManager;
     }
@@ -97,5 +105,14 @@ public class ShiroConfig {
     @Bean(name = "repairmanRealm")
     public RepairmanRealm getRepairmanRealm(){
         return new RepairmanRealm();
+    }
+
+    /**
+     * 创建Realm
+     * @return
+     */
+    @Bean(name = "adminRealm")
+    public AdminRealm getAdminRealm(){
+        return new AdminRealm();
     }
 }

@@ -126,20 +126,14 @@ public class RepairmanService {
 
     /**
      * 检查维修员账号密码
-     * @param login
+     * @param subject
      * @return
      */
-    public Results checkRepairman(LoginDTO login) {
-        // 1.获取Subject
-        Subject subject = SecurityUtils.getSubject();
-        // 3. 执行登录方法
-        try {
-            subject.login(new UserToken(login.getId(),login.getPassword(),login.getSole()));
-            Repairman repairman = (Repairman)subject.getPrincipal();
-            return Results.success("repairman/irepairman/"+repairman.getId());
-        }catch (Exception e){
-            return Results.failure(ResponseCode.LOGIN_ACCPASS_NOT_FOUND);
-        }
+    public Results checkRepairman(Subject subject) {
+
+        Repairman repairman = (Repairman)subject.getPrincipal();
+        return Results.success("repairman/irepairman/"+repairman.getId());
+
 
         //// 1. 检查账号是否存在
         //Repairman repairman = repairmanMapper.selectById(login.getId());

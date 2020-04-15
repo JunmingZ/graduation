@@ -48,6 +48,8 @@ public class StudentService {
             // 审核状态
             wrapper.eq("flag",flag);
         }
+        // 根据状态降序
+        wrapper.orderByDesc("flag");
         iPage = student.selectPage(page, wrapper);
 
         //getTotal 总记录数  getRecords 信息集

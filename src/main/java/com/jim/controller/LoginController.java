@@ -12,6 +12,7 @@ import com.jim.service.StudentService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,11 +32,34 @@ public class LoginController {
     @Resource
     private RepairmanService repairmanService;
 
+    /**
+     * 登出
+     * @param model
+     * @return
+     */
+    //@GetMapping("/logout")
+    //public String toLogout(Model model){
+    //    Subject subject = SecurityUtils.getSubject();
+    //    System.out.println("退出");
+    //    subject.logout();
+    //    model.addAttribute("msg","安全退出！");
+    //    return "login";
+    //}
+
+
+    /**
+     * 进入登录页面
+     * @return
+     */
     @GetMapping("/login")
     public String toLogin(){
         return "/login";
     }
 
+    /**
+     * 未授权
+     * @return
+     */
     @GetMapping("/noAuth")
     public String toNoAuth(){
         return "noAuth";

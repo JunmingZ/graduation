@@ -16,7 +16,7 @@
                 <a href="javascript:;" th:text="${student.name}"></a>
                 <dl class="layui-nav-child"> <!-- 二级菜单 -->
                     <dd><a href="javascript:" onclick="selfInfo()">个人信息</a></dd>
-                    <dd><a href="">退出</a></dd>
+                    <dd><a href="/logout">退出</a></dd>
                 </dl>
             </li>
         </span>
@@ -49,13 +49,22 @@
 
 <script id="demo" type="text/html">
     {{#  layui.each(d, function(index, item){ }}
-        {{#  if(item.state === 1||item.state === 2){ }}
-        <blockquote class="layui-elem-quote layui-bg-orange"  >
-        {{#  } else { }}
         <blockquote class="layui-elem-quote">
-        {{#  } }}
-            <span><a href="javascript:" onclick="seeRepair({{ item.id }})" >{{item.content}}</a></span>
-            <span class="site-right">{{layui.util.toDateString(item.ctime, 'yyyy-MM-dd HH:mm:ss')}}</span>
+            <div class="layui-row">
+                <h1 class="site-left product-buyer-name"><a href="javascript:" onclick="seeRepair({{ item.id }})">{{item.dormitory}} {{item.content}}</a></h1>
+                {{# if(item.state === 1){  }}
+                <span class="layui-btn layui-btn-xs layui-btn-radius  layui-btn-danger site-right" >待分配</span>
+                {{#  } }}
+                {{# if(item.state === 2){  }}
+                <span class="layui-btn layui-btn-xs layui-btn-radius  layui-btn-warm site-right" >待处理</span>
+                {{#  } }}
+                {{# if(item.state === 3){  }}
+                <span class="layui-btn layui-btn-xs layui-btn-radius  layui-btn-normal site-right" >已处理</span>
+                {{#  } }}
+            </div>
+            <div class="layui-row self-top">
+                <span> {{ layui.util.toDateString(item.ctime, 'yyyy-MM-dd HH:mm:ss')}} </span>
+            </div>
         </blockquote>
     {{#  }) }}
 

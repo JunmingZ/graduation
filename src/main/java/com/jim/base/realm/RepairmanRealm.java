@@ -4,10 +4,13 @@ import com.jim.mapper.RepairmanMapper;
 import com.jim.model.Repairman;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 
 import javax.annotation.Resource;
+import java.util.HashSet;
+import java.util.Set;
 
 public class RepairmanRealm extends AuthorizingRealm {
     @Resource
@@ -17,7 +20,12 @@ public class RepairmanRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         System.out.println("RepairmanRealm 授权");
-        return null;
+        SimpleAuthorizationInfo info =new SimpleAuthorizationInfo();
+        Set<String> set = new HashSet<>();
+        set.add("Repairman");
+        // 字符串资源
+        info.setRoles(set);
+        return info;
     }
 
     @Override

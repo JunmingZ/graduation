@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <header th:replace="header::html"></header>
-    <title>维修员首页</title>
+    <title>维修员个人页面</title>
 </head>
 <body>
 <div style="background-color:#393D49">
@@ -15,7 +15,7 @@
                 <a href="javascript:;" th:text="${repairman.name}"></a>
                 <dl class="layui-nav-child"> <!-- 二级菜单 -->
                     <dd><a href="javascript:" onclick="selfInfo()">个人信息</a></dd>
-                    <dd><a href="">退出</a></dd>
+                    <dd><a href="/logout">退出</a></dd>
                 </dl>
             </li>
         </span>

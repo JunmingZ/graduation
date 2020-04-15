@@ -10,6 +10,7 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.servlet.Filter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -24,6 +25,15 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         // 设置安全管理器
         shiroFilterFactoryBean.setSecurityManager(securityManager);
+
+        // 存放自定义的filter
+        LinkedHashMap<String, Filter> filtersMap = new LinkedHashMap<>();
+        // 配置自定义 or角色 认证
+        filtersMap.put("roles", new RoleFilter());
+        shiroFilterFactoryBean.setFilters(filtersMap);
+
+
+
         /**
          * Shiro内置过滤器，可以实现权限相关的拦截器
          * 常用的过滤器:
@@ -31,7 +41,7 @@ public class ShiroConfig {
          *      authc:必须认证才可以访问
          *      user:如果使用rememberMe的功能可以直接访问
          *      perms:该资源必须得到资源权限才可以访问
-         *      role:该资源必须得到角色权限才可以访问
+         *      roles:该资源必须得到角色权限才可以访问
          */
         // 使用LinkedHashMap有序,因为该过滤器有优先级之分
         Map<String,String> filterMap = new LinkedHashMap<>();

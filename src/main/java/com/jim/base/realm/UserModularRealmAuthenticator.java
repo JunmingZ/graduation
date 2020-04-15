@@ -22,7 +22,7 @@ public class UserModularRealmAuthenticator extends ModularRealmAuthenticator {
         System.out.println("UserModularRealmAuthenticator:method doAuthenticate() execute ");
         // 判断getRealms()是否返回为空
         assertRealmsConfigured();
-        // 强制转换回自定义的CustomizedToken
+        // 强制转换回自定义的UserToken
         UserToken userToken = (UserToken)authenticationToken;
         // 登录类型
         String loginType = userToken.getLoginType();
@@ -32,9 +32,8 @@ public class UserModularRealmAuthenticator extends ModularRealmAuthenticator {
         // 登录类型对应的所有Realm
         List<Realm> typeRealms = new ArrayList<>();
         for (Realm realm : realms) {
-            System.out.println("遍历realm.getName()："+realm.getName());
             if (realm.getName().contains(loginType)) {
-                System.out.println("遍历符合条件的realm.getName()："+realm.getName());
+                System.out.println("遍历出符合条件的realm.getName()："+realm.getName());
                 typeRealms.add(realm);
             }
         }

@@ -132,4 +132,12 @@ public class AdminService {
         //}
         //return Results.failure(ResponseCode.LOGIN_ACCPASS_NOT_FOUND.getCode(),ResponseCode.LOGIN_ACCPASS_NOT_FOUND.getMessage());
     }
+
+    /**
+     * 获取管理数
+     * @return
+     */
+    public Integer getAdminCount() {
+        return adminMapper.selectCount(null);
+    }
 }

@@ -2,12 +2,12 @@ package com.jim.controller;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jim.base.result.PageTableRequest;
 import com.jim.base.enums.ResponseCode;
+import com.jim.base.result.PageTableRequest;
 import com.jim.base.result.Results;
+import com.jim.dto.WelcomeDTO;
 import com.jim.model.Admin;
-import com.jim.model.Student;
-import com.jim.service.AdminService;
+import com.jim.service.*;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +20,54 @@ import javax.annotation.Resource;
 public class AdminController {
 
     @Resource
-    public AdminService adminService;
+    private AdminService adminService;
+
+    @Resource
+    private StudentService studentService;
+
+    @Resource
+    private DormitoryService dormitoryService;
+
+    @Resource
+    private RepairmanService repairmanService;
+
+    @Resource
+    private EvaluateService evaluateService;
+
+    @Resource
+    private RepairsService repairsService;
+    /**
+     * 进入欢迎页
+     * @param modelAndView
+     * @return
+     */
+    @GetMapping("/welcome/{id}")
+    public ModelAndView toWelcome(ModelAndView modelAndView,@PathVariable String id){
+        System.out.println("AdminController toWelcome():"+id);
+        Admin admin = adminService.findAdminById(id);
+        // 管理员的名字
+        modelAndView.addObject("admin_name",admin.getName());
+        WelcomeDTO welcome = new WelcomeDTO();
+        // 统计审核学生数
+        welcome.setStudentCount(studentService.getStudentsCount());
+        // 统计宿舍数
+        welcome.setDormitoryCount(dormitoryService.getDormitorysCount());
+        // 统计报修数
+        welcome.setRepairsCount(repairsService.getRepairsCount());
+        // 统计在职维修人员数
+        welcome.setRepairmanCount(repairmanService.getRepairmanCount());
+        // 统计评价数
+        welcome.setEvaluateCount(evaluateService.getEvaluateCount());
+        // 统计在职人员数
+        welcome.setAdminCount(adminService.getAdminCount());
+        modelAndView.addObject("welcomeDTO",welcome);
+        modelAndView.setViewName("admin/welcome");
+        return modelAndView;
+    }
 
     @GetMapping("/{id}")
     public ModelAndView index(ModelAndView modelAndView,@PathVariable("id")String  id){
-        System.out.println(id);
+        System.out.println("AdminController  index() :"+id);
         // 获取当前登录对象,判断是否是登录对象
         Subject subject = SecurityUtils.getSubject();
         Admin admin = (Admin) subject.getPrincipal();
@@ -39,16 +82,7 @@ public class AdminController {
         return modelAndView;
     }
 
-    /**
-     * 进入欢迎页
-     * @param modelAndView
-     * @return
-     */
-    @GetMapping("/welcome")
-    public ModelAndView toWelcome(ModelAndView modelAndView){
-        modelAndView.setViewName("admin/welcome");
-        return modelAndView;
-    }
+
 
 
     @GetMapping("/list")
@@ -98,8 +132,8 @@ public class AdminController {
      * @param id
      * @return
      */
-    @GetMapping("/edit")
-    public ModelAndView toEditAdmin(ModelAndView modelAndView, String id){
+    @GetMapping("/edit/{id}")
+    public ModelAndView toEditAdmin(ModelAndView modelAndView, @PathVariable String id){
         modelAndView.setViewName("admin/admin-edit");
         Admin admin = adminService.findAdminById(id);
         modelAndView.addObject("admin",admin);

@@ -166,4 +166,8 @@ public class EvaluateService {
         }
         return Results.failure();
     }
+
+    public Integer getEvaluateCount() {
+        return evaluateMapper.selectCount(null);
+    }
 }

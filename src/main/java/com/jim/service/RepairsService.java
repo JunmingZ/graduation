@@ -48,7 +48,7 @@ public class RepairsService {
 
 
     /**
-     * 统计页面
+     * 报修统计页面
      * @return
      */
     public Map<String,RepairStatisticsDTO> getRepairStatisticsDTO() {
@@ -425,5 +425,14 @@ public class RepairsService {
         }
         IPage iPage = repairsMapper.selectPage(page,wrapper);
         return Results.success((int) iPage.getTotal(),iPage.getRecords());
+    }
+
+
+    /**
+     * 统计报修数
+     * @return
+     */
+    public Integer getRepairsCount() {
+        return repairsMapper.selectCount(null);
     }
 }

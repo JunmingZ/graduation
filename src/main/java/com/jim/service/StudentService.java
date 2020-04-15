@@ -27,6 +27,15 @@ public class StudentService {
 
      @Resource
      private DormitoryMapper dormitoryMapper;
+
+
+
+
+
+
+
+
+
     /**
      * 分页获取学生列表
      * @param page
@@ -56,6 +65,11 @@ public class StudentService {
         return Results.success((int) iPage.getTotal(),iPage.getRecords());
     }
 
+    /**
+     * 通过id删除学生
+     * @param sno
+     * @return
+     */
     public Results deleteStudentById(String sno) {
         if(studentMapper.deleteById(sno)>0){
             return Results.ok();
@@ -169,7 +183,11 @@ public class StudentService {
         return Results.failure();
     }
 
-
+    /**
+     * 批量修改审核状态
+     * @param ids
+     * @return
+     */
     public Results setFlagByIds(String ids) {
         String[] split = ids.split(",");
         int i =0;
@@ -183,5 +201,15 @@ public class StudentService {
             return Results.success();
         }
         return Results.failure();
+    }
+
+    /**
+     * 统计在职学生数
+     * @return
+     */
+    public Integer getStudentsCount() {
+        QueryWrapper<Student> wrapper = new QueryWrapper<>();
+        wrapper.eq("flag",1);
+        return studentMapper.selectCount(wrapper);
     }
 }

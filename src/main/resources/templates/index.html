@@ -25,7 +25,7 @@
                     <dl class="layui-nav-child">
                         <!-- 二级菜单 -->
                         <dd>
-                            <a onclick="xadmin.open('个人信息','')">个人信息</a></dd>
+                            <a th:onclick="'javascript:toedit('+${admin.id}+')'">个人信息</a></dd>
                         <dd>
                             <a href="/logout">退出</a></dd>
                     </dl>
@@ -146,7 +146,7 @@
                 </div>
                 <div class="layui-tab-content">
                     <div class="layui-tab-item layui-show">
-                        <iframe src='/admin/welcome' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
+                        <iframe th:src="@{'/admin/welcome/'+${admin.id}}" frameborder="0" scrolling="yes" class="x-iframe"></iframe>
                     </div>
                 </div>
                 <div id="tab_show"></div>
@@ -158,5 +158,16 @@
         <!-- 中部结束 -->
 
     </body>
+<script>
 
+    layui.use( 'layer',
+        function() {
+            toedit = function (i) {
+                console.log("进入toedit:"+i);
+                xadmin.open('编辑管理员信息','/admin/edit/'+i,800,600);
+            }
+
+        });
+
+</script>
 </html>

@@ -87,6 +87,7 @@
         // 查看个人报修信息
         seeRepair = function(value){
             layer.open({
+                id:value,
                 type: 2,
                 title: '个人报修信息',
                 shadeClose: true,
@@ -101,6 +102,7 @@
         // 编辑个人信息
         selfInfo = function(){
             layer.open({
+                id:sno,
                 type: 2,
                 title: '个人信息编辑',
                 shadeClose: true,

@@ -151,5 +151,13 @@ public class RepairmanService {
         //return Results.failure(ResponseCode.LOGIN_ACCPASS_NOT_FOUND);
     }
 
-
+    /**
+     * 统计在职人员个数
+     * @return
+     */
+    public Integer getRepairmanCount() {
+        QueryWrapper<Repairman> wrapper = new QueryWrapper<>();
+        wrapper.eq("flag",1);
+        return repairmanMapper.selectCount(wrapper);
+    }
 }

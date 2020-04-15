@@ -130,4 +130,12 @@ public class DormitoryService {
         wrapper.eq("dormitory",id);
         return studentMapper.selectList(wrapper);
     }
+
+    /**
+     * 获取宿舍数
+     * @return
+     */
+    public Integer getDormitorysCount() {
+        return dormitoryMapper.selectCount(null);
+    }
 }

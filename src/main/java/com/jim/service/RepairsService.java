@@ -355,7 +355,7 @@ public class RepairsService {
 
 
     /**
-     * 获取已完成的报修信息
+     * 获取报修信息
      * @param id
      * @return
      */

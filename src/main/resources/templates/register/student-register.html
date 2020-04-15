@@ -132,20 +132,22 @@
                 function(data) {
 
                     $.ajax({
-                        url:"/student/add",
+                        url:"/register/add",
                         type:"POST",
                         data:data.field,
                         dataType:'json',
                         success:function(result){
                             console.log(result)
-                            if(result.code == 500||result.code == 5000100){
+                            if(result.code === 500||result.code === 5000100|| result.code=== 5000202){
                                 layer.alert(result.msg);
-                            }else{
+                            }else if(result.code === 200){
                                 layer.alert("注册成功，请等待审核", {icon: 6},function () {
                                     //关闭当前frame
                                     parent.location.href = "/login";
                                     xadmin.close();
                                 });
+                            }else {
+                                layer.msg('后端错误');
                             }
                         },
                         error:function () {

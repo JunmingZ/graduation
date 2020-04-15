@@ -40,6 +40,11 @@ public class RepairmanController {
         return repairsService.updateRepairsByEntity(repairs);
     }
 
+    /**
+     * 获取已完成的报修信息
+     * @param id
+     * @return
+     */
     @GetMapping("/repairInfo/{id}")
     public ModelAndView toRepairmanRepairInfoById(ModelAndView modelAndView,@PathVariable String id){
         RepairsDTO repairsDTO = repairsService.getRepairsDTO(id);

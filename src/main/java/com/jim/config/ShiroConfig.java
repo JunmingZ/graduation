@@ -49,6 +49,7 @@ public class ShiroConfig {
         filterMap.put("/js/**","anon");
         filterMap.put("/xadmin/**","anon");
         filterMap.put("/login","anon");
+        filterMap.put("/register/**","anon");
 
         filterMap.put("/","roles[Admin]");
 

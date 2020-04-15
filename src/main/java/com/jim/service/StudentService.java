@@ -118,16 +118,16 @@ public class StudentService {
         if(studentMapper.selectById(student.getSno())!=null){
             return Results.failure(ResponseCode.SNO_REPEAT.getCode(),ResponseCode.SNO_REPEAT.getMessage());
         }
-
-        if(dormitoryMapper.selectById(student.getDormitory())!=null){
-            return Results.failure(ResponseCode.DORMITORY_REPEAT.getCode(),ResponseCode.DORMITORY_REPEAT.getMessage());
+        // 检查宿舍是否存在
+        if(dormitoryMapper.selectById(student.getDormitory())==null){
+            return Results.failure(ResponseCode.DORMITORY_NOT_EXIST);
         }
 
         student.setCtime(System.currentTimeMillis());
         student.setUtime(System.currentTimeMillis());
         int insert = studentMapper.insert(student);
         if(insert>0){
-            return  Results.ok();
+            return  Results.success();
         }
         return Results.failure();
     }

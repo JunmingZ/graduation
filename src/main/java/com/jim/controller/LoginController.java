@@ -33,7 +33,7 @@ public class LoginController {
     private RepairmanService repairmanService;
 
     /**
-     * 登出
+     * 登出交由shiro
      * @param model
      * @return
      */
@@ -69,7 +69,7 @@ public class LoginController {
     @ResponseBody
     public Results login(LoginDTO login){
         if(login==null || login.getSole()==null ){
-            return Results.failure(ResponseCode.OBJECT_IS_NULL.getCode(),ResponseCode.OBJECT_IS_NULL.getMessage());
+            return Results.failure(ResponseCode.OBJECT_IS_NULL);
         }
 
         Subject subject = SecurityUtils.getSubject();

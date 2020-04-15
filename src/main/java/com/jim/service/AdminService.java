@@ -122,7 +122,7 @@ public class AdminService {
     public Results  checkAdmin(Subject subject ) {
 
         Admin admin = (Admin)subject.getPrincipal();
-        return Results.success("/");
+        return Results.success("/admin/"+admin.getId());
 
         //QueryWrapper<Admin> wrapper = new QueryWrapper<>();
         //wrapper.eq("id",login.getId()).eq("password",login.getPassword());

@@ -6,7 +6,10 @@ import com.jim.base.result.PageTableRequest;
 import com.jim.base.enums.ResponseCode;
 import com.jim.base.result.Results;
 import com.jim.model.Admin;
+import com.jim.model.Student;
 import com.jim.service.AdminService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,6 +21,23 @@ public class AdminController {
 
     @Resource
     public AdminService adminService;
+
+    @GetMapping("/{id}")
+    public ModelAndView index(ModelAndView modelAndView,@PathVariable("id")String  id){
+        System.out.println(id);
+        // 获取当前登录对象,判断是否是登录对象
+        Subject subject = SecurityUtils.getSubject();
+        Admin admin = (Admin) subject.getPrincipal();
+        if(!admin.getId().toString().equals(id)){
+            modelAndView.setViewName("redirect:/login");
+            return modelAndView;
+        }
+        // 存入请求域
+        modelAndView.addObject("admin",admin);
+
+        modelAndView.setViewName("index");
+        return modelAndView;
+    }
 
     /**
      * 进入欢迎页

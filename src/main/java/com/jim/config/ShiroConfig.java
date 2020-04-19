@@ -51,7 +51,7 @@ public class ShiroConfig {
         filterMap.put("/login","anon");
         filterMap.put("/register/**","anon");
 
-        filterMap.put("/","roles[Admin]");
+        filterMap.put("/admin/**","roles[Admin]");
 
         //配置退出 过滤器,其中的具体的退出代码Shiro已经替我们实现了
         filterMap.put("/logout", "logout");

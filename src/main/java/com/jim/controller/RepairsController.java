@@ -121,31 +121,25 @@ public class RepairsController {
      * @return
      */
     @GetMapping("/allocation")
-    public ModelAndView toAllocationPage(ModelAndView modelAndView){
+    public ModelAndView toAllocationPage(ModelAndView modelAndView,String ids){
+        System.out.println("toAllocationPage:"+ids);
         //维修员列表
         List<Repairman> allRepairman = repairmanService.getAllRepairman();
-        
-        //报修类型
-        List allRepairType = repairTypeService.getAllRepairType();
-
-
+        modelAndView.addObject("ids",ids);
         modelAndView.addObject("allRepairman",allRepairman);
-        modelAndView.addObject("allRepairType",allRepairType);
-
         modelAndView.setViewName("repair-manage/task-allocation");
         return modelAndView;
     }
 
     /**
      * 分配任务
-     * @param type
-     * @param type
      * @param repairman
      * @return
      */
-    @PostMapping("/allocation")
-    public Results taskAllocation(Integer type,Integer repairman){
-        return repairsService.taskAllocation(type,repairman) ;
+    @PostMapping("/doAllocation")
+    public Results doAllocation(Integer repairman){
+        System.out.println("RepairsController doAllocation(Integer repairman):"+ repairman);
+        return repairsService.taskAllocation(repairman) ;
     }
 
     /**

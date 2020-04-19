@@ -53,7 +53,8 @@
         <div class="layui-btn-container">
             <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="getCheckData"> <i class="layui-icon"></i>批量删除</button>
             <button class="layui-btn" onclick="xadmin.open('添加报修任务','/repairs/add',800,600)"><i class="layui-icon"></i>添加报修任务</button>
-            <button class="layui-btn" onclick="xadmin.open('任务分配','/repairs/allocation',800,600)"><i class="layui-icon"></i>任务分配</button>
+<!--            <button class="layui-btn" onclick="xadmin.open('任务分配','/repairs/allocation',800,600)"><i class="layui-icon"></i>任务分配</button>-->
+            <button class="layui-btn" lay-event="allocation"><i class="layui-icon"></i>任务分配</button>
         </div>
     </script>
     <script type="text/html" id="barDemo">
@@ -71,55 +72,17 @@
             var table = layui.table;
             let form = layui.form;
             let repairmans=[],repair_types=[];
-            //获取维修人
-            //  $.get("/repairman/repairmans",function(data,status){
-            //      for(let i =0; i<data.length;i++){
-            //          repairmans.push(data[i])
-            //      }
-            //
-            // });
-            //  //获取维修类型
-            //  $.get("/repairType/types",function(data,status){
-            //      for(let i =0; i<data.length;i++){
-            //          repair_types.push(data[i])
-            //      }
-            //
-            // });
+
 
             let lie=[
                 {type: 'checkbox', fixed: 'left',id: 'idTest'}
                 ,{field:'id', title:'ID', width:120, fixed: 'left', unresize: true, sort: true}
                 ,{field:'sno', title:'学号'}
                 ,{field:'dormitory', title:'宿舍号'}
-                ,{field:'type', title:'报修类型'
-                    // ,templet: function (d) {
-                    //     for(let i=0; i<repair_types.length; i++){
-                    //         if(repair_types[i].id == d.typeId) {
-                    //             return repair_types[i].type;
-                    //         }else{
-                    //             console.log(d.typeId,repair_types[i].id)
-                    //             return "未指定类型"
-                    //         }
-                    //     }
-                    // }
-                }
+                ,{field:'type', title:'报修类型'}
                 ,{field:'content', title:'内容'}
 
-                ,{field:'repairman', title:'维修人'
-                    // ,templet: function (d) {
-                    //     for(let i=0 ; i<repairmans.length; i++){
-                    //         if(repairmans[i].id == d.repairmanId){
-                    //             return repairmans[i].name;
-                    //         }else {
-                    //             return '未分配维修人'
-                    //         }
-                    //         if(d.repairmanId == 0||d.repairmanId == null){
-                    //             return '未分配维修人'
-                    //         }
-                    //     }
-                    //
-                    // }
-                }
+                ,{field:'repairman', title:'维修人'}
                 ,{field:'state', title:'状态', templet:function (d) {
                         switch (d.state) {
                             case 1 :
@@ -167,9 +130,40 @@
                 // console.log("obj--->  "+obj);
                 // console.log("obj.config--->  "+obj.config);
                 switch(obj.event){
+                    case 'allocation':
+                        // 任务分配
+                        // 获取选中行
+                        let tasks = checkStatus.data;
+                        // 存放选择
+                        let choose= [];
+                        // 遍历任务数组，判断是否未分配
+                        for (let i = 0; i<tasks.length; i++){
+                            if (tasks[i].state!==1){
+                                layer.msg("所选任务已分配，请重新选择");
+                                return false;
+                            }
+                            choose.push(tasks[i].id)
+                        }
+                        console.log(choose);
+                        // 进入分配任务界面
+                        if(choose.length===0){
+                            layer.msg("你未选择")
+                        }else {
+                            layer.open({
+                                type: 2,
+                                title: '分配任务',
+                                shadeClose: true,
+                                shade: false,
+                                maxmin: true, //开启最大化最小化按钮
+                                area: ['460px','250px'],
+                                content: '/repairs/allocation?ids='+choose
+                            });
+                        }
+                        break;
                     case 'getCheckData':
-                        var data = checkStatus.data;
-                        var delList=[];
+                        // 批量删除
+                        let data = checkStatus.data;
+                        let delList=[];
                         data.forEach(function(n,i){
                             delList.push(n.id);
                         });

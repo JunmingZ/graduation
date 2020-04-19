@@ -140,14 +140,12 @@ public class RepairsService {
 
     /**
      * 分配任务
-     * @param type  报修类型
      * @param repairman  维修人id
      * @return
      */
-    public Results taskAllocation(Integer type, Integer repairman) {
+    public Results taskAllocation(Integer repairman) {
         // 1. 根据 报修类型 id 获取
         QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
-        wrapper.eq("type_id",type);
         Repairs repairs = new Repairs();
         repairs.setRepairmanId(repairman);
         // 2. 更新状状态为待处理

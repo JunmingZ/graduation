@@ -133,13 +133,13 @@ public class RepairsController {
 
     /**
      * 分配任务
-     * @param repairman
+     * @param repairmanId
      * @return
      */
     @PostMapping("/doAllocation")
-    public Results doAllocation(Integer repairman){
-        System.out.println("RepairsController doAllocation(Integer repairman):"+ repairman);
-        return repairsService.taskAllocation(repairman) ;
+    public Results doAllocation(Integer repairmanId,String ids){
+        System.out.println("RepairsController doAllocation(Integer repairman):"+ ids);
+        return repairsService.taskAllocation(repairmanId,ids) ;
     }
 
     /**

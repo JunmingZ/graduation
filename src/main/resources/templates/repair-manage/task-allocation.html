@@ -25,7 +25,7 @@
                          维修人员安排
                         </label>
                         <div class="layui-input-inline">
-                            <select name="repairman"   id="L_repairman" lay-verify="required">
+                            <select name="repairmanId"   id="L_repairman" lay-verify="required">
                                 <option value="" >请选择维修人</option>
                                 <option th:value="${man.id}" th:each="man:${allRepairman}"  th:text="${man.name}"></option>
                             </select>
@@ -51,9 +51,9 @@
                 //监听提交
                 form.on('submit(add)',
                     function(data) {
-                    console.log(data);
+                    console.log(data.field);
                     $.ajax({
-                        url:"/repairs/allocation",
+                        url:"/repairs/doAllocation",
                         type:"POST",
                         data:data.field,
                         dataType:'json',
@@ -69,6 +69,8 @@
                                     // 可以对父窗口进行刷新
                                     // xadmin.father_reload();
                                 });
+                            }else {
+                                layer.msg('未知系统错误');
                             }
                         },
                         error:function () {
@@ -79,18 +81,7 @@
                     return false;
                 });
 
-                // form.verify({
-                //     L_repairman: function(value, item){
-                //         if(value == '100'){
-                //             return '未选择维修人!!!!!!'
-                //         }
-                //     },
-                //     // repair_type:function(value, item){
-                //     //     if(value == '99'){
-                //     //         return '未选择报修类型!!!!!!'
-                //     //     }
-                //     // }
-                // });
+
             });</script>
 
     </body>

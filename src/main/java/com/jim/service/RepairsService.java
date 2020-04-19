@@ -140,19 +140,26 @@ public class RepairsService {
 
     /**
      * 分配任务
-     * @param repairman  维修人id
+     * @param repairmanId  维修人id
      * @return
      */
-    public Results taskAllocation(Integer repairman) {
+    public Results taskAllocation(Integer repairmanId,String ids) {
+        String[] split = ids.split(",");
+        int update = 0;
         // 1. 根据 报修类型 id 获取
-        QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
-        Repairs repairs = new Repairs();
-        repairs.setRepairmanId(repairman);
-        // 2. 更新状状态为待处理
-        repairs.setState(2);
-        int update = repairsMapper.update(repairs, wrapper);
+        for (String id:split) {
+            QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
+            wrapper.eq("id",id);
+            Repairs repairs = new Repairs();
+            // 2. 更新状状态为待处理
+            repairs.setState(2);
+            repairs.setRepairmanId(repairmanId);
+            repairs.setUtime(System.currentTimeMillis());
+            update = repairsMapper.update(repairs, wrapper);
+        }
+
         if(update>0){
-            return Results.ok();
+            return Results.success();
         }
         return Results.failure();
     }

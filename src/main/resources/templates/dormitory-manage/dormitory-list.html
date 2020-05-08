@@ -96,7 +96,7 @@
                         data.forEach(function(n,i){
                             delList.push(n.id);
                         });
-                        if(delList != ''||delList != []){
+                        if(delList.length){
                             layer.confirm('确定删除所选项吗？',function (index) {
                                     $.ajax({
                                         url: '/dormitory/delete',

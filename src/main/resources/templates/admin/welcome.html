@@ -83,38 +83,42 @@
         </div>
     </body>
 <script th:inline="javascript">
-    // 数据初始化
-    let student= [[${welcomeDTO.studentCount}]],
-        dormitory = [[${welcomeDTO.dormitoryCount}]],
-        repairs=[[${welcomeDTO.repairsCount}]],
-        repairman=[[${welcomeDTO.repairmanCount}]],
-        evaluate=[[${welcomeDTO.evaluateCount}]],
-        admin =[[${welcomeDTO.adminCount}]]
-    ;
+    layui.use(['layer', 'form'], function(){
+        // 数据初始化
+        let student= [[${welcomeDTO.studentCount}]],
+            dormitory = [[${welcomeDTO.dormitoryCount}]],
+            repairs=[[${welcomeDTO.repairsCount}]],
+            repairman=[[${welcomeDTO.repairmanCount}]],
+            evaluate=[[${welcomeDTO.evaluateCount}]],
+            admin =[[${welcomeDTO.adminCount}]]
+        ;
 
 
 
 
-    // 基于准备好的dom，初始化echarts实例
-    let myChart = echarts.init(document.getElementById('main'));
+        // 基于准备好的dom，初始化echarts实例
+        let myChart = echarts.init(document.getElementById('main'));
 
-    // 指定图表的配置项和数据
-    let option = {
-        title: {
-            text: '统计图'
-        },
-        tooltip: {},
-        xAxis: {
-            data: ["学生人数","宿舍个数","报修数","维修人人数","评价数","管理员人数"]
-        },
-        yAxis: {},
-        series: [{
-            type: 'bar',
-            data: [student, dormitory, repairs, repairman, evaluate, admin]
-        }]
-    };
+        // 指定图表的配置项和数据
+        let option = {
+            title: {
+                text: '统计图'
+            },
+            tooltip: {},
+            xAxis: {
+                data: ["学生人数","宿舍个数","报修数","维修人人数","评价数","管理员人数"]
+            },
+            yAxis: {},
+            series: [{
+                type: 'bar',
+                data: [student, dormitory, repairs, repairman, evaluate, admin]
+            }]
+        };
 
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    });
+
+
 </script>
 </html>

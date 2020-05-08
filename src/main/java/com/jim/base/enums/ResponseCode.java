@@ -25,6 +25,7 @@ public enum ResponseCode {
 	//5000201 - 5000300
 	DORMITORY_REPEAT(5000201,"错误操作，该宿舍已存在！！！"),
 	DORMITORY_NOT_EXIST(5000202,"该宿舍不存在！！！"),
+	DORMITORY_HAVE_STUDENT(5000203,"该宿舍有人，不可删除！！！"),
 
 	//报修类型
 	//5000301 - 5000400

@@ -9,7 +9,11 @@ import com.jim.base.result.Results;
 import com.jim.config.UserToken;
 import com.jim.dto.LoginDTO;
 import com.jim.mapper.DormitoryMapper;
+import com.jim.mapper.EvaluateMapper;
+import com.jim.mapper.RepairsMapper;
 import com.jim.mapper.StudentMapper;
+import com.jim.model.Evaluate;
+import com.jim.model.Repairs;
 import com.jim.model.Student;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -18,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 @Transactional
@@ -28,11 +33,11 @@ public class StudentService {
      @Resource
      private DormitoryMapper dormitoryMapper;
 
+     @Resource
+     private RepairsMapper repairsMapper;
 
-
-
-
-
+     @Resource
+     private EvaluateMapper evaluateMapper;
 
 
 
@@ -71,8 +76,21 @@ public class StudentService {
      * @return
      */
     public Results deleteStudentById(String sno) {
+        // 找出要删除报修的报修id
+        QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
+        wrapper.eq("sno",sno);
+        List<Repairs> repairs = repairsMapper.selectList(wrapper);
+
+        // 删除评价
+        for(Repairs r :repairs ){
+            QueryWrapper<Evaluate> evaWrapper = new QueryWrapper<>();
+            evaWrapper.eq("repairs_id",r.getId());
+            evaluateMapper.delete(evaWrapper);      //删除对应的评价
+            repairsMapper.deleteById(r.getId());  // 删除对应的报修任务
+        }
+        // 删除学生
         if(studentMapper.deleteById(sno)>0){
-            return Results.ok();
+            return Results.success();
         }else {
             return Results.failure();
         }
@@ -96,7 +114,7 @@ public class StudentService {
         if(flag==0){
             return Results.failure();
         }
-        return Results.ok();
+        return Results.success();
     }
 
     /**

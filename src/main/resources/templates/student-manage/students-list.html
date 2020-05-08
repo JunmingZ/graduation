@@ -125,7 +125,7 @@
                         data.forEach(function(n,i){
                             delList.push(n.sno);
                         });
-                        if(delList != ''||delList != []){
+                        if(delList.length!=0){
                             layer.confirm('确定删除所选项吗？',function (index) {
                                     $.ajax({
                                         url: '/student/delete',
@@ -157,7 +157,7 @@
                         data.forEach(function(n,i){
                             delList.push(n.sno);
                         });
-                        if(delList != ''||delList != []){
+                        if(delList.length){
                             layer.confirm('确定通过审核吗？',function (index) {
                                 $.ajax({
                                     url: '/student/setFlag',

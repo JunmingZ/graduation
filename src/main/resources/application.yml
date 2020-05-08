@@ -23,10 +23,10 @@ spring:
     testWhileIdle: true
     testOnBorrow: false
     testOnReturn: false
-  devtools:
-    restart:
-      enabled: true  #设置开启热部署
-      additional-paths: resources/**,static/**
+#  devtools:
+#    restart:
+##      enabled: true  #设置开启热部署
+#      additional-paths: resources/**,static/**
 # sql输出到控制台
 #mybatis-plus:
 #  configuration:

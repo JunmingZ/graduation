@@ -73,11 +73,20 @@ public class DormitoryService {
             return Results.failure();
         }
         String[] split = ids.split(",");
+        // 检查是否有学生
+        for(String id : split){
+            QueryWrapper<Student> wrapper = new QueryWrapper<>();
+            wrapper.eq("dormitory",id);
+            Integer integer = studentMapper.selectCount(wrapper);
+            if(integer!=0){
+                return Results.failure(ResponseCode.DORMITORY_HAVE_STUDENT);
+            }
+        }
 
         if(dormitoryMapper.deleteBatchIds(Arrays.asList(split))==0){
             return Results.failure();
         }
-        return Results.ok();
+        return Results.success();
     }
 
     /**

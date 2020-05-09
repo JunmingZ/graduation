@@ -195,8 +195,10 @@
                                         //单单表格刷新
                                         table.reload('test');
                                     });
-                                }else {
-                                    layer.msg('删除失败');
+                                }else if(result.code===500 || result.code===5000203){
+                                    layer.msg(result.msg);
+                                }else{
+                                    layer.msg('删除失败')
                                 }
                             },
                             error:function (result) {

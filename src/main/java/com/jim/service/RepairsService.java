@@ -314,6 +314,7 @@ public class RepairsService {
     public Results selectRepairsBySnoPage(PageTableRequest pageTableRequest, String sno,String content) {
         Page page = new Page(pageTableRequest.getPage(),pageTableRequest.getLimit());
         QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
+        // 创建时间降序，维修状态升序
         wrapper.orderByAsc("state").orderByDesc("ctime");
         wrapper.eq("sno",sno);
         if(!StringUtils.isEmpty(content)){

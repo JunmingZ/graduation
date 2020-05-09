@@ -51,13 +51,21 @@ public class DormitoryService {
      * @return
      */
     public Results deleteDormitoryById(String id) {
+        QueryWrapper<Student> wrapper = new QueryWrapper<>();
+        wrapper.eq("dormitory",id);
+        Integer integer = studentMapper.selectCount(wrapper);
+        if(integer!=0){
+            return Results.failure(ResponseCode.DORMITORY_HAVE_STUDENT);
+        }
+
+
         if(dormitoryMapper.deleteById(id)>0){
-            QueryWrapper<Student> wrapper = new QueryWrapper<>();
-            wrapper.eq("dormitory",id);
-            Student student = new Student();
-            student.setDormitory(0L);
-            studentMapper.update(student,wrapper);
-            return Results.ok();
+            //QueryWrapper<Student> wrapper = new QueryWrapper<>();
+            //wrapper.eq("dormitory",id);
+            //Student student = new Student();
+            //student.setDormitory(0L);
+            //studentMapper.update(student,wrapper);
+            return Results.success();
         }else {
             return Results.failure();
         }

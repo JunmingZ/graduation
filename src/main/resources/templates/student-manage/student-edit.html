@@ -139,15 +139,17 @@
                         data:data.field,
                         dataType:'json',
                         success:function(result){
-                            if(result.code == 500){
+                            if(result.code === 500||result.code===5000202){
                                 layer.alert(result.msg);
-                            }else{
+                            }else if(result.code ===200){
                                 layer.alert("设置成功", {icon: 6},function () {
                                     //关闭当前frame
                                     xadmin.close();
                                     // 可以对父窗口进行刷新
                                     xadmin.father_reload();
                                 });
+                            }else {
+                                layer.msg('失败的操作')
                             }
                         },
                         error:function () {

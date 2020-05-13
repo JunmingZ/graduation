@@ -7,6 +7,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.IOException;
 
+/**
+ * 多角色判断
+ */
 public class RoleFilter extends RolesAuthorizationFilter {
     @Override
     public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue)

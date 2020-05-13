@@ -132,10 +132,15 @@ public class StudentService {
      * @return
      */
     public Results editStudent(Student student) {
+        // 检查宿舍号是否存在
+        // 检查宿舍是否存在
+        if(dormitoryMapper.selectById(student.getDormitory())==null){
+            return Results.failure(ResponseCode.DORMITORY_NOT_EXIST);
+        }
         student.setUtime(System.currentTimeMillis());
         int i = studentMapper.updateById(student);
         if(i>0){
-            return Results.ok();
+            return Results.success();
         }
         return Results.failure();
 

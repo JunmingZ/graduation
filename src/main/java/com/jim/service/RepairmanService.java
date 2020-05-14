@@ -118,7 +118,7 @@ public class RepairmanService {
         repairman.setUtime(System.currentTimeMillis());
         int i = repairmanMapper.updateById(repairman);
         if(i>0){
-            return Results.ok();
+            return Results.success();
         }else {
             return Results.failure(ResponseCode.UPDATE_FAIL.getCode(),ResponseCode.UPDATE_FAIL.getMessage());
         }

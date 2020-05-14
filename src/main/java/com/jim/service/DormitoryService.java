@@ -110,7 +110,7 @@ public class DormitoryService {
         dormitory.setUtime(System.currentTimeMillis());
         int insert = dormitoryMapper.insert(dormitory);
         if(insert>0){
-            return  Results.ok();
+            return  Results.success();
         }
         return Results.failure();
     }
@@ -133,7 +133,7 @@ public class DormitoryService {
         dormitory.setUtime(System.currentTimeMillis());
         int i = dormitoryMapper.updateById(dormitory);
         if(i>0){
-            return Results.ok();
+            return Results.success();
         }
         return Results.failure();
     }

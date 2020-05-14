@@ -254,7 +254,7 @@ public class RepairsService {
                 repairs.setCtime(System.currentTimeMillis());
                 repairs.setUtime(System.currentTimeMillis());
                 repairs.setEvaluationId(0L);
-                repairs.setRepairmanId(0);
+                //repairs.setRepairmanId(0);
                 // 3. 判断是否分配维修人员
                 if(repairs.getRepairmanId()==null||repairs.getRepairmanId()==0){
                     repairs.setState(1);  // 待分配

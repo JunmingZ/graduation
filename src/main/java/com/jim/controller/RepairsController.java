@@ -176,9 +176,11 @@ public class RepairsController {
     @PostMapping("/edit")
     public Results updateRepair(Repairs repairs){
         // 如果维修人被设置，那么进入待处理状态
-        if( repairs.getRepairmanId()!=null || repairs.getRepairmanId()!=0){
-            repairs.setState(2);
-        }
+        if( repairs.getState()==3){
+             repairs.setState(3);
+        }else if( repairs.getRepairmanId()!=null || repairs.getRepairmanId()!=0){
+             repairs.setState(2);
+         }
         return repairsService.updateRepairsByEntity(repairs);
     }
 

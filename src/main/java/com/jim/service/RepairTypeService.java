@@ -54,7 +54,7 @@ public class RepairTypeService  {
         repairType.setUtime(System.currentTimeMillis());
         int insert = repairTypeMapper.insert(repairType);
         if(insert>0){
-            return  Results.ok();
+            return  Results.success();
         }
         return Results.failure();
     }
@@ -76,7 +76,7 @@ public class RepairTypeService  {
     public Results editRepairType(RepairType repairType) {
         repairType.setUtime(System.currentTimeMillis());
         if(repairTypeMapper.updateById(repairType)>0){
-            return Results.ok();
+            return Results.success();
         }
         return Results.failure();
     }
@@ -92,6 +92,8 @@ public class RepairTypeService  {
         wrapper.eq("type_id",id);
         Integer flag = 0;
         Integer count = repairsMapper.selectCount(wrapper);
+
+        // 报修表存在不给删除
         if(count>0){
             return Results.failure();
         }else {
@@ -104,16 +106,6 @@ public class RepairTypeService  {
         }
 
 
-        //if(repairTypeMapper.deleteById(id)>0){
-        //    QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
-        //    wrapper.eq("type_id",id);
-        //    Repairs repairs = new Repairs();
-        //    repairs.setDormitory(0L);
-        //    repairsMapper.update(repairs,wrapper);
-        //    return Results.ok();
-        //}else {
-        //    return Results.failure();
-        //}
     }
 
 

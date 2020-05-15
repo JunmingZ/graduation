@@ -70,7 +70,7 @@ public class RepairmanService {
         int update = repairmanMapper.update(repairman, wrapper);
 
         if(update>0){
-            return Results.ok();
+            return Results.success();
         }else {
             return Results.failure(ResponseCode.REPAIRMAN_UPDATE_FLAG.getCode(),ResponseCode.REPAIRMAN_UPDATE_FLAG.getMessage());
         }
@@ -91,7 +91,7 @@ public class RepairmanService {
         repairman.setUtime(System.currentTimeMillis());
         int insert = repairmanMapper.insert(repairman);
         if(insert>0){
-            return Results.ok();
+            return Results.success();
         }else {
             return Results.failure(ResponseCode.INSERT_EXCEPTION.getCode(),ResponseCode.INSERT_EXCEPTION.getMessage());
         }

@@ -74,7 +74,7 @@ public class AdminService {
         if(adminMapper.deleteBatchIds(Arrays.asList(split))==0){
             return Results.failure(ResponseCode.DELETE_FAIL.getCode(),ResponseCode.DELETE_FAIL.getMessage());
         }
-        return Results.ok();
+        return Results.success();
     }
 
     /**

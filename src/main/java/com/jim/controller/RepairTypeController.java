@@ -65,7 +65,7 @@ public class RepairTypeController {
     }
 
     /**
-     * 编辑宿舍
+     * 编辑报修类型
      * @param repairType 宿舍
      * @return
      */

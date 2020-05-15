@@ -87,16 +87,33 @@ public class RepairTypeService  {
      * @return
      */
     public Results deleteRepairTypeById(String id) {
-        if(repairTypeMapper.deleteById(id)>0){
-            QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
-            wrapper.eq("type_id",id);
-            Repairs repairs = new Repairs();
-            repairs.setDormitory(0L);
-            repairsMapper.update(repairs,wrapper);
-            return Results.ok();
+        // 1。判断是否在使用，若是在使用，不许删除
+        QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
+        wrapper.eq("type_id",id);
+        Integer flag = 0;
+        Integer count = repairsMapper.selectCount(wrapper);
+        if(count>0){
+            return Results.failure();
+        }else {
+            flag = repairTypeMapper.deleteById(id);
+        }
+        if(flag>0){
+            return Results.success();
         }else {
             return Results.failure();
         }
+
+
+        //if(repairTypeMapper.deleteById(id)>0){
+        //    QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
+        //    wrapper.eq("type_id",id);
+        //    Repairs repairs = new Repairs();
+        //    repairs.setDormitory(0L);
+        //    repairsMapper.update(repairs,wrapper);
+        //    return Results.ok();
+        //}else {
+        //    return Results.failure();
+        //}
     }
 
 
@@ -109,11 +126,24 @@ public class RepairTypeService  {
         if(StringUtils.isEmpty(ids)){
             return Results.failure();
         }
+        Integer flag = 0;
         String[] split = ids.split(",");
-        if(repairTypeMapper.deleteBatchIds(Arrays.asList(split))>0){
-            return Results.ok();
+        for (String id:split){
+            QueryWrapper<Repairs> wrapper = new QueryWrapper<>();
+            wrapper.eq("type_id",id);
+            Integer count = repairsMapper.selectCount(wrapper);
+            if(count>0){
+                // 在使用
+                return Results.failure();
+            }else {
+                flag = repairTypeMapper.deleteById(id);
+            }
         }
-        return Results.failure();
+        if(flag>0){
+            return Results.success();
+        }else {
+            return Results.failure();
+        }
     }
 
     /**

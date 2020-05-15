@@ -55,7 +55,7 @@ public class AdminService {
     public Results deleteAdminById(String id) {
         int i = adminMapper.deleteById(id);
         if(i>0){
-            return Results.ok();
+            return Results.success();
         }
         return Results.failure(ResponseCode.DELETE_FAIL.getCode(),ResponseCode.DELETE_FAIL.getMessage());
     }
@@ -87,7 +87,7 @@ public class AdminService {
         admin.setUtime(System.currentTimeMillis());
         int insert = adminMapper.insert(admin);
         if(insert>0){
-            return Results.ok();
+            return Results.success();
         }
         return Results.failure(ResponseCode.INSERT_EXCEPTION.getCode(),ResponseCode.INSERT_EXCEPTION.getMessage());
     }
@@ -110,7 +110,7 @@ public class AdminService {
         admin.setUtime(System.currentTimeMillis());
         int i = adminMapper.updateById(admin);
         if(i>0){
-            return Results.ok();
+            return Results.success();
         }
         return Results.failure(ResponseCode.UPDATE_FAIL.getCode(),ResponseCode.UPDATE_FAIL.getMessage());
     }
